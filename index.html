@@ -721,6 +721,7 @@ function updateSiteLinks(){
  document.querySelectorAll('#siteLinks a').forEach(a=>{
   const label=lang==='en'?a.dataset.en:a.dataset.ja;
   if(a.textContent!==label)a.textContent=label;
+  a.href=a.getAttribute('href').split('?')[0]+'?lang='+lang;
  });
 }
 for(const b of document.querySelectorAll('#languageBar button'))b.addEventListener('click',updateSiteLinks);
