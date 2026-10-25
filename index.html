@@ -749,4 +749,8 @@ for(const [id,battleMode,copy] of [['shareResult',false,false],['copyResult',fal
 const old=document.getElementById(id),btn=old.cloneNode(true);old.replaceWith(btn);btn.addEventListener('click',async()=>{const message=shareMessage(battleMode),feedback=document.getElementById(battleMode?'shareBattleFeedback':'shareFeedback');try{if(!copy&&navigator.share){await navigator.share({text:message});feedback.textContent=lang==='ja'?'共有画面を開きました':'Share sheet opened'}else{await navigator.clipboard.writeText(message);feedback.textContent=lang==='ja'?'結果とリンクをコピーしました':'Result and link copied'}}catch(e){if(e.name!=='AbortError')feedback.textContent=lang==='ja'?'共有できませんでした':'Could not share'}});
 }
 })();
-</script></body></html>
+</script><div style="text-align:center;padding:16px;background:#101827;">
+  <a href="/games/" style="color:#ffffff;font-size:15px;text-decoration:underline;">
+    🎮 ほかのゲームを見る / More Games
+  </a>
+</div></body></html>
