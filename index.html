@@ -596,7 +596,19 @@ const setupTranslations = [
  ['#shareBattleResult','↗ SHARE BATTLE'],['#copyBattleResult','COPY RESULT'],
  ['#setupScreen ~ .footer','No installation needed. Works offline.\nDevice and input lag can affect millisecond accuracy.']
 ];
-const staticOriginals = new Map();
+// Stable Japanese originals for labels that must never be inferred from translated DOM.
+const fixedJa = {
+ '#modes [data-mode="single"]':'ワンショット',
+ '#modes [data-mode="total"]':'ラウンド戦',
+ '#modes [data-mode="battle"]':'VS対戦',
+ '#modes [data-mode="gate"]':'ステージ攻略',
+ '#modes [data-mode="streak"]':'連続成功',
+ '#displays [data-display="always"]':'常時表示',
+ '#displays [data-display="hidden"]':'非表示',
+ '#displays [data-display="partial"]':'途中まで',
+ '#displays [data-display="random"]':'ランダム'
+};
+const staticOriginals = new Map(Object.entries(fixedJa));
 function enforceStatic(){
  for(const [selector,en] of setupTranslations){
   if(!en)continue;
