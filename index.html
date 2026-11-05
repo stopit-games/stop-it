@@ -207,109 +207,30 @@ button,select,input{touch-action:manipulation}
 /* v2.9: keep all panels inside mobile viewport */
 html,body{max-width:100%;overflow-x:clip}main,.screen,.panel{min-width:0;max-width:100%} .play-top{min-width:0}.play-top .muted{min-width:0;overflow-wrap:anywhere;text-align:right} .stats,.entry{min-width:0;flex-wrap:wrap}.entry span{min-width:0;overflow-wrap:anywhere}.custom-grid select{min-width:0;width:100%;font-size:16px} .custom-grid label{min-width:0} 
 @media(max-width:480px){.custom-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.play-card .target{font-size:clamp(50px,16vw,90px)}.play-card .clock{font-size:clamp(42px,12vw,75px)}}
-</style><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7474396056910450" crossorigin="anonymous"></script></head><body><main><header><strong>⏱ STOP IT!</strong><span>v3.7 β · WORLD EDITION</span></header><div id="languageBar" aria-label="Language"><button type="button" data-lang="en">🌐 English</button><button type="button" data-lang="ja">🇯🇵 日本語</button></div><section id="playScreen" class="screen"><div class="play-top"><button type="button" class="back-btn" id="backToSetup">← 設定に戻る</button><span class="muted" id="playModeName">チャレンジ</span></div><section class="panel play-card"><div class="eyebrow" id="roundLabel">目標時間</div><div class="target"><span id="target">3.000</span><small>s</small></div><div class="subtitle" id="modeDetail">狙った秒数で止めよう！</div><div class="display" aria-live="off"><div class="clock" id="clock">0.000s</div><div class="hint" id="hint">STARTを押して、体内時計で数えよう</div></div><div class="result" id="result" aria-live="polite"></div><div id="sharePlay" class="share-tools" hidden><button type="button" id="shareResult">↗ 結果をシェア</button><button type="button" id="copyResult">結果をコピー</button><span id="shareFeedback" class="muted" aria-live="polite"></span></div><button class="action" type="button" id="action">▶ START</button><div class="stats" id="stats"></div><div id="progress" class="progress" aria-label="ラウンド進行状況"></div><div id="best" class="best"></div></section><section class="panel history"><h2>今回の記録</h2><div id="history"><span class="muted">まだ記録はありません。</span></div></section></section><section id="battleScreen" class="screen" aria-label="2〜4人対戦"><div class="play-top"><button type="button" class="back-btn" id="battleBack">← 設定に戻る</button><span class="muted">VS BATTLE · 1対1が基本</span></div><section class="panel battle-panel"><div class="eyebrow" id="battleHeading">対戦スタート</div><div class="battle-name" id="battleName">PLAYER 1</div><div class="battle-number" id="battleGoal">3.000<small style="font-size:22px">s</small></div><div class="battle-status" id="battleStatus">同じコースで交互に挑戦！</div><div class="battle-clock" id="battleClock">0.000s</div><div id="battleProgress" class="battle-rounds"></div><div class="battle-summary" id="battleSummary"></div><button type="button" class="action" id="battleAction">▶ START</button><button type="button" class="battle-secondary hidden" id="battleAgain">↻ もう一度対戦</button><button type="button" class="battle-secondary hidden" id="battleReturn">← 設定に戻る</button><div id="battleRecordNotice" class="muted"></div><div id="shareBattle" class="share-tools" hidden><button type="button" id="shareBattleResult">↗ 対戦結果をシェア</button><button type="button" id="copyBattleResult">結果をコピー</button><span id="shareBattleFeedback" class="muted" aria-live="polite"></span></div></section></section><section id="setupScreen" class="screen visible"><h1 class="screen-title">チャレンジを選ぼう</h1><p class="setup-note">まずは3秒に挑戦！ 設定を選んで「ゲーム開始」を押そう。</p><section class="panel settings" id="settings"><h2>ゲーム設定</h2><div class="field"><label>ゲームモード</label><div class="choices mode-grid" id="modes"><button class="choice active" data-mode="single">ワンショット</button><button class="choice" data-mode="total">ラウンド戦</button><button class="choice" data-mode="battle">VS対戦</button><button class="choice" data-mode="gate">ステージ攻略</button><button class="choice" data-mode="streak">連続成功</button></div></div><section class="panel records-panel" id="battleRecordsSettings" style="display:none"><h2>対戦プレイヤー</h2><div class="field"><label for="playerCount">対戦人数</label><select id="playerCount"><option value="2">2人</option><option value="3">3人</option><option value="4">4人</option></select></div><div class="field"><label for="battleRule">対戦ルール</label><select id="battleRule"><option value="score">スコア対戦（合計誤差）</option><option value="survival">サバイバル対戦（失敗で脱落）</option></select></div><div id="survivalSettings" class="hidden"><div class="field"><label for="survivalStyle">秒数の決め方</label><select id="survivalStyle"><option value="fixed">固定タイム戦</option><option value="nominate">指名タイム戦（毎周交代）</option></select></div><div class="field"><label for="survivalTarget">サバイバルの目標秒数</label><select id="survivalTarget"><option value="1">1秒</option><option value="3" selected>3秒</option><option value="5">5秒</option><option value="10">10秒</option><option value="15">15秒</option><option value="30">30秒</option></select></div><div class="field"><label for="survivalTolerance">許容誤差（±）</label><select id="survivalTolerance"><option value="0.5">0.500秒</option><option value="0.3">0.300秒</option><option value="0.2" selected>0.200秒</option><option value="0.1">0.100秒</option><option value="0.05">0.050秒</option><option value="0.01">0.010秒</option></select></div><p class="muted">全員が1回ずつ挑戦して1周。失敗した人は脱落。最後の1人が勝利。同じ周で全員脱落した場合は、その周の誤差が最小の人が勝利します。</p></div><div class="two"><label>プレイヤー1<input id="playerOne" maxlength="20" value="PLAYER 1" autocomplete="off"></label><label>プレイヤー2<input id="playerTwo" maxlength="20" value="PLAYER 2" autocomplete="off"></label></div><div id="extraPlayers" class="two" style="margin-top:10px"></div><p class="muted">同じ名前の組み合わせで対戦成績を集計します。</p><details class="battle-record-details"><summary>過去の対戦成績を見る</summary><div id="battleRecordList"></div><div class="record-actions"><button type="button" id="clearBattleRecords">戦績を削除</button></div></details></section><div class="field" id="roundsField"><label>回戦数（1〜10回戦）</label><div class="row"><select id="roundCount" aria-label="回戦数"><option value="1">1回戦</option><option value="2">2回戦</option><option value="3" selected>3回戦</option><option value="4">4回戦</option><option value="5">5回戦</option><option value="6">6回戦</option><option value="7">7回戦</option><option value="8">8回戦</option><option value="9">9回戦</option><option value="10">10回戦</option></select><select id="pattern" aria-label="秒数の組み合わせ"><option value="standard">スタンダード</option><option value="short">1秒ずつ増加</option><option value="mix">ミックス</option><option value="custom">秒数を個別指定</option></select></div><div id="customFields" class="hidden field"><label>各回の目標秒数（1〜10秒から選択）</label><div id="customInputs" class="custom-grid"></div></div></div><div class="field" id="singleField"><label>目標秒数（ワンショット・連続成功）</label><div class="choices four" id="targets"><button class="choice" data-target="1">1秒</button><button class="choice active" data-target="3">3秒</button><button class="choice" data-target="5">5秒</button><button class="choice" data-target="10">10秒</button></div></div><div class="field" id="sequenceField"><label>ステージごとの目標秒数</label><div class="subtitle" id="sequence">1 → 3 → 5 秒</div></div><div class="field" id="toleranceField"><label>成功条件（絶対誤差が指定値以下）</label><div class="choices" id="tolerances"><button class="choice" data-tolerance="0.5">±0.5秒</button><button class="choice active" data-tolerance="0.3">±0.3秒</button><button class="choice" data-tolerance="0.2">±0.2秒</button><button class="choice" data-tolerance="0.1">±0.1秒</button><button class="choice" data-tolerance="0.05">±0.05秒</button></div></div><div class="field" id="failureField"><label>クリア制：失敗したとき</label><select id="failure"><option value="end">そこで終了</option><option value="retry">同じステージを再挑戦</option><option value="reset">第1ステージからやり直し</option></select></div><div class="field"><label>計測中の時間表示</label><div class="choices four" id="displays"><button class="choice" data-display="always">常時表示</button><button class="choice active" data-display="hidden">非表示</button><button class="choice" data-display="partial">途中まで</button><button class="choice" data-display="random">ランダム</button></div></div><div class="field hidden" id="partialField"><label>開始から何秒後に隠すか</label><select id="hideAfter"><option value="1">1秒後</option><option value="2" selected>2秒後</option><option value="3">3秒後</option><option value="5">5秒後</option></select></div><div class="field"><label>結果の表示精度</label><div class="choices" id="precisions"><button class="choice" data-digits="1">0.1秒</button><button class="choice" data-digits="2">0.01秒</button><button class="choice active" data-digits="3">0.001秒</button></div></div></section><button class="action setup-start" type="button" id="beginGame">▶ ゲーム開始</button></section><p class="footer">インストール不要・オフライン動作可能。<br>端末や入力方式の遅延により、ミリ秒単位の公平性は保証されません。</p></main><nav id="siteLinks" aria-label="Site information" style="display:block!important;visibility:visible!important;position:relative;isolation:isolate;z-index:1000;max-width:600px;margin:0 auto;padding:16px 10px 36px;text-align:center;font-size:13px;line-height:2.6"><a href="about.html" data-ja="ゲームについて" data-en="About the game" style="color:#c9e4ff;display:inline-block;padding:4px 5px">ゲームについて</a> ｜ <a href="privacy.html" data-ja="プライバシーポリシー" data-en="Privacy Policy" style="color:#c9e4ff;display:inline-block;padding:4px 5px">プライバシーポリシー</a> ｜ <a href="contact.html" data-ja="お問い合わせ" data-en="Contact" style="color:#c9e4ff;display:inline-block;padding:4px 5px">お問い合わせ</a></nav><script>
-(()=>{'use strict';const $=id=>document.getElementById(id);let cfg={mode:'single',rounds:3,target:3,tolerance:.3,display:'hidden',digits:3,pattern:'standard'};const customTargets=Array.from({length:10},(_,i)=>[1,3,5,7,10,15,20,30,45,60][i]);let view='setup';let phase='ready',stage=0,streak=0,errors=[],records=[],startAt=0,raf=0,activeDisplay='hidden',finished=false;const patterns={standard:[1,3,5,7,10,15,20,30,45,60],short:[1,2,3,4,5,6,7,8,9,10],mix:[3,5,2,7,1,10,4,8,6,9]};const sequence=()=>cfg.pattern==='custom'?customTargets.slice(0,cfg.rounds):patterns[cfg.pattern].slice(0,cfg.rounds);const goal=()=>cfg.mode==='total'||cfg.mode==='gate'?sequence()[Math.min(stage,cfg.rounds-1)]:cfg.target;const fixed=n=>n.toFixed(cfg.digits);const bestKey=()=>['stopit-v07',cfg.mode,cfg.rounds,cfg.target,cfg.pattern,sequence().join('-'),cfg.display,cfg.tolerance,$('failure').value].join('|');function getBest(){try{const v=localStorage.getItem(bestKey());return v===null?null:Number(v)}catch(e){return null}}function saveBest(v){try{const old=getBest();if(old===null||(cfg.mode==='streak'?v>old:v<old)){localStorage.setItem(bestKey(),String(v));return true}}catch(e){}return false}const setText=(id,s)=>$(id).textContent=s;function setActive(group,key,val){document.querySelectorAll('#'+group+' [data-'+key+']').forEach(b=>b.classList.toggle('active',b.dataset[key]===String(val)))}function reset(){cancelAnimationFrame(raf);phase='ready';stage=0;streak=0;errors=[];records=[];finished=false;setText('result','');setText('hint','STARTを押して、体内時計で数えよう');setText('history','まだ記録はありません。');render()}
-function render(){const g=goal();$('setupScreen').classList.toggle('visible',view==='setup');$('playScreen').classList.toggle('visible',view==='play');$('battleScreen').classList.toggle('visible',view==='battle');setText('playModeName',({single:'ワンショット',total:`${cfg.rounds}回戦`,gate:'ステージ攻略',streak:'連続成功'})[cfg.mode]);setText('target',fixed(goal()));setText('roundLabel',cfg.mode==='total'||cfg.mode==='gate'?(finished?`チャレンジ終了（${records.length}回挑戦）`:`STAGE ${Math.min(stage+1,cfg.rounds)} / ${cfg.rounds}`):cfg.mode==='streak'?'連続成功':'目標時間');setText('modeDetail',cfg.mode==='total'?`${cfg.rounds}回戦の合計誤差を競う`:cfg.mode==='gate'?'成功しないと次のステージへ進めない':cfg.mode==='streak'?'何回連続で成功できる？':'狙った秒数で止めよう！');if(phase==='ready')setText('clock',`0.${'0'.repeat(cfg.digits)}s`);setText('action',phase==='running'?'■ STOP':phase==='ready'?'▶ START':finished?'↻ もう一度':cfg.mode==='streak'?'▶ 次の挑戦':cfg.mode==='total'||cfg.mode==='gate'?'▶ 次のステージ':'↻ TRY AGAIN');$('action').classList.toggle('stop',phase==='running');$('settings').classList.toggle('hidden',phase==='running'||(phase==='result'&&!finished&&(cfg.mode==='total'||cfg.mode==='gate'||cfg.mode==='streak')));$('roundsField').classList.toggle('hidden',!(cfg.mode==='total'||cfg.mode==='gate'||(cfg.mode==='battle'&&$('battleRule').value==='score')));$('singleField').classList.toggle('hidden',cfg.mode==='total'||cfg.mode==='gate'||cfg.mode==='battle');$('sequenceField').classList.toggle('hidden',!(cfg.mode==='total'||cfg.mode==='gate'||(cfg.mode==='battle'&&$('battleRule').value==='score')));$('toleranceField').classList.toggle('hidden',cfg.mode==='single'||cfg.mode==='total'||cfg.mode==='battle');$('failureField').classList.toggle('hidden',cfg.mode!=='gate');$('partialField').classList.toggle('hidden',cfg.display!=='partial');$('battleRecordsSettings').style.display=cfg.mode==='battle'?'block':'none';setText('sequence',sequence().join(' → ')+' 秒');$('customFields').classList.toggle('hidden',cfg.pattern!=='custom'||!(cfg.mode==='total'||cfg.mode==='gate'||(cfg.mode==='battle'&&$('battleRule').value==='score')));const total=errors.reduce((a,b)=>a+b,0);const totalRounds=cfg.mode==='total'||cfg.mode==='gate'?cfg.rounds:0;$('progress').innerHTML=totalRounds?Array.from({length:totalRounds},(_,i)=>`<span class="pip ${i<stage?'done':i===stage&&!finished?'current':''}"></span>`).join(''):'';const best=getBest();setText('best',best===null?'':cfg.mode==='streak'?`🏆 自己ベスト：${best}回連続`:`🏆 この設定の自己ベスト：${best.toFixed(3)}秒`);setText('stats',cfg.mode==='streak'?`今回の連続成功：${streak}回　｜　今回の最高記録：${Math.max(streak,...records.map(x=>x.streak||0),0)}回`:cfg.mode==='total'||cfg.mode==='gate'?`完了：${records.length}回　｜　合計誤差：${total.toFixed(3)}秒`:'');}
-function tick(){if(phase!=='running')return;const elapsed=(performance.now()-startAt)/1000;let show=activeDisplay==='always'||(activeDisplay==='partial'&&elapsed<Number($('hideAfter').value));setText('clock',show?fixed(elapsed)+'s':'?.'+'?'.repeat(cfg.digits)+'s');raf=requestAnimationFrame(tick)}function start(){document.getElementById('sharePlay').hidden=true;if(finished||cfg.mode==='single'&&phase==='result')reset();activeDisplay=cfg.display==='random'?['always','hidden','partial'][Math.floor(Math.random()*3)]:cfg.display;phase='running';setText('result','');setText('hint',activeDisplay==='always'?'表示を見ながら止めよう':activeDisplay==='partial'?'途中で表示が消えます':activeDisplay==='hidden'?'体内時計で数えよう':'');startAt=performance.now();render();tick()}
-function stop(){if(phase!=='running')return;const elapsed=(performance.now()-startAt)/1000;cancelAnimationFrame(raf);const g=goal(),err=Math.abs(elapsed-g),pass=err<=cfg.tolerance+1e-10;setText('clock',fixed(elapsed)+'s');const rec={stage:stage+1,g,elapsed,err,pass,streak:0};errors.push(err);records.push(rec);if(cfg.mode==='streak'){if(pass){streak=records.filter(x=>x.pass).length;rec.streak=streak}else{finished=true}}else if(cfg.mode==='single'){finished=true}else if(cfg.mode==='total'){stage++;finished=stage>=cfg.rounds}else if(cfg.mode==='gate'){if(pass){stage++;finished=stage>=cfg.rounds}else{const rule=$('failure').value;if(rule==='end')finished=true;else if(rule==='reset'){stage=0;errors=[];records=[]}}}const title=err<0.0005?'🎯 PERFECT!':err<=0.010?'✨ AMAZING!':err<=0.050?'⭐ EXCELLENT!':err<=0.100?'GREAT!':cfg.mode==='total'||cfg.mode==='single'?'NICE TRY!':pass?'CLEAR!':'FAILED';let details=`<strong class="${pass?'good':'bad'}">${title}</strong><br>誤差：<b>${err.toFixed(3)}秒</b>`;if(cfg.mode==='total'&&finished)details+=`<br><strong>合計誤差：${errors.reduce((a,b)=>a+b,0).toFixed(3)}秒</strong>`;if(cfg.mode==='gate'&&finished&&pass)details+='<br><strong class="good">全ステージクリア！</strong>';if(cfg.mode==='streak')details+=`<br>連続成功：<b>${streak}回</b>`;if(cfg.mode==='gate'&&!pass&&!finished)details+='<br>再挑戦が必要です';if(finished){const score=cfg.mode==='streak'?streak:cfg.mode==='total'?errors.reduce((a,b)=>a+b,0):cfg.mode==='single'?err:null;const eligible=cfg.mode==='single'||cfg.mode==='total'||cfg.mode==='streak'||(cfg.mode==='gate'&&pass);const finalScore=cfg.mode==='gate'?errors.reduce((a,b)=>a+b,0):score;if(eligible&&finalScore!==null&&saveBest(finalScore))details+='<br><strong class="good">🏆 NEW BEST!</strong>';} $('result').innerHTML=details;window.stopitLastResult={mode:cfg.mode,goal:g,elapsed,err,total:errors.reduce((a,b)=>a+b,0),rounds:records.length,finished};document.getElementById('sharePlay').hidden=!finished;setText('hint',finished?'チャレンジ終了':'次の挑戦へ！');phase='result';render();$('history').innerHTML=records.map((x,i)=>`<div class="entry"><span>${i+1}. 目標 ${x.g}s → ${x.elapsed.toFixed(3)}s</span><span class="${x.pass?'good':'bad'}">±${x.err.toFixed(3)}s</span></div>`).join('')||'<span class="muted">記録なし</span>'}
-$('beginGame').addEventListener('click',()=>{reset();view=cfg.mode==='battle'?'battle':'play';if(view==='battle'){battleReset();if(survival()&&nominated()){bphase='choose';survivalRender()}else if(survival()){sGoals=[sRoundGoal]}}render();window.scrollTo(0,0)});$('backToSetup').addEventListener('click',()=>{if(phase==='running'&&!confirm('計測中です。中断して設定に戻りますか？'))return;reset();view='setup';render();window.scrollTo(0,0)});$('action').addEventListener('click',()=>phase==='running'?stop():start());document.querySelectorAll('[data-mode]').forEach(b=>b.addEventListener('click',()=>{cfg.mode=b.dataset.mode;setActive('modes','mode',cfg.mode);reset()}));for(const [key,group] of [['target','targets'],['tolerance','tolerances'],['display','displays'],['digits','precisions']])document.querySelectorAll(`#${group} [data-${key}]`).forEach(b=>b.addEventListener('click',()=>{cfg[key]=key==='display'?b.dataset[key]:Number(b.dataset[key]);setActive(group,key,cfg[key]);reset()}));$('roundCount').addEventListener('change',()=>{cfg.rounds=Number($('roundCount').value);buildCustomInputs();reset()});$('pattern').addEventListener('change',()=>{cfg.pattern=$('pattern').value;reset()});function buildCustomInputs(){$('customInputs').innerHTML='';for(let i=0;i<cfg.rounds;i++){const label=document.createElement('label');label.textContent=`第${i+1}回`;const input=document.createElement('select');input.setAttribute('aria-label',`第${i+1}回の目標秒数`);for(let n=1;n<=10;n++){const option=document.createElement('option');option.value=String(n);option.textContent=n+'秒';input.appendChild(option)}if(customTargets[i]>10||customTargets[i]<1||!Number.isInteger(customTargets[i])){const option=document.createElement('option');option.value=String(customTargets[i]);option.textContent=customTargets[i]+'秒（以前の設定）';input.appendChild(option)}input.value=String(customTargets[i]);input.addEventListener('change',()=>{customTargets[i]=Number(input.value);reset()});label.appendChild(input);$('customInputs').appendChild(label)}}buildCustomInputs();$('hideAfter').addEventListener('change',reset);$('failure').addEventListener('change',reset);
-// Battle is a separate state machine: no opponent scores are shown during handoff.
-let bp=0,br=0,bphase='ready',bStart=0,bFrame=0,bResults=[[],[]],bDisplay='hidden';
-const historyKey='stopit-battle-history-v09';
-let sAlive=[],sRound=1,sCurrent=[],sEliminated=[],sWinner=null,sRoundGoal=3,sGoals=[],sNominator=0;const survival=()=>$('battleRule').value==='survival';const sGoal=()=>sRoundGoal;const nominated=()=>$('survivalStyle').value==='nominate';const sTolerance=()=>Number($('survivalTolerance').value);
-$('survivalStyle').addEventListener('change',()=>{updateSurvivalControls();render()});function updateSurvivalControls(){const field=$('survivalTarget').closest('.field');field.classList.toggle('hidden',nominated());}updateSurvivalControls();$('battleRule').addEventListener('change',()=>{$('survivalSettings').classList.toggle('hidden',!survival());render()});
-const playerNames=()=>Array.from({length:Number($('playerCount').value)},(_,i)=>{const el=i===0?$('playerOne'):i===1?$('playerTwo'):$('player'+(i+1));return (el?.value||'').trim().slice(0,20)||'PLAYER '+(i+1)});function buildExtraPlayers(){const n=Number($('playerCount').value);const old=[3,4].map(i=>$('player'+i)?.value||'PLAYER '+i);$('extraPlayers').innerHTML='';for(let i=3;i<=n;i++){const label=document.createElement('label');label.textContent='プレイヤー'+i;const input=document.createElement('input');input.id='player'+i;input.maxLength=20;input.value=old[i-3];input.addEventListener('input',showBattleRecords);label.appendChild(input);$('extraPlayers').appendChild(label)}showBattleRecords()}$('playerCount').addEventListener('change',buildExtraPlayers);
-function readBattles(){try{const x=JSON.parse(localStorage.getItem(historyKey)||'[]');return Array.isArray(x)?x:[]}catch(e){return []}}
-function writeBattles(a){try{localStorage.setItem(historyKey,JSON.stringify(a.slice(0,200)));return true}catch(e){return false}}
-function escapeHtml(t){return String(t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function showBattleRecords(){const a=readBattles(),names=playerNames();const pair=a.filter(x=>Array.isArray(x.names)&&x.names.length===names.length&&x.names.every((n,i)=>n===names[i]));const wins=names.map((_,i)=>pair.filter(x=>x.winner===i).length);const draws=pair.filter(x=>x.winner===null).length;const summary=names.map((n,i)=>`${escapeHtml(n)} ${wins[i]}勝`).join(' / ');const recent=a.slice(0,10).map(x=>{const ns=Array.isArray(x.names)?x.names:[],scores=Array.isArray(x.scores)?x.scores:[];return `<div class="entry"><span>${escapeHtml(x.date||'')}　${ns.map(escapeHtml).join(' vs ')}<br><small>${x.rule==='survival'?'サバイバル '+x.rounds+'周':x.rounds+'回戦'} · ${scores.map(v=>Number(v).toFixed(3)+'s').join(' / ')}</small></span><strong>${x.winner===null?'DRAW':escapeHtml(ns[x.winner]||'?')+' 勝利'}</strong></div>`}).join('');$('battleRecordList').innerHTML=`<p>${summary} / 引分 ${draws}回</p><p class="muted">この組み合わせ：${pair.length}試合 ／ 全記録：${a.length}試合（最近10試合を表示）</p>${recent||'<p class="muted">まだ対戦記録はありません。</p>'}`}
-function saveBattleResult(){const scores=bResults.map(bTotal),min=Math.min(...scores),leaders=scores.map((v,i)=>Math.abs(v-min)<1e-9?i:-1).filter(i=>i>=0),winner=leaders.length===1?leaders[0]:null;const now=new Date();const record={date:now.toLocaleString('ja-JP'),names:playerNames(),rounds:cfg.rounds,targets:sequence(),scores,winner,details:bResults.map(rows=>rows.map(r=>({target:r.target,elapsed:r.elapsed,err:r.err})))};const ok=writeBattles([record,...readBattles()]);setText('battleRecordNotice',ok?'✓ 対戦結果をこのブラウザに保存しました':'保存できませんでした。ブラウザの保存設定を確認してください。');showBattleRecords()}
-$('playerOne').addEventListener('input',showBattleRecords);$('playerTwo').addEventListener('input',showBattleRecords);
-$('clearBattleRecords').addEventListener('click',()=>{if(confirm('保存したすべての対戦戦績を削除しますか？')){try{localStorage.removeItem(historyKey)}catch(e){}showBattleRecords()}});
-const bTotal=a=>a.reduce((n,x)=>n+x.err,0);
-function battleReset(){setText('battleRecordNotice','');cancelAnimationFrame(bFrame);bp=0;br=0;bphase='ready';bResults=playerNames().map(()=>[]);sAlive=playerNames().map((_,i)=>i);sEliminated=[];sRound=1;sCurrent=[];sWinner=null;sRoundGoal=Number($('survivalTarget').value);sGoals=[];sNominator=0;battleRender()}
-function battleRender(){if(survival()){survivalRender();return}const seq=sequence(),names=playerNames(),done=bphase==='allDone',handoff=bphase==='handoff',roundDone=bphase==='roundDone';setText('battleHeading',done?'最終順位':handoff?'スマホを交代してください':`PLAYER ${bp+1} / ${names.length} · ROUND ${Math.min(br+1,cfg.rounds)} / ${cfg.rounds}`);setText('battleName',done?'RESULT':handoff?'次は '+names[bp+1]:names[bp]);setText('battleGoal',done?'FINISH':handoff?'READY':seq[Math.min(br,cfg.rounds-1)].toFixed(3)+'s');$('battleClock').classList.toggle('hidden',done||handoff);$('battleProgress').classList.toggle('hidden',done||handoff);$('battleProgress').innerHTML=Array.from({length:cfg.rounds},(_,i)=>`<span class="${i<br?'done':i===br?'current':''}"></span>`).join('');$('battleAgain').classList.toggle('hidden',!done);$('battleReturn').classList.toggle('hidden',!done);$('battleAction').classList.toggle('stop',bphase==='running');$('battleAction').classList.toggle('hidden',done);setText('battleAction',handoff?'▶ '+names[bp+1]+' 開始':bphase==='running'?'■ STOP':roundDone?'▶ 次のラウンド':'▶ START');if(bphase==='ready'){setText('battleClock','0.'+'0'.repeat(cfg.digits)+'s');setText('battleStatus','目標時間に合わせてSTOP！');setText('battleSummary','')}if(handoff){setText('battleStatus','準備ができたらボタンを押してください');setText('battleSummary','端末を次のプレイヤーに渡してください。準備ができたら下のボタンを押します。')}if(done){const scores=bResults.map(bTotal),order=scores.map((score,i)=>({score,i})).sort((a,b)=>a.score-b.score),tie=order.length>1&&Math.abs(order[0].score-order[1].score)<1e-9;setText('battleName',tie?'DRAW!':names[order[0].i]+' WINS!');setText('battleStatus',tie?'同点優勝':`勝敗差：${(order[1].score-order[0].score).toFixed(3)}秒`);$('battleSummary').innerHTML=`<div class="battle-results" style="grid-template-columns:1fr">${order.map((x,i)=>`<div class="${i===0?'winner':''}">${i+1}位　${escapeHtml(names[x.i])}<strong>誤差 ${x.score.toFixed(3)}秒</strong></div>`).join('')}</div><div style="font-size:12px;margin-top:12px;color:#b7c9e6">合計絶対誤差が小さい順</div><details class="round-detail"><summary>各回の記録を見る（全${cfg.rounds}回）</summary>${order.map(x=>`<div class="detail-player">${escapeHtml(names[x.i])}</div><table><thead><tr><th>回</th><th>目標</th><th>計測</th><th>誤差</th></tr></thead><tbody>${bResults[x.i].map((r,j)=>`<tr><td>${j+1}</td><td>${r.target.toFixed(3)}秒</td><td>${r.elapsed.toFixed(3)}秒</td><td>${r.err.toFixed(3)}秒</td></tr>`).join('')}<tr class="detail-total"><td colspan="3">合計誤差</td><td>${x.score.toFixed(3)}秒</td></tr></tbody></table>`).join('')}<p class="muted">各回の値は小数第3位に丸めて表示しています。合計は丸め前の値で計算するため、表示値の合算と0.001秒程度異なる場合があります。</p></details>`}}
-function battleTick(){if(bphase!=='running')return;const elapsed=(performance.now()-bStart)/1000;const show=bDisplay==='always'||bDisplay==='partial'&&elapsed<Number($('hideAfter').value);setText('battleClock',show?elapsed.toFixed(cfg.digits)+'s':'?.'+'?'.repeat(cfg.digits)+'s');bFrame=requestAnimationFrame(battleTick)}
-function battleAction(){if(survival()){survivalAction();return}if(bphase==='handoff'){bp++;br=0;bphase='ready';battleRender();return}if(bphase==='roundDone'){br++;bphase='ready';battleRender();return}if(bphase==='ready'){bDisplay=cfg.display==='random'?['always','hidden','partial'][Math.floor(Math.random()*3)]:cfg.display;bStart=performance.now();bphase='running';battleRender();setText('battleStatus','タイミングを見極めてSTOP！');battleTick();return}if(bphase==='running'){const elapsed=(performance.now()-bStart)/1000;cancelAnimationFrame(bFrame);const target=sequence()[br],err=Math.abs(elapsed-target);bResults[bp].push({target,elapsed,err});setText('battleClock',elapsed.toFixed(cfg.digits)+'s');setText('battleStatus',`誤差 ${err.toFixed(3)}秒`);setText('battleSummary',`第${br+1}回：${target}s → ${elapsed.toFixed(3)}s`);if(br+1===cfg.rounds){if(bp<playerNames().length-1){bphase='handoff';battleRender()}else{bphase='allDone';battleRender();saveBattleResult()}}else{bphase='roundDone';battleRender()} }}
-let sPending=[];
-function survivalRender(){
- const names=playerNames(),done=bphase==='allDone',handoff=bphase==='handoff',between=bphase==='roundDone';
- const choosing=bphase==='choose';const label=done?'サバイバル終了':choosing?'目標秒数を指名':handoff?'端末を次の人へ':`サバイバル · 第${sRound}周`;
- setText('battleHeading',label);setText('battleName',done?(sWinner===null?'DRAW!':names[sWinner]+' WINS!'):choosing?names[sNominator]+' が指定':handoff?'次は '+names[sPending[0]]:names[bp]);
- setText('battleGoal',done?'WIN':choosing?'SELECT':sGoal().toFixed(3)+'s');
- $('battleClock').classList.toggle('hidden',done||handoff||between||choosing);
- $('battleProgress').classList.add('hidden');$('battleAgain').classList.toggle('hidden',!done);$('battleReturn').classList.toggle('hidden',!done);
- $('battleAction').classList.toggle('hidden',done);$('battleAction').classList.toggle('stop',bphase==='running');
- setText('battleAction',bphase==='running'?'■ STOP':choosing?'▶ この秒数で開始':handoff?'▶ 次のプレイヤー':between?'▶ 次の周へ':'▶ START');
- if(bphase==='ready'){setText('battleClock','0.'+'0'.repeat(cfg.digits)+'s');setText('battleStatus',`許容誤差 ±${sTolerance().toFixed(3)}秒 ／ 残り${sAlive.length}人`);setText('battleSummary','目標に合わせてSTOP！')}
- if(handoff||between){setText('battleStatus',between?`第${sRound}周へ進みます`:'次のプレイヤーに端末を渡してください');setText('battleSummary',`生存者：${sAlive.map(i=>escapeHtml(names[i])).join('・')}`)}
- if(done){setText('battleStatus',`全${sRound}周 ／ 許容誤差 ±${sTolerance().toFixed(3)}秒`);$('battleSummary').innerHTML=`<div class="battle-results" style="grid-template-columns:1fr">${names.map((name,i)=>`<div class="${sWinner===i?'winner':''}">${sWinner===i?'🏆 優勝':'挑戦終了'}　${escapeHtml(name)}<strong>成功 ${bResults[i].filter(x=>x.pass).length}回</strong></div>`).join('')}</div>`}
-}
-function saveSurvival(){const names=playerNames();const scores=bResults.map(a=>a.filter(x=>x.pass).length);const record={date:new Date().toLocaleString('ja-JP'),rule:'survival',names,rounds:sRound,targets:sGoals.length?sGoals:[sGoal()],style:nominated()?'nominate':'fixed',tolerance:sTolerance(),scores,winner:sWinner};const ok=writeBattles([record,...readBattles()]);setText('battleRecordNotice',ok?'✓ サバイバル戦績を保存しました':'戦績の保存に失敗しました');showBattleRecords()}
-function survivalAction(){
- if(bphase==='allDone')return;
- if(bphase==='choose'){sRoundGoal=Number($('nominateSeconds').value);sGoals.push(sRoundGoal);bp=sAlive[0];bphase='ready';survivalRender();return}
- if(bphase==='handoff'){bp=sPending[0];bphase='ready';survivalRender();return}
- if(bphase==='roundDone'){sRound++;sCurrent=[];bp=sAlive[0];if(nominated()){sNominator=sAlive.find(i=>i>sNominator)??sAlive[0];bphase='choose'}else{bphase='ready';sRoundGoal=Number($('survivalTarget').value)}survivalRender();return}
- if(bphase==='ready'){bDisplay=cfg.display==='random'?['always','hidden','partial'][Math.floor(Math.random()*3)]:cfg.display;bStart=performance.now();bphase='running';survivalRender();battleTick();return}
- if(bphase!=='running')return;
- const elapsed=(performance.now()-bStart)/1000;cancelAnimationFrame(bFrame);const err=Math.abs(elapsed-sGoal()),pass=err<=sTolerance()+1e-10;
- bResults[bp].push({target:sGoal(),elapsed,err,pass});sCurrent.push({i:bp,err,pass});
- setText('battleClock',elapsed.toFixed(cfg.digits)+'s');
- const remaining=sAlive.filter(i=>!sCurrent.some(x=>x.i===i));
- if(remaining.length){bphase='handoff';setText('battleStatus',pass?'成功！ 生き残り':'失敗！ 脱落');setText('battleSummary',`誤差 ${err.toFixed(3)}秒。次は${escapeHtml(playerNames()[remaining[0]])}`);sPending=remaining;
- }else{
- const survivors=sCurrent.filter(x=>x.pass).map(x=>x.i);
- if(survivors.length<=1){sWinner=survivors.length===1?survivors[0]:sCurrent.reduce((a,b)=>b.err<a.err?b:a).i;bphase='allDone';saveSurvival()}
- else{sAlive=survivors;bphase='roundDone'}
- }
- survivalRender();if(bphase==='handoff'){setText('battleStatus',pass?'成功！ 次の人へ':'失敗！ 脱落');setText('battleSummary',`今回の誤差：${err.toFixed(3)}秒`)}
+</style><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7474396056910450" crossorigin="anonymous"></script><style>/* Result feedback stays out of the input path; replay never waits for animation. */
+#soundToggle{font-size:11px;min-height:38px;padding:6px 10px}#languageBar{flex-wrap:wrap}
+#achievement{position:fixed;left:50%;top:max(10px,env(safe-area-inset-top));transform:translateX(-50%);z-index:2000;pointer-events:none;max-width:calc(100vw - 22px);padding:12px 20px;border-radius:14px;border:2px solid var(--achievement-color);background:#111c32f5;color:var(--achievement-color);font-size:clamp(19px,5vw,32px);font-weight:900;text-align:center;box-shadow:0 0 24px #0008;overflow-wrap:anywhere}
+#achievement[hidden]{display:none}#achievement.burst{animation:achievement-in .32s ease-out}#achievement[data-kind=perfect]{box-shadow:0 0 40px #ffd56477}
+#nominationControl{margin:8px 0}#nominationControl label{display:block;font-size:13px;margin-bottom:5px}#nominationControl select{width:100%;min-height:44px}
+@keyframes achievement-in{from{opacity:0;transform:translateX(-50%) scale(.88)}to{opacity:1;transform:translateX(-50%) scale(1)}}
+@media(prefers-reduced-motion:reduce){#achievement.burst{animation:none}}
+@media(orientation:landscape) and (max-height:500px){
+ main{max-width:960px;padding:4px 10px}header{margin:0;min-height:25px}header strong{font-size:17px}#languageBar{margin:3px 0;gap:6px}#languageBar button,#soundToggle{min-height:30px;padding:5px 10px;font-size:11px}
+ .play-top{margin:3px 0}.back-btn{min-height:30px;padding:5px 10px}#playScreen .play-card{min-height:0;padding:8px 12px;display:grid;grid-template-columns:1fr 1fr;gap:2px 12px}.play-card>.eyebrow{grid-column:1;grid-row:1;font-size:10px}.play-card>.target{grid-column:1;grid-row:2;font-size:38px;line-height:1.1}.play-card>.subtitle{grid-column:1;grid-row:3;font-size:11px}.play-card>.display{min-height:74px;grid-column:2;grid-row:1/4;margin:0;padding:5px}.play-card .clock{font-size:34px;line-height:1.2}.play-card .hint{font-size:10px;margin:3px 0}.play-card>.result,.play-card>.share-tools,.play-card>.action,.play-card>.stats,.play-card>.progress,.play-card>.best{grid-column:1/3}.play-card>.result{margin:2px 0;font-size:14px}.play-card>.action{margin:4px 0;min-height:44px;font-size:23px;padding:7px}.play-card>.result:empty,.play-card>.stats:empty,.play-card>.best:empty,.play-card>.progress:empty{display:none}.history{margin-top:8px}#battleScreen .battle-panel{min-height:0;gap:5px;padding:8px 12px}#battleScreen .battle-name{font-size:25px}#battleScreen .battle-number{font-size:32px}#battleScreen .battle-clock{font-size:34px;padding:5px}#battleScreen .battle-status{font-size:12px}#battleScreen .action{min-height:44px;font-size:22px;padding:8px}#battleScreen .battle-summary{font-size:12px}#playerColorLegend span{font-size:10px;padding:3px 6px}
 }
 
-$('battleReturn').addEventListener('click',()=>{$('battleBack').click()});$('battleAction').addEventListener('click',battleAction);$('battleAgain').addEventListener('click',battleReset);$('battleBack').addEventListener('click',()=>{if(bphase==='running'&&!confirm('計測中です。中断しますか？'))return;cancelAnimationFrame(bFrame);view='setup';reset();window.scrollTo(0,0)});
-buildExtraPlayers();document.addEventListener('keydown',e=>{if(e.code==='Space'&&!e.repeat&&!['INPUT','SELECT','TEXTAREA','BUTTON'].includes(document.activeElement.tagName)){e.preventDefault();(view==='battle'?$('battleAction'):$('action')).click()}});render()})();
-</script><script>
-/* v2.4: show essential VS controls, fold names/history, preserve IDs and handlers. */
-(()=>{
-const settings=document.getElementById('settings');
-const advanced=document.createElement('details');advanced.id='advancedOptions';
-const summary=document.createElement('summary');summary.textContent='詳しい設定を開く';advanced.appendChild(summary);
-const quick=document.getElementById('singleField');quick.insertAdjacentElement('afterend',advanced);
-for(const id of ['battleRecordsSettings','roundsField','sequenceField','toleranceField','failureField','partialField']){
- const el=document.getElementById(id);if(el)advanced.appendChild(el);
-}
-for(const id of ['displays','precisions']){
- const el=document.getElementById(id);if(el){const field=el.closest('.field');if(field)advanced.appendChild(field)}
-}
-const battle=document.getElementById('battleRecordsSettings');
-const namesDetails=document.createElement('details');namesDetails.id='battleNamesDetails';
-const namesSummary=document.createElement('summary');namesSummary.textContent='プレイヤー名・過去の戦績を設定';namesDetails.appendChild(namesSummary);
-for(const el of [battle.querySelector('.two'),document.getElementById('extraPlayers'),battle.querySelector('p.muted'),battle.querySelector('.battle-record-details')]){
- if(el)namesDetails.appendChild(el);
-}
-battle.appendChild(namesDetails);
-const rounds=document.getElementById('roundsField');
-const hint=document.createElement('p');hint.id='quickHint';hint.textContent='時間表示・表示精度などは「詳しい設定」から変更できます。';
-advanced.insertAdjacentElement('afterend',hint);
-function arrange(){
- const mode=document.querySelector('#modes .active')?.dataset.mode||'single';
- if(mode==='battle'){
-  quick.insertAdjacentElement('afterend',battle);
-  battle.insertAdjacentElement('afterend',rounds);
-  battle.classList.add('quick-battle');rounds.classList.add('quick-rounds');
-  advanced.open=false;
-  hint.textContent='表示精度などは「詳しい設定」から変更できます。';
- }else{
-  advanced.appendChild(battle);advanced.appendChild(rounds);
-  battle.classList.remove('quick-battle');rounds.classList.remove('quick-rounds');
-  advanced.open=(mode==='total'||mode==='gate'||mode==='streak');
-  hint.textContent=advanced.open?'必要なルールを設定してから開始してください。':'時間表示・表示精度などは「詳しい設定」から変更できます。';
- }
-}
-for(const b of document.querySelectorAll('#modes [data-mode]'))b.addEventListener('click',()=>setTimeout(arrange,0));
-arrange();
-})();
-</script>
+/* A single, short celebration; never intercepts input or changes board layout. */
+#achievement[data-kind=perfect]{top:50%;left:50%;transform:translate(-50%,-50%);width:min(92vw,1100px);max-width:none;box-sizing:border-box;padding:22px 8px;border:0;background:transparent;box-shadow:none;text-align:center;filter:drop-shadow(0 3px 9px #000b)}
+#achievement .perfect-title{display:block;font-size:clamp(42px,20vw,160px);font-weight:950;letter-spacing:-.055em;line-height:1.05;color:#ffe398;text-shadow:0 0 12px #ffb737aa,0 0 38px #f7ad3444;white-space:nowrap}
+#achievement .perfect-subtitle{display:block;margin-top:12px;font-size:clamp(15px,4vw,29px);letter-spacing:.1em;color:#fff3c8;overflow-wrap:anywhere}
+#achievement[data-kind=perfect].burst{animation:perfect-arrival .26s cubic-bezier(.2,.8,.2,1) both}
+#perfectFx{position:fixed;inset:0;z-index:1999;pointer-events:none;overflow:hidden;background:radial-gradient(ellipse at center,#b87c162e 0%,#08102065 65%,transparent 100%)}
+#perfectFx[hidden]{display:none}
+#perfectFx i{position:absolute;left:var(--x);top:12%;width:9px;height:15px;border-radius:2px;background:var(--gold);opacity:0;animation:gold-confetti 1s ease-out var(--delay) both}
+@keyframes perfect-arrival{from{opacity:0;transform:translate(-50%,-50%) scale(.72)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+@keyframes gold-confetti{0%{opacity:0;transform:translate(0,-20vh) rotate(0)}12%{opacity:1}75%{opacity:.9}100%{opacity:0;transform:translate(var(--drift),85vh) rotate(var(--spin))}}
+@media(prefers-reduced-motion:reduce){#achievement[data-kind=perfect].burst{animation:none}#perfectFx i{display:none;animation:none}}
+</style></head><body><main><header><strong>⏱ STOP IT!</strong><span>v3.8.1</span></header><div id="languageBar" aria-label="Language"><button type="button" data-lang="en">🌐 English</button><button type="button" data-lang="ja">🇯🇵 日本語</button></div><section id="playScreen" class="screen"><div class="play-top"><button type="button" class="back-btn" id="backToSetup">← 設定に戻る</button><span class="muted" id="playModeName">チャレンジ</span></div><section class="panel play-card"><div class="eyebrow" id="roundLabel">目標時間</div><div class="target"><span id="target">3.000</span><small>s</small></div><div class="subtitle" id="modeDetail">狙った秒数で止めよう！</div><div class="display" aria-live="off"><div class="clock" id="clock">0.000s</div><div class="hint" id="hint">STARTを押して、体内時計で数えよう</div></div><div class="result" id="result" aria-live="polite"></div><div id="sharePlay" class="share-tools" hidden><button type="button" id="shareResult">↗ 結果をシェア</button><button type="button" id="copyResult">結果をコピー</button><span id="shareFeedback" class="muted" aria-live="polite"></span></div><button class="action" type="button" id="action">▶ START</button><div class="stats" id="stats"></div><div id="progress" class="progress" aria-label="ラウンド進行状況"></div><div id="best" class="best"></div></section><section class="panel history"><h2>今回の記録</h2><div id="history"><span class="muted">まだ記録はありません。</span></div></section></section><section id="battleScreen" class="screen" aria-label="2〜4人対戦"><div class="play-top"><button type="button" class="back-btn" id="battleBack">← 設定に戻る</button><span class="muted">VS BATTLE · 1対1が基本</span></div><section class="panel battle-panel"><div class="eyebrow" id="battleHeading">対戦スタート</div><div class="battle-name" id="battleName">PLAYER 1</div><div class="battle-number" id="battleGoal">3.000<small style="font-size:22px">s</small></div><div class="battle-status" id="battleStatus">同じコースで交互に挑戦！</div><div class="battle-clock" id="battleClock">0.000s</div><div id="nominationControl" hidden><label for="nominateSeconds">指名する秒数</label><select id="nominateSeconds"><option value="1">1秒</option><option value="3" selected>3秒</option><option value="5">5秒</option><option value="10">10秒</option><option value="15">15秒</option><option value="30">30秒</option></select></div><div id="battleProgress" class="battle-rounds"></div><div class="battle-summary" id="battleSummary"></div><button type="button" class="action" id="battleAction">▶ START</button><button type="button" class="battle-secondary hidden" id="battleAgain">↻ もう一度対戦</button><button type="button" class="battle-secondary hidden" id="battleReturn">← 設定に戻る</button><div id="battleRecordNotice" class="muted"></div><div id="shareBattle" class="share-tools" hidden><button type="button" id="shareBattleResult">↗ 対戦結果をシェア</button><button type="button" id="copyBattleResult">結果をコピー</button><span id="shareBattleFeedback" class="muted" aria-live="polite"></span></div></section></section><section id="setupScreen" class="screen visible"><h1 class="screen-title">チャレンジを選ぼう</h1><p class="setup-note">まずは3秒に挑戦！ 設定を選んで「ゲーム開始」を押そう。</p><section class="panel settings" id="settings"><h2>ゲーム設定</h2><div class="field"><label>ゲームモード</label><div class="choices mode-grid" id="modes"><button class="choice active" data-mode="single">ワンショット</button><button class="choice" data-mode="total">ラウンド戦</button><button class="choice" data-mode="battle">VS対戦</button><button class="choice" data-mode="gate">ステージ攻略</button><button class="choice" data-mode="streak">連続成功</button></div></div><section class="panel records-panel" id="battleRecordsSettings" style="display:none"><h2>対戦プレイヤー</h2><div class="field"><label for="playerCount">対戦人数</label><select id="playerCount"><option value="2">2人</option><option value="3">3人</option><option value="4">4人</option></select></div><div class="field"><label for="battleRule">対戦ルール</label><select id="battleRule"><option value="score">スコア対戦（合計誤差）</option><option value="survival">サバイバル対戦（失敗で脱落）</option></select></div><div id="survivalSettings" class="hidden"><div class="field"><label for="survivalStyle">秒数の決め方</label><select id="survivalStyle"><option value="fixed">固定タイム戦</option><option value="nominate">指名タイム戦（毎周交代）</option></select></div><div class="field"><label for="survivalTarget">サバイバルの目標秒数</label><select id="survivalTarget"><option value="1">1秒</option><option value="3" selected>3秒</option><option value="5">5秒</option><option value="10">10秒</option><option value="15">15秒</option><option value="30">30秒</option></select></div><div class="field"><label for="survivalTolerance">許容誤差（±）</label><select id="survivalTolerance"><option value="0.5">0.500秒</option><option value="0.3">0.300秒</option><option value="0.2" selected>0.200秒</option><option value="0.1">0.100秒</option><option value="0.05">0.050秒</option><option value="0.01">0.010秒</option></select></div><p class="muted">全員が1回ずつ挑戦して1周。失敗した人は脱落。最後の1人が勝利。同じ周で全員脱落した場合は、その周の誤差が最小の人が勝利します。</p></div><div class="two"><label>プレイヤー1<input id="playerOne" maxlength="20" value="PLAYER 1" autocomplete="off"></label><label>プレイヤー2<input id="playerTwo" maxlength="20" value="PLAYER 2" autocomplete="off"></label></div><div id="extraPlayers" class="two" style="margin-top:10px"></div><p class="muted">同じ名前の組み合わせで対戦成績を集計します。</p><details class="battle-record-details"><summary>過去の対戦成績を見る</summary><div id="battleRecordList"></div><div class="record-actions"><button type="button" id="clearBattleRecords">戦績を削除</button></div></details></section><div class="field" id="roundsField"><label>回戦数（1〜10回戦）</label><div class="row"><select id="roundCount" aria-label="回戦数"><option value="1">1回戦</option><option value="2">2回戦</option><option value="3" selected>3回戦</option><option value="4">4回戦</option><option value="5">5回戦</option><option value="6">6回戦</option><option value="7">7回戦</option><option value="8">8回戦</option><option value="9">9回戦</option><option value="10">10回戦</option></select><select id="pattern" aria-label="秒数の組み合わせ"><option value="standard">スタンダード</option><option value="short">1秒ずつ増加</option><option value="mix">ミックス</option><option value="custom">秒数を個別指定</option></select></div><div id="customFields" class="hidden field"><label>各回の目標秒数（1〜10秒から選択）</label><div id="customInputs" class="custom-grid"></div></div></div><div class="field" id="singleField"><label>目標秒数（ワンショット・連続成功）</label><div class="choices four" id="targets"><button class="choice" data-target="1">1秒</button><button class="choice active" data-target="3">3秒</button><button class="choice" data-target="5">5秒</button><button class="choice" data-target="10">10秒</button></div></div><div class="field" id="sequenceField"><label>ステージごとの目標秒数</label><div class="subtitle" id="sequence">1 → 3 → 5 秒</div></div><div class="field" id="toleranceField"><label>成功条件（絶対誤差が指定値以下）</label><div class="choices" id="tolerances"><button class="choice" data-tolerance="0.5">±0.5秒</button><button class="choice active" data-tolerance="0.3">±0.3秒</button><button class="choice" data-tolerance="0.2">±0.2秒</button><button class="choice" data-tolerance="0.1">±0.1秒</button><button class="choice" data-tolerance="0.05">±0.05秒</button></div></div><div class="field" id="failureField"><label>クリア制：失敗したとき</label><select id="failure"><option value="end">そこで終了</option><option value="retry">同じステージを再挑戦</option><option value="reset">第1ステージからやり直し</option></select></div><div class="field"><label>計測中の時間表示</label><div class="choices four" id="displays"><button class="choice" data-display="always">常時表示</button><button class="choice active" data-display="hidden">非表示</button><button class="choice" data-display="partial">途中まで</button><button class="choice" data-display="random">ランダム</button></div></div><div class="field hidden" id="partialField"><label>開始から何秒後に隠すか</label><select id="hideAfter"><option value="1">1秒後</option><option value="2" selected>2秒後</option><option value="3">3秒後</option><option value="5">5秒後</option></select></div><div class="field"><label>結果の表示精度</label><div class="choices" id="precisions"><button class="choice" data-digits="1">0.1秒</button><button class="choice" data-digits="2">0.01秒</button><button class="choice active" data-digits="3">0.001秒</button></div></div></section><button class="action setup-start" type="button" id="beginGame">▶ ゲーム開始</button></section><p class="footer">インストール不要・オフライン動作可能。<br>端末や入力方式の遅延により、ミリ秒単位の公平性は保証されません。</p></main><nav id="siteLinks" aria-label="Site information" style="display:block!important;visibility:visible!important;position:relative;isolation:isolate;z-index:1000;max-width:600px;margin:0 auto;padding:16px 10px 36px;text-align:center;font-size:13px;line-height:2.6"><a href="about.html" data-ja="ゲームについて" data-en="About the game" style="color:#c9e4ff;display:inline-block;padding:4px 5px">ゲームについて</a> ｜ <a href="privacy.html" data-ja="プライバシーポリシー" data-en="Privacy Policy" style="color:#c9e4ff;display:inline-block;padding:4px 5px">プライバシーポリシー</a> ｜ <a href="contact.html" data-ja="お問い合わせ" data-en="Contact" style="color:#c9e4ff;display:inline-block;padding:4px 5px">お問い合わせ</a></nav>
 <style>
 /* v2.5: VS-first compact mobile controls */
 @media(max-width:600px){
@@ -337,7 +258,1982 @@ arrange();
  #battleScreen.v25-done .round-detail{margin-top:10px}
 }
 </style>
-<script>
+
+
+<style>
+/* v2.7: action buttons participate in normal document flow.
+   No fixed overlay can obscure setup controls or battle details. */
+@media(max-width:600px){
+ #setupScreen.visible{padding-bottom:0!important}
+ #setupScreen.visible #beginGame,
+ #battleScreen.v25-done #battleAgain:not(.hidden){
+  position:static!important;left:auto!important;right:auto!important;
+  bottom:auto!important;width:100%!important;max-width:none!important;
+  margin:12px 0 8px!important;z-index:auto!important;
+  min-height:64px;padding:12px;font-size:clamp(20px,6vw,27px);
+  box-shadow:none;
+ }
+ #battleScreen.v25-done{padding-bottom:0!important}
+ #battleScreen.v25-done #battleAgain:not(.hidden){
+  background:#9aefbf;color:#082b25;border:2px solid #d7ffe9;
+ }
+}
+</style>
+
+
+<style>
+/* v2.8: compact VS setup without overlays or smaller tap targets. */
+@media(max-width:600px){
+ #setupScreen.v25-vs .screen-title{font-size:18px;margin:2px 0 4px}
+ #setupScreen.v25-vs .settings{padding:9px 10px 10px}
+ #setupScreen.v25-vs .settings>.field:first-of-type{margin:0 0 6px}
+ #setupScreen.v25-vs .mode-grid{gap:6px!important;row-gap:6px!important}
+ #setupScreen.v25-vs .mode-grid .choice{min-height:44px!important;padding:7px 3px!important;font-size:12px!important}
+ #setupScreen.v25-vs #battleRecordsSettings.quick-battle{margin:5px 0!important;padding:8px 10px!important}
+ #setupScreen.v25-vs #battleRecordsSettings.quick-battle>.field{margin:3px 0 6px!important}
+ #setupScreen.v25-vs #battleRecordsSettings.quick-battle>.field label{font-size:12px;margin-bottom:3px}
+ #setupScreen.v25-vs #battleRecordsSettings.quick-battle select{min-height:44px!important;padding:7px 10px!important;font-size:14px}
+ #setupScreen.v25-vs #battleRecordsSettings.quick-battle>p.muted{font-size:11px!important;line-height:1.3;margin:4px 0!important}
+ #setupScreen.v25-vs #battleNamesDetails{margin:4px 0 0!important}
+ #setupScreen.v25-vs #roundsField.quick-rounds{margin:5px 0!important}
+ #setupScreen.v25-vs #roundsField.quick-rounds label{margin-bottom:4px!important}
+ #setupScreen.v25-vs #roundsField.quick-rounds select{min-height:44px!important;padding:7px 8px!important;font-size:14px}
+ #setupScreen.v25-vs #advancedOptions{margin:5px 0!important}
+ #setupScreen.v25-vs #advancedOptions>summary{min-height:44px;display:flex;align-items:center;justify-content:center}
+ #setupScreen.v25-vs #beginGame{min-height:62px!important;margin:10px 0 5px!important}
+}
+</style>
+
+
+<style>
+.share-tools{display:flex;flex-wrap:wrap;gap:9px;justify-content:center;align-items:center;margin:12px 0 4px}
+.share-tools[hidden]{display:none!important}
+.share-tools button{border:1px solid #8af1bc;border-radius:12px;background:#142541;color:#a0f2c5;font-weight:750;padding:12px 14px;min-height:46px;cursor:pointer}
+.share-tools .muted{width:100%;font-size:12px;text-align:center}
+@media(max-width:600px){.share-tools button{flex:1 1 130px;font-size:14px}}
+</style>
+
+<style>
+#languageBar{display:flex;justify-content:flex-end;gap:8px;margin:9px 0 12px}
+#languageBar button{border:1px solid #5575a5;border-radius:999px;background:#1a3055;color:#e8f3ff;padding:9px 14px;min-height:42px;font-weight:800;cursor:pointer}
+#languageBar button.selected{background:#b7ff43;color:#12223b;border-color:#b7ff43}
+#battleScreen .battle-panel{--player-accent:#60d6ff;border:2px solid var(--player-accent);transition:border-color .15s}
+#battleScreen .battle-name{color:var(--player-accent)!important;text-shadow:0 0 18px color-mix(in srgb,var(--player-accent),transparent 70%)}
+#battleScreen .battle-panel .action:not(.stop){background:var(--player-accent);color:#08172c}
+#battleScreen .battle-panel .battle-results>div{border-left:6px solid var(--row-accent,#60d6ff);padding-left:10px}
+#battleScreen .battle-panel .battle-results>div strong{color:var(--row-accent,#60d6ff)}
+#battleScreen .battle-panel .battle-results>div.winner{outline:1px solid var(--row-accent,#60d6ff)}
+#playerColorLegend{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin:7px 0 13px}
+#playerColorLegend span{border:1px solid var(--pc);border-radius:999px;padding:6px 12px;color:var(--pc);font-size:12px;font-weight:850;background:#101e35}
+#playerColorLegend span.current{background:var(--pc);color:#0b1730}
+</style><div style="text-align:center;padding:16px;background:#101827;">
+  <a href="/games/" style="color:#ffffff;font-size:15px;text-decoration:underline;">
+    🎮 ほかのゲームを見る / More Games
+  </a>
+</div><script>// Every UI phrase is resolved before insertion. No word substitution or DOM translation observer.
+window.StopitI18n=(()=>{
+ const catalog={
+  "チャレンジを選ぼう": {
+    "ja": "チャレンジを選ぼう",
+    "en": "CHOOSE YOUR CHALLENGE"
+  },
+  "まずは3秒に挑戦！ 設定を選んで「ゲーム開始」を押そう。": {
+    "ja": "まずは3秒に挑戦！ 設定を選んで「ゲーム開始」を押そう。",
+    "en": "Try 3 seconds first! Pick your settings and tap START GAME."
+  },
+  "ゲーム設定": {
+    "ja": "ゲーム設定",
+    "en": "GAME SETTINGS"
+  },
+  "ゲームモード": {
+    "ja": "ゲームモード",
+    "en": "GAME MODE"
+  },
+  "ワンショット": {
+    "ja": "ワンショット",
+    "en": "ONE SHOT"
+  },
+  "ラウンド戦": {
+    "ja": "ラウンド戦",
+    "en": "ROUND MATCH"
+  },
+  "VS対戦": {
+    "ja": "VS対戦",
+    "en": "VS BATTLE"
+  },
+  "ステージ攻略": {
+    "ja": "ステージ攻略",
+    "en": "STAGE CHALLENGE"
+  },
+  "連続成功": {
+    "ja": "連続成功",
+    "en": "WIN STREAK"
+  },
+  "対戦プレイヤー": {
+    "ja": "対戦プレイヤー",
+    "en": "PLAYERS"
+  },
+  "対戦人数": {
+    "ja": "対戦人数",
+    "en": "NUMBER OF PLAYERS"
+  },
+  "対戦ルール": {
+    "ja": "対戦ルール",
+    "en": "BATTLE RULES"
+  },
+  "スコア対戦（合計誤差）": {
+    "ja": "スコア対戦（合計誤差）",
+    "en": "SCORE BATTLE (TOTAL ERROR)"
+  },
+  "サバイバル対戦（失敗で脱落）": {
+    "ja": "サバイバル対戦（失敗で脱落）",
+    "en": "SURVIVAL (ELIMINATION)"
+  },
+  "秒数の決め方": {
+    "ja": "秒数の決め方",
+    "en": "TARGET SELECTION"
+  },
+  "固定タイム戦": {
+    "ja": "固定タイム戦",
+    "en": "FIXED TARGET"
+  },
+  "指名タイム戦（毎周交代）": {
+    "ja": "指名タイム戦（毎周交代）",
+    "en": "CHOOSE TARGET EACH ROUND"
+  },
+  "サバイバルの目標秒数": {
+    "ja": "サバイバルの目標秒数",
+    "en": "SURVIVAL TARGET"
+  },
+  "許容誤差（±）": {
+    "ja": "許容誤差（±）",
+    "en": "ALLOWED ERROR (±)"
+  },
+  "全員が1回ずつ挑戦して1周。失敗した人は脱落。最後の1人が勝利。同じ周で全員脱落した場合は、その周の誤差が最小の人が勝利します。": {
+    "ja": "全員が1回ずつ挑戦して1周。失敗した人は脱落。最後の1人が勝利。同じ周で全員脱落した場合は、その周の誤差が最小の人が勝利します。",
+    "en": "Everyone plays once per round. Miss the target and you are out. Last player standing wins. If everyone is eliminated together, the smallest error wins."
+  },
+  "プレイヤー1": {
+    "ja": "プレイヤー1",
+    "en": "PLAYER 1"
+  },
+  "プレイヤー2": {
+    "ja": "プレイヤー2",
+    "en": "PLAYER 2"
+  },
+  "同じ名前の組み合わせで対戦成績を集計します。": {
+    "ja": "同じ名前の組み合わせで対戦成績を集計します。",
+    "en": "Match history is grouped by player names."
+  },
+  "過去の対戦成績を見る": {
+    "ja": "過去の対戦成績を見る",
+    "en": "VIEW MATCH HISTORY"
+  },
+  "戦績を削除": {
+    "ja": "戦績を削除",
+    "en": "DELETE MATCH HISTORY"
+  },
+  "回戦数（1〜10回戦）": {
+    "ja": "回戦数（1〜10回戦）",
+    "en": "ROUNDS (1–10)"
+  },
+  "スタンダード": {
+    "ja": "スタンダード",
+    "en": "STANDARD"
+  },
+  "1秒ずつ増加": {
+    "ja": "1秒ずつ増加",
+    "en": "INCREASE BY 1 SECOND"
+  },
+  "ミックス": {
+    "ja": "ミックス",
+    "en": "MIXED"
+  },
+  "秒数を個別指定": {
+    "ja": "秒数を個別指定",
+    "en": "CUSTOM TARGETS"
+  },
+  "各回の目標秒数（1〜10秒から選択）": {
+    "ja": "各回の目標秒数（1〜10秒から選択）",
+    "en": "TARGET FOR EACH ROUND"
+  },
+  "目標秒数（ワンショット・連続成功）": {
+    "ja": "目標秒数（ワンショット・連続成功）",
+    "en": "TARGET (ONE SHOT / STREAK)"
+  },
+  "ステージごとの目標秒数": {
+    "ja": "ステージごとの目標秒数",
+    "en": "STAGE TARGETS"
+  },
+  "成功条件（絶対誤差が指定値以下）": {
+    "ja": "成功条件（絶対誤差が指定値以下）",
+    "en": "SUCCESS CONDITION (MAX ERROR)"
+  },
+  "クリア制：失敗したとき": {
+    "ja": "クリア制：失敗したとき",
+    "en": "ON FAILURE"
+  },
+  "そこで終了": {
+    "ja": "そこで終了",
+    "en": "END GAME"
+  },
+  "同じステージを再挑戦": {
+    "ja": "同じステージを再挑戦",
+    "en": "RETRY STAGE"
+  },
+  "第1ステージからやり直し": {
+    "ja": "第1ステージからやり直し",
+    "en": "RESTART FROM STAGE 1"
+  },
+  "計測中の時間表示": {
+    "ja": "計測中の時間表示",
+    "en": "CLOCK VISIBILITY"
+  },
+  "常時表示": {
+    "ja": "常時表示",
+    "en": "ALWAYS SHOW"
+  },
+  "非表示": {
+    "ja": "非表示",
+    "en": "HIDE"
+  },
+  "途中まで": {
+    "ja": "途中まで",
+    "en": "SHOW THEN HIDE"
+  },
+  "ランダム": {
+    "ja": "ランダム",
+    "en": "RANDOM"
+  },
+  "開始から何秒後に隠すか": {
+    "ja": "開始から何秒後に隠すか",
+    "en": "HIDE AFTER"
+  },
+  "結果の表示精度": {
+    "ja": "結果の表示精度",
+    "en": "RESULT PRECISION"
+  },
+  "▶ ゲーム開始": {
+    "ja": "▶ ゲーム開始",
+    "en": "▶ START GAME"
+  },
+  "インストール不要・オフライン動作可能。": {
+    "ja": "インストール不要・オフライン動作可能。",
+    "en": "No install required. Works offline."
+  },
+  "端末や入力方式の遅延により、ミリ秒単位の公平性は保証されません。": {
+    "ja": "端末や入力方式の遅延により、ミリ秒単位の公平性は保証されません。",
+    "en": "Device and input delays may affect millisecond precision."
+  },
+  "← 設定に戻る": {
+    "ja": "← 設定に戻る",
+    "en": "← SETTINGS"
+  },
+  "チャレンジ": {
+    "ja": "チャレンジ",
+    "en": "CHALLENGE"
+  },
+  "目標時間": {
+    "ja": "目標時間",
+    "en": "TARGET TIME"
+  },
+  "狙った秒数で止めよう！": {
+    "ja": "狙った秒数で止めよう！",
+    "en": "Stop at the target time!"
+  },
+  "STARTを押して、体内時計で数えよう": {
+    "ja": "STARTを押して、体内時計で数えよう",
+    "en": "Press START and count in your head!"
+  },
+  "今回の記録": {
+    "ja": "今回の記録",
+    "en": "YOUR RESULTS"
+  },
+  "まだ記録はありません。": {
+    "ja": "まだ記録はありません。",
+    "en": "No results yet."
+  },
+  "↗ 結果をシェア": {
+    "ja": "↗ 結果をシェア",
+    "en": "↗ SHARE RESULT"
+  },
+  "↗ 対戦結果をシェア": {
+    "ja": "↗ 対戦結果をシェア",
+    "en": "↗ SHARE BATTLE"
+  },
+  "結果をコピー": {
+    "ja": "結果をコピー",
+    "en": "COPY RESULT"
+  },
+  "対戦スタート": {
+    "ja": "対戦スタート",
+    "en": "BATTLE START"
+  },
+  "同じコースで交互に挑戦！": {
+    "ja": "同じコースで交互に挑戦！",
+    "en": "Take turns on the same targets!"
+  },
+  "VS BATTLE · 1対1が基本": {
+    "ja": "VS BATTLE · 1対1が基本",
+    "en": "VS BATTLE · 2–4 PLAYERS"
+  },
+  "↻ もう一度対戦": {
+    "ja": "↻ もう一度対戦",
+    "en": "↻ PLAY AGAIN"
+  },
+  "↻ もう一度": {
+    "ja": "↻ もう一度",
+    "en": "↻ PLAY AGAIN"
+  },
+  "▶ 次の挑戦": {
+    "ja": "▶ 次の挑戦",
+    "en": "▶ NEXT TRY"
+  },
+  "▶ 次のステージ": {
+    "ja": "▶ 次のステージ",
+    "en": "▶ NEXT STAGE"
+  },
+  "詳しい設定を開く": {
+    "ja": "詳しい設定を開く",
+    "en": "ADVANCED SETTINGS"
+  },
+  "プレイヤー名・過去の戦績を設定": {
+    "ja": "プレイヤー名・過去の戦績を設定",
+    "en": "PLAYER NAMES & HISTORY"
+  },
+  "時間表示・表示精度などは「詳しい設定」から変更できます。": {
+    "ja": "時間表示・表示精度などは「詳しい設定」から変更できます。",
+    "en": "Clock visibility and precision are in Advanced Settings."
+  },
+  "最終順位": {
+    "ja": "最終順位",
+    "en": "FINAL RANKING"
+  },
+  "スマホを交代してください": {
+    "ja": "スマホを交代してください",
+    "en": "PASS THE PHONE"
+  },
+  "次は ": {
+    "ja": "次は ",
+    "en": "NEXT: "
+  },
+  "準備ができたらボタンを押してください": {
+    "ja": "準備ができたらボタンを押してください",
+    "en": "Press the button when ready."
+  },
+  "端末を次のプレイヤーに渡してください。準備ができたら下のボタンを押します。": {
+    "ja": "端末を次のプレイヤーに渡してください。準備ができたら下のボタンを押します。",
+    "en": "Pass the device to the next player, then tap the button."
+  },
+  "目標時間に合わせてSTOP！": {
+    "ja": "目標時間に合わせてSTOP！",
+    "en": "Stop as close to the target as you can!"
+  },
+  "タイミングを見極めてSTOP！": {
+    "ja": "タイミングを見極めてSTOP！",
+    "en": "Time it right and press STOP!"
+  },
+  "同点優勝": {
+    "ja": "同点優勝",
+    "en": "IT’S A TIE!"
+  },
+  "合計絶対誤差が小さい順": {
+    "ja": "合計絶対誤差が小さい順",
+    "en": "Ranked by lowest total absolute error"
+  },
+  "回": {
+    "ja": "回",
+    "en": "ROUND"
+  },
+  "目標": {
+    "ja": "目標",
+    "en": "TARGET"
+  },
+  "計測": {
+    "ja": "計測",
+    "en": "ACTUAL"
+  },
+  "誤差": {
+    "ja": "誤差",
+    "en": "ERROR"
+  },
+  "合計誤差": {
+    "ja": "合計誤差",
+    "en": "TOTAL ERROR"
+  },
+  "各回の記録を見る": {
+    "ja": "各回の記録を見る",
+    "en": "VIEW ROUND DETAILS"
+  },
+  "サバイバル終了": {
+    "ja": "サバイバル終了",
+    "en": "SURVIVAL FINISHED"
+  },
+  "目標秒数を指名": {
+    "ja": "目標秒数を指名",
+    "en": "CHOOSE A TARGET"
+  },
+  "端末を次の人へ": {
+    "ja": "端末を次の人へ",
+    "en": "PASS THE PHONE"
+  },
+  "▶ この秒数で開始": {
+    "ja": "▶ この秒数で開始",
+    "en": "▶ USE THIS TARGET"
+  },
+  "▶ 次のプレイヤー": {
+    "ja": "▶ 次のプレイヤー",
+    "en": "▶ NEXT PLAYER"
+  },
+  "▶ 次の周へ": {
+    "ja": "▶ 次の周へ",
+    "en": "▶ NEXT ROUND"
+  },
+  "挑戦終了": {
+    "ja": "挑戦終了",
+    "en": "ELIMINATED"
+  },
+  "🏆 優勝": {
+    "ja": "🏆 優勝",
+    "en": "🏆 WINNER"
+  },
+  "成功": {
+    "ja": "成功",
+    "en": "SUCCESS"
+  },
+  "失敗": {
+    "ja": "失敗",
+    "en": "FAILED"
+  },
+  "脱落": {
+    "ja": "脱落",
+    "en": "OUT"
+  },
+  "生き残り": {
+    "ja": "生き残り",
+    "en": "SURVIVED"
+  },
+  "次の人へ": {
+    "ja": "次の人へ",
+    "en": "NEXT PLAYER"
+  },
+  "共有画面を開きました": {
+    "ja": "共有画面を開きました",
+    "en": "Share sheet opened"
+  },
+  "結果をコピーしました": {
+    "ja": "結果をコピーしました",
+    "en": "Result copied"
+  },
+  "結果とリンクをコピーしました": {
+    "ja": "結果とリンクをコピーしました",
+    "en": "Result and link copied"
+  },
+  "共有できませんでした。コピーをお試しください": {
+    "ja": "共有できませんでした。コピーをお試しください",
+    "en": "Could not share. Try copying."
+  },
+  "コピーできませんでした": {
+    "ja": "コピーできませんでした",
+    "en": "Could not copy"
+  },
+  "保存したすべての対戦戦績を削除しますか？": {
+    "ja": "保存したすべての対戦戦績を削除しますか？",
+    "en": "Delete all saved match history?"
+  },
+  "計測中です。中断しますか？": {
+    "ja": "計測中です。中断しますか？",
+    "en": "Timer is running. Quit?"
+  },
+  "▶ 次のラウンド": {
+    "ja": "▶ 次のラウンド",
+    "en": "▶ NEXT ROUND"
+  },
+  "次のラウンド": {
+    "ja": "次のラウンド",
+    "en": "NEXT ROUND"
+  },
+  "▶ START": {
+    "ja": "▶ START",
+    "en": "▶ START"
+  },
+  "■ STOP": {
+    "ja": "■ STOP",
+    "en": "■ STOP"
+  },
+  "FINISH": {
+    "ja": "FINISH",
+    "en": "FINISH"
+  },
+  "READY": {
+    "ja": "READY",
+    "en": "READY"
+  },
+  "RESULT": {
+    "ja": "RESULT",
+    "en": "RESULT"
+  },
+  "成功しないと次のステージへ進めない": {
+    "ja": "成功しないと次のステージへ進めない",
+    "en": "Clear this stage to advance"
+  },
+  "全ステージクリア！": {
+    "ja": "全ステージクリア！",
+    "en": "ALL STAGES CLEARED!"
+  },
+  "再挑戦が必要です": {
+    "ja": "再挑戦が必要です",
+    "en": "Try again to advance"
+  },
+  "チャレンジ終了": {
+    "ja": "チャレンジ終了",
+    "en": "CHALLENGE COMPLETE"
+  },
+  "次の挑戦へ！": {
+    "ja": "次の挑戦へ！",
+    "en": "Ready for your next try!"
+  },
+  "何回連続で成功できる？": {
+    "ja": "何回連続で成功できる？",
+    "en": "How many successes in a row can you get?"
+  },
+  "表示を見ながら止めよう": {
+    "ja": "表示を見ながら止めよう",
+    "en": "Watch the clock and press STOP!"
+  },
+  "途中で表示が消えます": {
+    "ja": "途中で表示が消えます",
+    "en": "The clock will disappear"
+  },
+  "体内時計で数えよう": {
+    "ja": "体内時計で数えよう",
+    "en": "Count in your head!"
+  },
+  "計測中です。中断して設定に戻りますか？": {
+    "ja": "計測中です。中断して設定に戻りますか？",
+    "en": "The timer is running. Return to settings?"
+  },
+  "まだ対戦記録はありません。": {
+    "ja": "まだ対戦記録はありません。",
+    "en": "No match history yet."
+  },
+  "保存できませんでした。ブラウザの保存設定を確認してください。": {
+    "ja": "保存できませんでした。ブラウザの保存設定を確認してください。",
+    "en": "Could not save. Check your browser storage settings."
+  },
+  "✓ 対戦結果をこのブラウザに保存しました": {
+    "ja": "✓ 対戦結果をこのブラウザに保存しました",
+    "en": "✓ Match result saved on this device."
+  },
+  "✓ サバイバル戦績を保存しました": {
+    "ja": "✓ サバイバル戦績を保存しました",
+    "en": "✓ Survival result saved on this device."
+  },
+  "戦績の保存に失敗しました": {
+    "ja": "戦績の保存に失敗しました",
+    "en": "Could not save match history."
+  },
+  "必要なルールを設定してから開始してください。": {
+    "ja": "必要なルールを設定してから開始してください。",
+    "en": "Choose your rules, then start the game."
+  },
+  "表示精度などは「詳しい設定」から変更できます。": {
+    "ja": "表示精度などは「詳しい設定」から変更できます。",
+    "en": "Adjust precision and more in Advanced Settings."
+  },
+  "成功！ 生き残り": {
+    "ja": "成功！ 生き残り",
+    "en": "SUCCESS! STILL IN!"
+  },
+  "成功！ 次の人へ": {
+    "ja": "成功！ 次の人へ",
+    "en": "SUCCESS! NEXT PLAYER"
+  },
+  "失敗！ 脱落": {
+    "ja": "失敗！ 脱落",
+    "en": "MISSED! ELIMINATED"
+  },
+  "次のプレイヤーに端末を渡してください": {
+    "ja": "次のプレイヤーに端末を渡してください",
+    "en": "Pass the device to the next player."
+  },
+  "目標に合わせてSTOP！": {
+    "ja": "目標に合わせてSTOP！",
+    "en": "Stop as close to the target as you can!"
+  },
+  "チャレンジFINISH": {
+    "ja": "チャレンジFINISH",
+    "en": "CHALLENGE COMPLETE"
+  },
+  "All Stageクリア！": {
+    "ja": "All Stageクリア！",
+    "en": "ALL STAGES CLEARED!"
+  },
+  "SuccessしないとNEXT Stageへ進めない": {
+    "ja": "SuccessしないとNEXT Stageへ進めない",
+    "en": "Clear this stage to advance"
+  },
+  "勝敗差：": {
+    "ja": "勝敗差：",
+    "en": "Winning margin: "
+  },
+  "各回の値は小数第3位に丸めて表示しています。合計は丸め前の値で計算するため、表示値の合算と0.001秒程度異なる場合があります。": {
+    "ja": "各回の値は小数第3位に丸めて表示しています。合計は丸め前の値で計算するため、表示値の合算と0.001秒程度異なる場合があります。",
+    "en": "Each round is displayed to three decimal places. Totals use unrounded values, so they may differ by about 0.001s."
+  },
+  "チャレンジを選んでください": {
+    "ja": "チャレンジを選んでください",
+    "en": "CHOOSE YOUR CHALLENGE"
+  },
+  "Challenge 選んでください": {
+    "ja": "Challenge 選んでください",
+    "en": "CHOOSE YOUR CHALLENGE"
+  },
+  "まずは3s試してみてください!SETTINGS 選んで「ゲームSTART」タップしてください。": {
+    "ja": "まずは3s試してみてください!SETTINGS 選んで「ゲームSTART」タップしてください。",
+    "en": "Try the 3-second challenge! Choose your settings, then tap START GAME."
+  },
+  "まずは3秒試してみてください!SETTINGS 選んで「ゲームSTART」タップしてください。": {
+    "ja": "まずは3秒試してみてください!SETTINGS 選んで「ゲームSTART」タップしてください。",
+    "en": "Try the 3-second challenge! Choose your settings, then tap START GAME."
+  },
+  "Roundマッチ": {
+    "ja": "Roundマッチ",
+    "en": "ROUND MATCH"
+  },
+  "VSバトル": {
+    "ja": "VSバトル",
+    "en": "VS BATTLE"
+  },
+  "Stageクエスト": {
+    "ja": "Stageクエスト",
+    "en": "STAGE CHALLENGE"
+  },
+  "連勝": {
+    "ja": "連勝",
+    "en": "WIN STREAK"
+  },
+  "詳細SETTINGS −": {
+    "ja": "詳細SETTINGS −",
+    "en": "ADVANCED SETTINGS −"
+  },
+  "詳細SETTINGS －": {
+    "ja": "詳細SETTINGS －",
+    "en": "ADVANCED SETTINGS −"
+  },
+  "詳細SETTINGS": {
+    "ja": "詳細SETTINGS",
+    "en": "ADVANCED SETTINGS"
+  },
+  "StageTarget": {
+    "ja": "StageTarget",
+    "en": "STAGE TARGETS"
+  },
+  "StageTarget 1 → 3 → 5s": {
+    "ja": "StageTarget 1 → 3 → 5s",
+    "en": "STAGE TARGETS"
+  },
+  "Success条件 (最大Error)": {
+    "ja": "Success条件 (最大Error)",
+    "en": "SUCCESS CONDITION (MAX ERROR)"
+  },
+  "時計 視認性": {
+    "ja": "時計 視認性",
+    "en": "TIMER VISIBILITY"
+  },
+  "常に見せる": {
+    "ja": "常に見せる",
+    "en": "ALWAYS VISIBLE"
+  },
+  "隠れる": {
+    "ja": "隠れる",
+    "en": "HIDDEN"
+  },
+  "displayしてから非displayにする": {
+    "ja": "displayしてから非displayにする",
+    "en": "SHOW THEN HIDE"
+  },
+  "result 精度": {
+    "ja": "result 精度",
+    "en": "RESULT PRECISION"
+  },
+  "ルール 選択したら、ゲーム STARTしてください。": {
+    "ja": "ルール 選択したら、ゲーム STARTしてください。",
+    "en": "Choose your settings, then start the game."
+  },
+  "ルール 選択したら、ゲームSTARTしてください。": {
+    "ja": "ルール 選択したら、ゲームSTARTしてください。",
+    "en": "Choose your settings, then start the game."
+  },
+  "選手": {
+    "ja": "選手",
+    "en": "PLAYERS"
+  },
+  "プレイヤー数": {
+    "ja": "プレイヤー数",
+    "en": "NUMBER OF PLAYERS"
+  },
+  "2 players用": {
+    "ja": "2 players用",
+    "en": "2 PLAYERS"
+  },
+  "戦闘ルール": {
+    "ja": "戦闘ルール",
+    "en": "BATTLE RULES"
+  },
+  "matches履歴は選手名ごとにグループ化されています。": {
+    "ja": "matches履歴は選手名ごとにグループ化されています。",
+    "en": "Match history is grouped by player names."
+  },
+  "▶ 選手名と経歴": {
+    "ja": "▶ 選手名と経歴",
+    "en": "▶ PLAYER NAMES & HISTORY"
+  },
+  "Round (1〜10)": {
+    "ja": "Round (1〜10)",
+    "en": "ROUNDS (1–10)"
+  },
+  "ターゲット (ワンショット / ストリーク)": {
+    "ja": "ターゲット (ワンショット / ストリーク)",
+    "en": "TARGET (ONE SHOT / STREAK)"
+  },
+  "インストール不要・オフラインで動作します。": {
+    "ja": "インストール不要・オフラインで動作します。",
+    "en": "No installation needed. Play right in your browser."
+  },
+  "デバイスや入力 遅延により、ミリs単位 精度に影響 出る場合 あります。": {
+    "ja": "デバイスや入力 遅延により、ミリs単位 精度に影響 出る場合 あります。",
+    "en": "Device and input lag can affect millisecond accuracy."
+  },
+  "ALL STAGES クリア！": {
+    "ja": "ALL STAGES クリア！",
+    "en": "ALL STAGES CLEARED!"
+  },
+  "PLAYER 1 WIN!": {
+    "ja": "PLAYER 1 WIN!",
+    "en": "PLAYER 1 WINS!"
+  },
+  "秒数の組み合わせ": {
+    "ja": "秒数の組み合わせ",
+    "en": "TARGET PATTERN"
+  },
+  "回戦数": {
+    "ja": "回戦数",
+    "en": "NUMBER OF ROUNDS"
+  },
+  "2〜4人対戦": {
+    "ja": "2〜4人対戦",
+    "en": "2–4 PLAYER BATTLE"
+  },
+  "ラウンド進行状況": {
+    "ja": "ラウンド進行状況",
+    "en": "ROUND PROGRESS"
+  },
+  "STARTして、ぴったりSTOP！ 何秒の誤差で止められる？": {
+    "ja": "STARTして、ぴったりSTOP！ 何秒の誤差で止められる？",
+    "en": "Press START, then STOP as close to the target as possible!"
+  },
+  "対戦記録": {
+    "ja": "対戦記録",
+    "en": "MATCH HISTORY"
+  },
+  " 秒": {
+    "ja": " 秒",
+    "en": " s"
+  },
+  "秒": {
+    "ja": "秒",
+    "en": "s"
+  },
+  "秒（以前の設定）": {
+    "ja": "秒（以前の設定）",
+    "en": "s (previous setting)"
+  },
+  "プレイヤー": {
+    "ja": "プレイヤー",
+    "en": "PLAYER "
+  },
+  "サバイバル ": {
+    "ja": "サバイバル ",
+    "en": "SURVIVAL "
+  },
+  "周": {
+    "ja": "周",
+    "en": " rounds"
+  },
+  "回戦": {
+    "ja": "回戦",
+    "en": " rounds"
+  },
+  " 勝利": {
+    "ja": " 勝利",
+    "en": " WINS"
+  },
+  " 開始": {
+    "ja": " 開始",
+    "en": " START"
+  },
+  " が指定": {
+    "ja": " が指定",
+    "en": " chooses the target"
+  },
+  "<br><strong class=\"good\">全ステージクリア！</strong>": {
+    "ja": "<br><strong class=\"good\">全ステージクリア！</strong>",
+    "en": "<br><strong class=\"good\">ALL STAGES CLEARED!</strong>"
+  },
+  "<br>再挑戦が必要です": {
+    "ja": "<br>再挑戦が必要です",
+    "en": "<br>Try again to advance"
+  },
+  "<span class=\"muted\">記録なし</span>": {
+    "ja": "<span class=\"muted\">記録なし</span>",
+    "en": "<span class=\"muted\">No results yet.</span>"
+  },
+  "<p class=\"muted\">まだ対戦記録はありません。</p>": {
+    "ja": "<p class=\"muted\">まだ対戦記録はありません。</p>",
+    "en": "<p class=\"muted\">No match history yet.</p>"
+  },
+  "ゲームについて": {
+    "ja": "ゲームについて",
+    "en": "About the game"
+  },
+  "プライバシーポリシー": {
+    "ja": "プライバシーポリシー",
+    "en": "Privacy Policy"
+  },
+  "お問い合わせ": {
+    "ja": "お問い合わせ",
+    "en": "Contact"
+  },
+  "🎮 ほかのゲームを見る / More Games": {
+    "ja": "🎮 ほかのゲームを見る / More Games",
+    "en": "🎮 More games"
+  },
+  "指名する秒数": {
+    "ja": "指名する秒数",
+    "en": "Choose target time"
+  },
+  "計測は中断されました。もう一度STARTを押してください。": {
+    "ja": "計測は中断されました。もう一度STARTを押してください。",
+    "en": "Timer interrupted. Press START to try again."
+  },
+  "音あり": {
+    "ja": "音あり",
+    "en": "Sound on"
+  },
+  "音なし": {
+    "ja": "音なし",
+    "en": "Sound off"
+  },
+  "{0}回戦": {
+    "ja": "{0}回戦",
+    "en": "{0} rounds"
+  },
+  "チャレンジ終了（{0}回挑戦）": {
+    "ja": "チャレンジ終了（{0}回挑戦）",
+    "en": "CHALLENGE COMPLETE ({0} tries)"
+  },
+  "{0}回戦の合計誤差を競う": {
+    "ja": "{0}回戦の合計誤差を競う",
+    "en": "Compete for the lowest total error across {0} rounds"
+  },
+  "🏆 自己ベスト：{0}回連続": {
+    "ja": "🏆 自己ベスト：{0}回連続",
+    "en": "🏆 PERSONAL BEST: {0} in a row"
+  },
+  "🏆 この設定の自己ベスト：{0}秒": {
+    "ja": "🏆 この設定の自己ベスト：{0}秒",
+    "en": "🏆 PERSONAL BEST: {0}s"
+  },
+  "今回の連続成功：{0}回　｜　今回の最高記録：{1}回": {
+    "ja": "今回の連続成功：{0}回　｜　今回の最高記録：{1}回",
+    "en": "Current streak: {0} | Best this game: {1}"
+  },
+  "完了：{0}回　｜　合計誤差：{1}秒": {
+    "ja": "完了：{0}回　｜　合計誤差：{1}秒",
+    "en": "Completed: {0} rounds | Total error: {1}s"
+  },
+  "<strong class=\"{0}\">{1}</strong><br>誤差：<b>{2}秒</b>": {
+    "ja": "<strong class=\"{0}\">{1}</strong><br>誤差：<b>{2}秒</b>",
+    "en": "<strong class=\"{0}\">{1}</strong><br>Error: <b>{2}s</b>"
+  },
+  "<br><strong>合計誤差：{0}秒</strong>": {
+    "ja": "<br><strong>合計誤差：{0}秒</strong>",
+    "en": "<br><strong>Total error: {0}s</strong>"
+  },
+  "<br>連続成功：<b>{0}回</b>": {
+    "ja": "<br>連続成功：<b>{0}回</b>",
+    "en": "<br>Win streak: <b>{0}</b>"
+  },
+  "<div class=\"entry\"><span>{0}. 目標 {1}s → {2}s</span><span class=\"{3}\">±{4}s</span></div>": {
+    "ja": "<div class=\"entry\"><span>{0}. 目標 {1}s → {2}s</span><span class=\"{3}\">±{4}s</span></div>",
+    "en": "<div class=\"entry\"><span>{0}. Target {1}s → {2}s</span><span class=\"{3}\">±{4}s</span></div>"
+  },
+  "第{0}回": {
+    "ja": "第{0}回",
+    "en": "ROUND {0}"
+  },
+  "第{0}回の目標秒数": {
+    "ja": "第{0}回の目標秒数",
+    "en": "Target for round {0}"
+  },
+  "{0} {1}勝": {
+    "ja": "{0} {1}勝",
+    "en": "{0} {1} wins"
+  },
+  "<p>{0} / 引分 {1}回</p><p class=\"muted\">この組み合わせ：{2}試合 ／ 全記録：{3}試合（最近10試合を表示）</p>{4}": {
+    "ja": "<p>{0} / 引分 {1}回</p><p class=\"muted\">この組み合わせ：{2}試合 ／ 全記録：{3}試合（最近10試合を表示）</p>{4}",
+    "en": "<p>{0} / Draws: {1}</p><p class=\"muted\">This group: {2} matches / All matches: {3} (latest 10 shown)</p>{4}"
+  },
+  "勝敗差：{0}秒": {
+    "ja": "勝敗差：{0}秒",
+    "en": "Winning margin: {0}s"
+  },
+  "<div class=\"battle-results\" style=\"grid-template-columns:1fr\">{0}</div><div style=\"font-size:12px;margin-top:12px;color:#b7c9e6\">合計絶対誤差が小さい順</div><details class=\"round-detail\"><summary>各回の記録を見る（全{1}回）</summary>{2}<p class=\"muted\">各回の値は小数第3位に丸めて表示しています。合計は丸め前の値で計算するため、表示値の合算と0.001秒程度異なる場合があります。</p></details>": {
+    "ja": "<div class=\"battle-results\" style=\"grid-template-columns:1fr\">{0}</div><div style=\"font-size:12px;margin-top:12px;color:#b7c9e6\">合計絶対誤差が小さい順</div><details class=\"round-detail\"><summary>各回の記録を見る（全{1}回）</summary>{2}<p class=\"muted\">各回の値は小数第3位に丸めて表示しています。合計は丸め前の値で計算するため、表示値の合算と0.001秒程度異なる場合があります。</p></details>",
+    "en": "<div class=\"battle-results\" style=\"grid-template-columns:1fr\">{0}</div><div style=\"font-size:12px;margin-top:12px;color:#b7c9e6\">Ranked by lowest total absolute error</div><details class=\"round-detail\"><summary>VIEW ROUND DETAILS ({1} rounds)</summary>{2}<p class=\"muted\">Each round is displayed to three decimals. Totals use unrounded values, so displayed sums may differ by about 0.001s.</p></details>"
+  },
+  "<div class=\"{0}\">{1}位　{2}<strong>誤差 {3}秒</strong></div>": {
+    "ja": "<div class=\"{0}\">{1}位　{2}<strong>誤差 {3}秒</strong></div>",
+    "en": "<div class=\"{0}\">#{1}  {2}<strong>Error {3}s</strong></div>"
+  },
+  "<div class=\"detail-player\">{0}</div><table><thead><tr><th>回</th><th>目標</th><th>計測</th><th>誤差</th></tr></thead><tbody>{1}<tr class=\"detail-total\"><td colspan=\"3\">合計誤差</td><td>{2}秒</td></tr></tbody></table>": {
+    "ja": "<div class=\"detail-player\">{0}</div><table><thead><tr><th>回</th><th>目標</th><th>計測</th><th>誤差</th></tr></thead><tbody>{1}<tr class=\"detail-total\"><td colspan=\"3\">合計誤差</td><td>{2}秒</td></tr></tbody></table>",
+    "en": "<div class=\"detail-player\">{0}</div><table><thead><tr><th>ROUND</th><th>TARGET</th><th>ACTUAL</th><th>ERROR</th></tr></thead><tbody>{1}<tr class=\"detail-total\"><td colspan=\"3\">TOTAL ERROR</td><td>{2}s</td></tr></tbody></table>"
+  },
+  "<tr><td>{0}</td><td>{1}秒</td><td>{2}秒</td><td>{3}秒</td></tr>": {
+    "ja": "<tr><td>{0}</td><td>{1}秒</td><td>{2}秒</td><td>{3}秒</td></tr>",
+    "en": "<tr><td>{0}</td><td>{1}s</td><td>{2}s</td><td>{3}s</td></tr>"
+  },
+  "誤差 {0}秒": {
+    "ja": "誤差 {0}秒",
+    "en": "Error {0}s"
+  },
+  "第{0}回：{1}s → {2}s": {
+    "ja": "第{0}回：{1}s → {2}s",
+    "en": "Round {0}: {1}s → {2}s"
+  },
+  "サバイバル · 第{0}周": {
+    "ja": "サバイバル · 第{0}周",
+    "en": "SURVIVAL · ROUND {0}"
+  },
+  "許容誤差 ±{0}秒 ／ 残り{1}人": {
+    "ja": "許容誤差 ±{0}秒 ／ 残り{1}人",
+    "en": "Allowed error ±{0}s / {1} players left"
+  },
+  "第{0}周へ進みます": {
+    "ja": "第{0}周へ進みます",
+    "en": "Moving to round {0}"
+  },
+  "生存者：{0}": {
+    "ja": "生存者：{0}",
+    "en": "Still in: {0}"
+  },
+  "全{0}周 ／ 許容誤差 ±{1}秒": {
+    "ja": "全{0}周 ／ 許容誤差 ±{1}秒",
+    "en": "{0} rounds / Allowed error ±{1}s"
+  },
+  "<div class=\"{0}\">{1}　{2}<strong>成功 {3}回</strong></div>": {
+    "ja": "<div class=\"{0}\">{1}　{2}<strong>成功 {3}回</strong></div>",
+    "en": "<div class=\"{0}\">{1}  {2}<strong>{3} successes</strong></div>"
+  },
+  "誤差 {0}秒。次は{1}": {
+    "ja": "誤差 {0}秒。次は{1}",
+    "en": "Error {0}s. Next: {1}"
+  },
+  "今回の誤差：{0}秒": {
+    "ja": "今回の誤差：{0}秒",
+    "en": "This attempt's error: {0}s"
+  },
+  "成功 {0}回": {
+    "ja": "成功 {0}回",
+    "en": "{0} successes"
+  },
+  "2人": {
+    "ja": "2人",
+    "en": "2 players"
+  },
+  "3人": {
+    "ja": "3人",
+    "en": "3 players"
+  },
+  "4人": {
+    "ja": "4人",
+    "en": "4 players"
+  },
+  "1秒": {
+    "ja": "1秒",
+    "en": "1s"
+  },
+  "3秒": {
+    "ja": "3秒",
+    "en": "3s"
+  },
+  "5秒": {
+    "ja": "5秒",
+    "en": "5s"
+  },
+  "10秒": {
+    "ja": "10秒",
+    "en": "10s"
+  },
+  "15秒": {
+    "ja": "15秒",
+    "en": "15s"
+  },
+  "30秒": {
+    "ja": "30秒",
+    "en": "30s"
+  },
+  "0.500秒": {
+    "ja": "0.500秒",
+    "en": "0.500s"
+  },
+  "0.300秒": {
+    "ja": "0.300秒",
+    "en": "0.300s"
+  },
+  "0.200秒": {
+    "ja": "0.200秒",
+    "en": "0.200s"
+  },
+  "0.100秒": {
+    "ja": "0.100秒",
+    "en": "0.100s"
+  },
+  "0.050秒": {
+    "ja": "0.050秒",
+    "en": "0.050s"
+  },
+  "0.010秒": {
+    "ja": "0.010秒",
+    "en": "0.010s"
+  },
+  "1回戦": {
+    "ja": "1回戦",
+    "en": "1 rounds"
+  },
+  "2回戦": {
+    "ja": "2回戦",
+    "en": "2 rounds"
+  },
+  "3回戦": {
+    "ja": "3回戦",
+    "en": "3 rounds"
+  },
+  "4回戦": {
+    "ja": "4回戦",
+    "en": "4 rounds"
+  },
+  "5回戦": {
+    "ja": "5回戦",
+    "en": "5 rounds"
+  },
+  "6回戦": {
+    "ja": "6回戦",
+    "en": "6 rounds"
+  },
+  "7回戦": {
+    "ja": "7回戦",
+    "en": "7 rounds"
+  },
+  "8回戦": {
+    "ja": "8回戦",
+    "en": "8 rounds"
+  },
+  "9回戦": {
+    "ja": "9回戦",
+    "en": "9 rounds"
+  },
+  "10回戦": {
+    "ja": "10回戦",
+    "en": "10 rounds"
+  },
+  "1 → 3 → 5 秒": {
+    "ja": "1 → 3 → 5 秒",
+    "en": "1 → 3 → 5 s"
+  },
+  "±0.5秒": {
+    "ja": "±0.5秒",
+    "en": "±0.5s"
+  },
+  "±0.3秒": {
+    "ja": "±0.3秒",
+    "en": "±0.3s"
+  },
+  "±0.2秒": {
+    "ja": "±0.2秒",
+    "en": "±0.2s"
+  },
+  "±0.1秒": {
+    "ja": "±0.1秒",
+    "en": "±0.1s"
+  },
+  "±0.05秒": {
+    "ja": "±0.05秒",
+    "en": "±0.05s"
+  },
+  "1秒後": {
+    "ja": "1秒後",
+    "en": "After 1s"
+  },
+  "2秒後": {
+    "ja": "2秒後",
+    "en": "After 2s"
+  },
+  "3秒後": {
+    "ja": "3秒後",
+    "en": "After 3s"
+  },
+  "5秒後": {
+    "ja": "5秒後",
+    "en": "After 5s"
+  },
+  "0.1秒": {
+    "ja": "0.1秒",
+    "en": "0.1s"
+  },
+  "0.01秒": {
+    "ja": "0.01秒",
+    "en": "0.01s"
+  },
+  "0.001秒": {
+    "ja": "0.001秒",
+    "en": "0.001s"
+  },
+  "🎯 PERFECT!": {
+    "ja": "🎯 パーフェクト！",
+    "en": "🎯 PERFECT!"
+  },
+  "✨ AMAZING!": {
+    "ja": "✨ すごい！",
+    "en": "✨ AMAZING!"
+  },
+  "⭐ EXCELLENT!": {
+    "ja": "⭐ 素晴らしい！",
+    "en": "⭐ EXCELLENT!"
+  },
+  "GREAT!": {
+    "ja": "いい感じ！",
+    "en": "GREAT!"
+  },
+  "NICE TRY!": {
+    "ja": "惜しい！",
+    "en": "NICE TRY!"
+  },
+  "CLEAR!": {
+    "ja": "成功！",
+    "en": "CLEAR!"
+  },
+  "FAILED": {
+    "ja": "失敗",
+    "en": "FAILED"
+  },
+  "🏆 NEW BEST!": {
+    "ja": "🏆 自己ベスト更新！",
+    "en": "🏆 NEW BEST!"
+  }
+};
+ const bindings=new Map();let lang='en';
+ try{const saved=localStorage.getItem('stopit-language-v1');lang=saved==='ja'?'ja':saved==='en'?'en':(navigator.language||'en').startsWith('ja')?'ja':'en'}catch{}
+ function t(key){const row=catalog[key];if(!row)throw new Error('Missing translation: '+key);return row[lang]}
+ function f(key,...values){return t(key).replace(/\{(\d+)\}/g,(_,i)=>String(values[Number(i)]??''))}
+ function bind(el,property,getter){if(!el)return;const render=typeof getter==='function'?getter:()=>getter;let map=bindings.get(el);if(!map){map=new Map();bindings.set(el,map)}if(property==='innerHTML'||property==='textContent'){map.delete('innerHTML');map.delete('textContent')}map.set(property,render);write(el,property,render())}
+ function write(el,property,value){value=value??'';if(property.startsWith('@'))el.setAttribute(property.slice(1),String(value));else if(property==='textContent'&&el.querySelector?.('input,select,textarea')){let text=[...el.childNodes].find(n=>n.nodeType===3);if(!text){text=document.createTextNode('');el.prepend(text)}if(text.nodeValue!==String(value))text.nodeValue=String(value)}else if(el[property]!==String(value))el[property]=String(value)}
+ function refresh(){for(const [el,map] of bindings){if(!el.isConnected){bindings.delete(el);continue}for(const [property,render] of map)write(el,property,render())}document.documentElement.lang=lang;document.title=lang==='ja'?'STOP IT! | ぴったり止められる？':'STOP IT! | Can you stop the clock?';document.querySelectorAll('#languageBar [data-lang]').forEach(b=>{b.classList.toggle('selected',b.dataset.lang===lang);b.setAttribute('aria-pressed',String(b.dataset.lang===lang))});document.dispatchEvent(new Event('stopit-language-change'))}
+ function setLanguage(value){if(!['ja','en'].includes(value))return;lang=value;try{localStorage.setItem('stopit-language-v1',lang)}catch{}refresh()}
+ function init(){const walk=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);const nodes=[];while(walk.nextNode())nodes.push(walk.currentNode);for(const node of nodes){const holder=node.parentElement;if(!holder||holder.closest('script,style,#languageBar,#soundToggle,#achievement,input,textarea,[data-player-name]'))continue;let parent=holder,bound=false;while(parent){if(bindings.has(parent)){bound=true;break}parent=parent.parentElement}if(bound)continue;const raw=node.nodeValue,key=raw.trim();if(catalog[key])bind(node,'nodeValue',()=>raw.replace(key,t(key)));else if(/[ぁ-んァ-ヶ一-龠]/.test(key))throw new Error('Unmapped static label: '+key)}
+ document.querySelectorAll('[aria-label]').forEach(el=>{if(el.closest('#languageBar'))return;const key=el.getAttribute('aria-label');if(catalog[key])bind(el,'@aria-label',()=>t(key))});
+ document.querySelectorAll('#languageBar [data-lang]').forEach(b=>b.addEventListener('click',()=>setLanguage(b.dataset.lang)));refresh()}
+ const rawConfirm=window.confirm.bind(window);window.confirm=message=>rawConfirm(message);
+ return {t,f,bind,text:(el,getter)=>bind(el,'textContent',getter),html:(el,getter)=>bind(el,'innerHTML',getter),attr:(el,key,getter)=>bind(el,'@'+key,getter),init,refresh,setLanguage,get language(){return lang},catalog};
+})();
+</script><script>window.StopitFeedback=(()=>{
+ let enabled=false,audio=null,expiry=0;try{enabled=localStorage.getItem('stopit-sound-v1')==='on'}catch{}
+ const button=document.createElement('button');button.type='button';button.id='soundToggle';document.getElementById('languageBar').appendChild(button);
+ const banner=document.createElement('div');banner.id='achievement';banner.role='status';banner.setAttribute('aria-live','polite');banner.hidden=true;document.body.appendChild(banner);
+ const celebration=document.createElement('div');celebration.id='perfectFx';celebration.setAttribute('aria-hidden','true');celebration.hidden=true;document.body.appendChild(celebration);
+ const language=()=>window.StopitI18n.language;
+ function label(){button.textContent=language()==='ja'?(enabled?'♪ 音あり':'♪ 音なし'):(enabled?'♪ SOUND ON':'♪ SOUND OFF');button.setAttribute('aria-pressed',String(enabled));button.setAttribute('aria-label',language()==='ja'?'効果音の切り替え':'Toggle sound effects')}
+ function context(){if(!enabled)return null;try{audio??=new (window.AudioContext||window.webkitAudioContext)();if(audio.state==='suspended')audio.resume().catch(()=>{});return audio}catch{return null}}
+ function sound(notes,volume=.045){const ctx=context();if(!ctx)return;const start=ctx.currentTime+.005;for(const [freq,offset,duration] of notes){const osc=ctx.createOscillator(),gain=ctx.createGain();osc.type='sine';osc.frequency.value=freq;gain.gain.setValueAtTime(0,start+offset);gain.gain.linearRampToValueAtTime(volume,start+offset+.008);gain.gain.exponentialRampToValueAtTime(.0001,start+offset+duration);osc.connect(gain);gain.connect(ctx.destination);osc.start(start+offset);osc.stop(start+offset+duration+.01);osc.onended=()=>{osc.disconnect();gain.disconnect()}}}
+ function paintBanner(){
+  const ja=language()==='ja';banner.replaceChildren();
+  if(banner.dataset.kind==='perfect'){
+   const title=document.createElement('strong');title.className='perfect-title';title.textContent='PERFECT!';
+   const sub=document.createElement('span');sub.className='perfect-subtitle';sub.textContent=ja?banner.dataset.subJa:banner.dataset.subEn;banner.append(title,sub);
+  }else banner.textContent=ja?banner.dataset.ja:banner.dataset.en;
+ }
+ function clearCelebration(){celebration.hidden=true;celebration.replaceChildren()}
+ function announce(kind,ja,en,color){
+  clearTimeout(expiry);clearCelebration();banner.hidden=false;banner.dataset.kind=kind;banner.dataset.ja=ja;banner.dataset.en=en;
+  banner.dataset.subJa='ジャスト！';banner.dataset.subEn='RIGHT ON TIME!';banner.style.setProperty('--achievement-color',color||'#a0f0d0');paintBanner();
+  banner.classList.remove('burst');void banner.offsetWidth;banner.classList.add('burst');
+  if(kind==='perfect'){
+   celebration.hidden=false;
+   for(let i=0;i<30;i++){const piece=document.createElement('i');piece.style.setProperty('--x',(4+(i*37)%92)+'vw');piece.style.setProperty('--drift',(((i*47)%160)-80)+'px');piece.style.setProperty('--delay',((i%6)*.025)+'s');piece.style.setProperty('--spin',((i%2?-1:1)*(240+i*17))+'deg');piece.style.setProperty('--gold',['#ffe997','#ffbc44','#fff8d8'][i%3]);celebration.appendChild(piece)}
+  }
+  expiry=setTimeout(()=>{banner.hidden=true;clearCelebration()},kind==='perfect'?1200:950);
+ }
+ function start(){reset();sound([[440,0,.045]],.018)}
+ function result({err,pass,streak=0}){const perfect=err<.0005;if(perfect){sound([[523,0,.15],[659,.04,.15],[784,.08,.16],[1047,.17,.18],[1319,.26,.20],[1568,.36,.24]],.045);announce('perfect','🎯 パーフェクト！','🎯 PERFECT!','#ffe098')}else if(pass){sound([[523,0,.09],[659,.07,.12],[784,.14,.18]]);if(streak>=2)announce('streak',streak+'回連続成功！',streak+' IN A ROW!','#9ff1d9');else announce('success','成功！','SUCCESS!','#9ff1d9')}else sound([[300,0,.045]],.014)}
+ function battle(winner,names){if(!banner.hidden&&banner.dataset.kind==='perfect'){banner.dataset.subJa=winner===null?'引き分け':names[winner]+' の勝利！';banner.dataset.subEn=winner===null?'IT’S A TIE!':names[winner]+' WINS!';paintBanner();return}sound(winner===null?[[440,0,.1],[440,.12,.1]]:[[523,0,.12],[784,.1,.2],[1047,.2,.22]]);const name=winner===null?'':names[winner];announce('battle',winner===null?'引き分け':name+' の勝利！',winner===null?'IT’S A TIE!':name+' WINS!',['#62d9ff','#ff719f','#ffd15b','#9df078'][winner??0])}
+ function reset(){clearTimeout(expiry);banner.hidden=true;clearCelebration()}
+ button.addEventListener('click',()=>{enabled=!enabled;try{localStorage.setItem('stopit-sound-v1',enabled?'on':'off')}catch{}label();if(enabled)sound([[659,0,.08]],.025)});
+ document.addEventListener('stopit-language-change',()=>{label();if(!banner.hidden)paintBanner()});label();
+ return {start,stop:()=>sound([[330,0,.035]],.014),result,battle,reset,get enabled(){return enabled}};
+})();
+</script><script>(() => {
+  'use strict';
+  const $ = id => document.getElementById(id);
+  let cfg = {
+    mode: 'single',
+    rounds: 3,
+    target: 3,
+    tolerance: .3,
+    display: 'hidden',
+    digits: 3,
+    pattern: 'standard'
+  };
+  const customTargets = Array.from({
+    length: 10
+  }, (_, i) => [1, 3, 5, 7, 10, 15, 20, 30, 45, 60][i]);
+  let view = 'setup';
+  let phase = 'ready', stage = 0, streak = 0, errors = [], records = [], startAt = 0, raf = 0, activeDisplay = 'hidden', finished = false;
+  const patterns = {
+    standard: [1, 3, 5, 7, 10, 15, 20, 30, 45, 60],
+    short: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    mix: [3, 5, 2, 7, 1, 10, 4, 8, 6, 9]
+  };
+  const sequence = () => cfg.pattern === 'custom' ? customTargets.slice(0, cfg.rounds) : patterns[cfg.pattern].slice(0, cfg.rounds);
+  const goal = () => cfg.mode === 'total' || cfg.mode === 'gate' ? sequence()[Math.min(stage, cfg.rounds - 1)] : cfg.target;
+  const fixed = n => n.toFixed(cfg.digits);
+  const bestKey = () => ['stopit-v07', cfg.mode, cfg.rounds, cfg.target, cfg.pattern, sequence().join('-'), cfg.display, cfg.tolerance, $('failure').value].join('|');
+  function getBest() {
+    try {
+      const v = localStorage.getItem(bestKey());
+      return v === null || !Number.isFinite(Number(v)) || Number(v) < 0 ? null : Number(v);
+    } catch (e) {
+      return null;
+    }
+  }
+  function saveBest(v) {
+    try {
+      const old = getBest();
+      if (old === null || (cfg.mode === 'streak' ? v > old : v < old)) {
+        localStorage.setItem(bestKey(), String(v));
+        return true;
+      }
+    } catch (e) {}
+    return false;
+  }
+  const I18n = window.StopitI18n, T = I18n.t, F = I18n.f, FX = window.StopitFeedback;
+  const setText = (id, s) => I18n.text($(id), s);
+  function setActive(group, key, val) {
+    document.querySelectorAll('#' + group + ' [data-' + key + ']').forEach(b => b.classList.toggle('active', b.dataset[key] === String(val)));
+  }
+  function reset() {
+    FX.reset();
+    window.stopitLastResult = null;
+    cancelAnimationFrame(raf);
+    phase = 'ready';
+    stage = 0;
+    streak = 0;
+    errors = [];
+    records = [];
+    finished = false;
+    setText('result', () => '');
+    setText('hint', () => T('STARTを押して、体内時計で数えよう'));
+    setText('history', () => T('まだ記録はありません。'));
+    render();
+  }
+  function render() {
+    const g = goal();
+    $('setupScreen').classList.toggle('visible', view === 'setup');
+    $('playScreen').classList.toggle('visible', view === 'play');
+    $('battleScreen').classList.toggle('visible', view === 'battle');
+    setText('playModeName', () => ({
+      single: T('ワンショット'),
+      total: F("{0}回戦", cfg.rounds),
+      gate: T('ステージ攻略'),
+      streak: T('連続成功')
+    })[cfg.mode]);
+    setText('target', () => fixed(goal()));
+    setText('roundLabel', () => cfg.mode === 'total' || cfg.mode === 'gate' ? finished ? F("チャレンジ終了（{0}回挑戦）", records.length) : `STAGE ${Math.min(stage + 1, cfg.rounds)} / ${cfg.rounds}` : cfg.mode === 'streak' ? T('連続成功') : T('目標時間'));
+    setText('modeDetail', () => cfg.mode === 'total' ? F("{0}回戦の合計誤差を競う", cfg.rounds) : cfg.mode === 'gate' ? T('成功しないと次のステージへ進めない') : cfg.mode === 'streak' ? T('何回連続で成功できる？') : T('狙った秒数で止めよう！'));
+    if (phase === 'ready') setText('clock', () => `0.${('0').repeat(cfg.digits)}s`);
+    setText('action', () => phase === 'running' ? '■ STOP' : phase === 'ready' ? '▶ START' : finished ? T('↻ もう一度') : cfg.mode === 'streak' ? T('▶ 次の挑戦') : cfg.mode === 'total' || cfg.mode === 'gate' ? T('▶ 次のステージ') : '↻ TRY AGAIN');
+    $('action').classList.toggle('stop', phase === 'running');
+    $('settings').classList.toggle('hidden', phase === 'running' || phase === 'result' && !finished && (cfg.mode === 'total' || cfg.mode === 'gate' || cfg.mode === 'streak'));
+    $('roundsField').classList.toggle('hidden', !(cfg.mode === 'total' || cfg.mode === 'gate' || cfg.mode === 'battle' && $('battleRule').value === 'score'));
+    $('singleField').classList.toggle('hidden', cfg.mode === 'total' || cfg.mode === 'gate' || cfg.mode === 'battle');
+    $('sequenceField').classList.toggle('hidden', !(cfg.mode === 'total' || cfg.mode === 'gate' || cfg.mode === 'battle' && $('battleRule').value === 'score'));
+    $('toleranceField').classList.toggle('hidden', cfg.mode === 'single' || cfg.mode === 'total' || cfg.mode === 'battle');
+    $('failureField').classList.toggle('hidden', cfg.mode !== 'gate');
+    $('partialField').classList.toggle('hidden', cfg.display !== 'partial');
+    $('battleRecordsSettings').style.display = cfg.mode === 'battle' ? 'block' : 'none';
+    setText('sequence', () => sequence().join(' → ') + T(' 秒'));
+    $('customFields').classList.toggle('hidden', cfg.pattern !== 'custom' || !(cfg.mode === 'total' || cfg.mode === 'gate' || cfg.mode === 'battle' && $('battleRule').value === 'score'));
+    const total = errors.reduce((a, b) => a + b, 0);
+    const totalRounds = cfg.mode === 'total' || cfg.mode === 'gate' ? cfg.rounds : 0;
+    I18n.html($('progress'), () => totalRounds ? Array.from({
+      length: totalRounds
+    }, (_, i) => `<span class="pip ${i < stage ? 'done' : i === stage && !finished ? 'current' : ''}"></span>`).join('') : '');
+    const best = getBest();
+    setText('best', () => best === null ? '' : cfg.mode === 'streak' ? F("🏆 自己ベスト：{0}回連続", best) : F("🏆 この設定の自己ベスト：{0}秒", best.toFixed(3)));
+    setText('stats', () => cfg.mode === 'streak' ? F("今回の連続成功：{0}回　｜　今回の最高記録：{1}回", streak, Math.max(streak, ...records.map(x => x.streak || 0), 0)) : cfg.mode === 'total' || cfg.mode === 'gate' ? F("完了：{0}回　｜　合計誤差：{1}秒", records.length, total.toFixed(3)) : '');
+  }
+  function tick() {
+    if (phase !== 'running') return;
+    const elapsed = (performance.now() - startAt) / 1000;
+    let show = activeDisplay === 'always' || activeDisplay === 'partial' && elapsed < Number($('hideAfter').value);
+    setText('clock', () => show ? fixed(elapsed) + 's' : '?.' + ('?').repeat(cfg.digits) + 's');
+    raf = requestAnimationFrame(tick);
+  }
+  function start() {
+    document.getElementById('sharePlay').hidden = true;
+    if (finished || cfg.mode === 'single' && phase === 'result') reset();
+    activeDisplay = cfg.display === 'random' ? ['always', 'hidden', 'partial'][Math.floor(Math.random() * 3)] : cfg.display;
+    phase = 'running';
+    setText('result', () => '');
+    setText('hint', () => activeDisplay === 'always' ? T('表示を見ながら止めよう') : activeDisplay === 'partial' ? T('途中で表示が消えます') : activeDisplay === 'hidden' ? T('体内時計で数えよう') : '');
+    startAt = performance.now();
+    FX.start();
+    render();
+    tick();
+  }
+  function stop() {
+    if (phase !== 'running') return;
+    const elapsed = (performance.now() - startAt) / 1000;
+    FX.stop();
+    cancelAnimationFrame(raf);
+    const g = goal(), err = Math.abs(elapsed - g), pass = err <= cfg.tolerance + 1e-10;
+    setText('clock', () => fixed(elapsed) + 's');
+    const rec = {
+      stage: stage + 1,
+      g,
+      elapsed,
+      err,
+      pass,
+      streak: 0
+    };
+    errors.push(err);
+    records.push(rec);
+    if (cfg.mode === 'streak') {
+      if (pass) {
+        streak = records.filter(x => x.pass).length;
+        rec.streak = streak;
+      } else {
+        finished = true;
+      }
+    } else if (cfg.mode === 'single') {
+      finished = true;
+    } else if (cfg.mode === 'total') {
+      stage++;
+      finished = stage >= cfg.rounds;
+    } else if (cfg.mode === 'gate') {
+      if (pass) {
+        stage++;
+        finished = stage >= cfg.rounds;
+      } else {
+        const rule = $('failure').value;
+        if (rule === 'end') finished = true; else if (rule === 'reset') {
+          stage = 0;
+          errors = [];
+          records = [];
+        }
+      }
+    }
+    const title = () => err < 0.0005 ? T('🎯 PERFECT!') : err <= 0.010 ? T('✨ AMAZING!') : err <= 0.050 ? T('⭐ EXCELLENT!') : err <= 0.100 ? T('GREAT!') : cfg.mode === 'total' || cfg.mode === 'single' ? T('NICE TRY!') : pass ? T('CLEAR!') : T('FAILED');
+    let details = [() => F("<strong class=\"{0}\">{1}</strong><br>誤差：<b>{2}秒</b>", pass ? 'good' : 'bad', title(), err.toFixed(3))];
+    if (cfg.mode === 'total' && finished) details.push(() => F("<br><strong>合計誤差：{0}秒</strong>", errors.reduce((a, b) => a + b, 0).toFixed(3)));
+    if (cfg.mode === 'gate' && finished && pass) details.push(() => T('<br><strong class="good">全ステージクリア！</strong>'));
+    if (cfg.mode === 'streak') details.push(() => F("<br>連続成功：<b>{0}回</b>", streak));
+    if (cfg.mode === 'gate' && !pass && !finished) details.push(() => T('<br>再挑戦が必要です'));
+    if (finished) {
+      const score = cfg.mode === 'streak' ? streak : cfg.mode === 'total' ? errors.reduce((a, b) => a + b, 0) : cfg.mode === 'single' ? err : null;
+      const eligible = cfg.mode === 'single' || cfg.mode === 'total' || cfg.mode === 'streak' || cfg.mode === 'gate' && pass;
+      const finalScore = cfg.mode === 'gate' ? errors.reduce((a, b) => a + b, 0) : score;
+      if (eligible && finalScore !== null && saveBest(finalScore)) details.push(() => '<br><strong class="good">🏆 NEW BEST!</strong>');
+    }
+    I18n.html($('result'), () => details.map(fn => fn()).join(''));
+    window.stopitLastResult = {
+      mode: cfg.mode,
+      goal: g,
+      elapsed,
+      err,
+      total: errors.reduce((a, b) => a + b, 0),
+      rounds: records.length,
+      finished
+    };
+    document.getElementById('sharePlay').hidden = !finished;
+    setText('hint', () => finished ? T('チャレンジ終了') : T('次の挑戦へ！'));
+    phase = 'result';
+    FX.result({
+      err,
+      pass,
+      streak
+    });
+    render();
+    I18n.html($('history'), () => records.map((x, i) => F("<div class=\"entry\"><span>{0}. 目標 {1}s → {2}s</span><span class=\"{3}\">±{4}s</span></div>", i + 1, x.g, x.elapsed.toFixed(3), x.pass ? 'good' : 'bad', x.err.toFixed(3))).join('') || T('<span class="muted">記録なし</span>'));
+  }
+  $('beginGame').addEventListener('click', () => {
+    reset();
+    view = cfg.mode === 'battle' ? 'battle' : 'play';
+    if (view === 'battle') {
+      battleReset();
+      if (survival() && nominated()) {
+        bphase = 'choose';
+        survivalRender();
+      } else if (survival()) {
+        sGoals = [sRoundGoal];
+      }
+    }
+    render();
+    window.scrollTo(0, 0);
+  });
+  $('backToSetup').addEventListener('click', () => {
+    if (phase === 'running' && !confirm(T('計測中です。中断して設定に戻りますか？'))) return;
+    reset();
+    view = 'setup';
+    render();
+    window.scrollTo(0, 0);
+  });
+  $('action').addEventListener('click', () => {
+    if (view === 'play') activate(() => phase === 'running' ? stop() : start());
+  });
+  document.querySelectorAll('[data-mode]').forEach(b => b.addEventListener('click', () => {
+    cfg.mode = b.dataset.mode;
+    setActive('modes', 'mode', cfg.mode);
+    reset();
+  }));
+  for (const [key, group] of [['target', 'targets'], ['tolerance', 'tolerances'], ['display', 'displays'], ['digits', 'precisions']]) document.querySelectorAll(`#${group} [data-${key}]`).forEach(b => b.addEventListener('click', () => {
+    cfg[key] = key === 'display' ? b.dataset[key] : Number(b.dataset[key]);
+    setActive(group, key, cfg[key]);
+    reset();
+  }));
+  $('roundCount').addEventListener('change', () => {
+    cfg.rounds = Number($('roundCount').value);
+    buildCustomInputs();
+    reset();
+  });
+  $('pattern').addEventListener('change', () => {
+    cfg.pattern = $('pattern').value;
+    reset();
+  });
+  function buildCustomInputs() {
+    $('customInputs').innerHTML = '';
+    for (let i = 0; i < cfg.rounds; i++) {
+      const label = document.createElement('label');
+      I18n.text(label, () => F("第{0}回", i + 1));
+      const input = document.createElement('select');
+      I18n.attr(input, 'aria-label', () => F("第{0}回の目標秒数", i + 1));
+      for (let n = 1; n <= 10; n++) {
+        const option = document.createElement('option');
+        option.value = String(n);
+        I18n.text(option, () => n + T('秒'));
+        input.appendChild(option);
+      }
+      if (customTargets[i] > 10 || customTargets[i] < 1 || !Number.isInteger(customTargets[i])) {
+        const option = document.createElement('option');
+        option.value = String(customTargets[i]);
+        I18n.text(option, () => customTargets[i] + T('秒（以前の設定）'));
+        input.appendChild(option);
+      }
+      input.value = String(customTargets[i]);
+      input.addEventListener('change', () => {
+        customTargets[i] = Number(input.value);
+        reset();
+      });
+      label.appendChild(input);
+      $('customInputs').appendChild(label);
+    }
+  }
+  buildCustomInputs();
+  $('hideAfter').addEventListener('change', reset);
+  $('failure').addEventListener('change', reset);
+  let bp = 0, br = 0, bphase = 'ready', bStart = 0, bFrame = 0, bResults = [[], []], bDisplay = 'hidden';
+  const historyKey = 'stopit-battle-history-v09';
+  let sAlive = [], sRound = 1, sCurrent = [], sEliminated = [], sWinner = null, sRoundGoal = 3, sGoals = [], sNominator = 0;
+  const survival = () => $('battleRule').value === 'survival';
+  const sGoal = () => sRoundGoal;
+  const nominated = () => $('survivalStyle').value === 'nominate';
+  const sTolerance = () => Number($('survivalTolerance').value);
+  $('survivalStyle').addEventListener('change', () => {
+    updateSurvivalControls();
+    render();
+  });
+  function updateSurvivalControls() {
+    const field = $('survivalTarget').closest('.field');
+    field.classList.toggle('hidden', nominated());
+  }
+  updateSurvivalControls();
+  $('battleRule').addEventListener('change', () => {
+    $('survivalSettings').classList.toggle('hidden', !survival());
+    render();
+  });
+  const playerNames = () => Array.from({
+    length: Number($('playerCount').value)
+  }, (_, i) => {
+    const el = i === 0 ? $('playerOne') : i === 1 ? $('playerTwo') : $('player' + (i + 1));
+    return (el?.value || '').trim().slice(0, 20) || 'PLAYER ' + (i + 1);
+  });
+  function buildExtraPlayers() {
+    const n = Number($('playerCount').value);
+    const old = [3, 4].map(i => $('player' + i)?.value || 'PLAYER ' + i);
+    $('extraPlayers').innerHTML = '';
+    for (let i = 3; i <= n; i++) {
+      const label = document.createElement('label');
+      I18n.text(label, () => T('プレイヤー') + i);
+      const input = document.createElement('input');
+      input.id = 'player' + i;
+      input.maxLength = 20;
+      input.value = old[i - 3];
+      input.addEventListener('input', showBattleRecords);
+      label.appendChild(input);
+      $('extraPlayers').appendChild(label);
+    }
+    showBattleRecords();
+  }
+  $('playerCount').addEventListener('change', buildExtraPlayers);
+  function readBattles() {
+    try {
+      const x = JSON.parse(localStorage.getItem(historyKey) || '[]');
+      return Array.isArray(x) ? x.filter(r => r && Array.isArray(r.names) && r.names.every(n => typeof n === 'string') && Array.isArray(r.scores) && r.scores.length === r.names.length && r.scores.every(n => Number.isFinite(n) && n >= 0) && (r.winner === null || Number.isInteger(r.winner) && r.winner >= 0 && r.winner < r.names.length)) : [];
+    } catch (e) {
+      return [];
+    }
+  }
+  function writeBattles(a) {
+    try {
+      localStorage.setItem(historyKey, JSON.stringify(a.slice(0, 200)));
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+  function escapeHtml(t) {
+    return String(t).replace(/[&<>"']/g, c => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;'
+    })[c]);
+  }
+  function showBattleRecords() {
+    const a = readBattles(), names = playerNames();
+    const pair = a.filter(x => Array.isArray(x.names) && x.names.length === names.length && x.names.every((n, i) => n === names[i]));
+    const wins = names.map((_, i) => pair.filter(x => x.winner === i).length);
+    const draws = pair.filter(x => x.winner === null).length;
+    const summary = () => names.map((n, i) => F("{0} {1}勝", escapeHtml(n), wins[i])).join(' / ');
+    const recent = () => a.slice(0, 10).map(x => {
+      const ns = Array.isArray(x.names) ? x.names : [], scores = Array.isArray(x.scores) ? x.scores : [];
+      return `<div class="entry"><span>${escapeHtml(x.date || '')}　${ns.map(escapeHtml).join(' vs ')}<br><small>${x.rule === 'survival' ? T('サバイバル ') + x.rounds + T('周') : x.rounds + T('回戦')} · ${scores.map(v => x.rule === 'survival' ? F('成功 {0}回', Number(v)) : Number(v).toFixed(3) + 's').join(' / ')}</small></span><strong>${x.winner === null ? 'DRAW' : escapeHtml(ns[x.winner] || '?') + T(' 勝利')}</strong></div>`;
+    }).join('');
+    I18n.html($('battleRecordList'), () => F("<p>{0} / 引分 {1}回</p><p class=\"muted\">この組み合わせ：{2}試合 ／ 全記録：{3}試合（最近10試合を表示）</p>{4}", summary(), draws, pair.length, a.length, recent() || T('<p class="muted">まだ対戦記録はありません。</p>')));
+  }
+  function saveBattleResult() {
+    const scores = bResults.map(bTotal), min = Math.min(...scores), leaders = scores.map((v, i) => Math.abs(v - min) < 1e-9 ? i : -1).filter(i => i >= 0), winner = leaders.length === 1 ? leaders[0] : null;
+    const now = new Date();
+    const record = {
+      date: now.toLocaleString(I18n.language === 'ja' ? 'ja-JP' : 'en-GB'),
+      names: playerNames(),
+      rounds: cfg.rounds,
+      targets: sequence(),
+      scores,
+      winner,
+      details: bResults.map(rows => rows.map(r => ({
+        target: r.target,
+        elapsed: r.elapsed,
+        err: r.err
+      })))
+    };
+    const ok = writeBattles([record, ...readBattles()]);
+    setText('battleRecordNotice', () => ok ? T('✓ 対戦結果をこのブラウザに保存しました') : T('保存できませんでした。ブラウザの保存設定を確認してください。'));
+    showBattleRecords();
+    FX.battle(winner, playerNames());
+  }
+  $('playerOne').addEventListener('input', showBattleRecords);
+  $('playerTwo').addEventListener('input', showBattleRecords);
+  $('clearBattleRecords').addEventListener('click', () => {
+    if (confirm(T('保存したすべての対戦戦績を削除しますか？'))) {
+      try {
+        localStorage.removeItem(historyKey);
+      } catch (e) {}
+      showBattleRecords();
+    }
+  });
+  const bTotal = a => a.reduce((n, x) => n + x.err, 0);
+  function battleReset() {
+    FX.reset();
+    setText('battleRecordNotice', () => '');
+    cancelAnimationFrame(bFrame);
+    bp = 0;
+    br = 0;
+    bphase = 'ready';
+    bResults = playerNames().map(() => []);
+    sAlive = playerNames().map((_, i) => i);
+    sEliminated = [];
+    sRound = 1;
+    sCurrent = [];
+    sWinner = null;
+    sRoundGoal = Number($('survivalTarget').value);
+    sGoals = [];
+    sNominator = 0;
+    if (survival() && nominated()) bphase = 'choose';
+    battleRender();
+  }
+  function battleRender() {
+    $('nominationControl').hidden = true;
+    if (survival()) {
+      survivalRender();
+      return;
+    }
+    const seq = sequence(), names = playerNames(), done = bphase === 'allDone', handoff = bphase === 'handoff', roundDone = bphase === 'roundDone';
+    setText('battleHeading', () => done ? T('最終順位') : handoff ? T('スマホを交代してください') : `PLAYER ${bp + 1} / ${names.length} · ROUND ${Math.min(br + 1, cfg.rounds)} / ${cfg.rounds}`);
+    setText('battleName', () => done ? 'RESULT' : handoff ? T('次は ') + names[bp + 1] : names[bp]);
+    setText('battleGoal', () => done ? 'FINISH' : handoff ? 'READY' : seq[Math.min(br, cfg.rounds - 1)].toFixed(3) + 's');
+    $('battleClock').classList.toggle('hidden', done || handoff);
+    $('battleProgress').classList.toggle('hidden', done || handoff);
+    I18n.html($('battleProgress'), () => Array.from({
+      length: cfg.rounds
+    }, (_, i) => `<span class="${i < br ? 'done' : i === br ? 'current' : ''}"></span>`).join(''));
+    $('battleAgain').classList.toggle('hidden', !done);
+    $('battleReturn').classList.toggle('hidden', !done);
+    $('battleAction').classList.toggle('stop', bphase === 'running');
+    $('battleAction').classList.toggle('hidden', done);
+    setText('battleAction', () => handoff ? '▶ ' + names[bp + 1] + T(' 開始') : bphase === 'running' ? '■ STOP' : roundDone ? T('▶ 次のラウンド') : '▶ START');
+    if (bphase === 'ready') {
+      setText('battleClock', () => '0.' + ('0').repeat(cfg.digits) + 's');
+      setText('battleStatus', () => T('目標時間に合わせてSTOP！'));
+      setText('battleSummary', () => '');
+    }
+    if (handoff) {
+      setText('battleStatus', () => T('準備ができたらボタンを押してください'));
+      setText('battleSummary', () => T('端末を次のプレイヤーに渡してください。準備ができたら下のボタンを押します。'));
+    }
+    if (done) {
+      const scores = bResults.map(bTotal), order = scores.map((score, i) => ({
+        score,
+        i
+      })).sort((a, b) => a.score - b.score), tie = order.length > 1 && Math.abs(order[0].score - order[1].score) < 1e-9;
+      setText('battleName', () => tie ? 'DRAW!' : names[order[0].i] + ' WINS!');
+      setText('battleStatus', () => tie ? T('同点優勝') : F("勝敗差：{0}秒", (order[1].score - order[0].score).toFixed(3)));
+      I18n.html($('battleSummary'), () => F("<div class=\"battle-results\" style=\"grid-template-columns:1fr\">{0}</div><div style=\"font-size:12px;margin-top:12px;color:#b7c9e6\">合計絶対誤差が小さい順</div><details class=\"round-detail\"><summary>各回の記録を見る（全{1}回）</summary>{2}<p class=\"muted\">各回の値は小数第3位に丸めて表示しています。合計は丸め前の値で計算するため、表示値の合算と0.001秒程度異なる場合があります。</p></details>", order.map((x, i) => F("<div class=\"{0}\">{1}位　{2}<strong>誤差 {3}秒</strong></div>", i === 0 ? 'winner' : '', i + 1, escapeHtml(names[x.i]), x.score.toFixed(3))).join(''), cfg.rounds, order.map(x => F("<div class=\"detail-player\">{0}</div><table><thead><tr><th>回</th><th>目標</th><th>計測</th><th>誤差</th></tr></thead><tbody>{1}<tr class=\"detail-total\"><td colspan=\"3\">合計誤差</td><td>{2}秒</td></tr></tbody></table>", escapeHtml(names[x.i]), bResults[x.i].map((r, j) => F("<tr><td>{0}</td><td>{1}秒</td><td>{2}秒</td><td>{3}秒</td></tr>", j + 1, r.target.toFixed(3), r.elapsed.toFixed(3), r.err.toFixed(3))).join(''), x.score.toFixed(3))).join('')));
+    }
+  }
+  function battleTick() {
+    if (bphase !== 'running') return;
+    const elapsed = (performance.now() - bStart) / 1000;
+    const show = bDisplay === 'always' || bDisplay === 'partial' && elapsed < Number($('hideAfter').value);
+    setText('battleClock', () => show ? elapsed.toFixed(cfg.digits) + 's' : '?.' + ('?').repeat(cfg.digits) + 's');
+    bFrame = requestAnimationFrame(battleTick);
+  }
+  function battleAction() {
+    if (survival()) {
+      survivalAction();
+      return;
+    }
+    if (bphase === 'handoff') {
+      bp++;
+      br = 0;
+      bphase = 'ready';
+      battleRender();
+      return;
+    }
+    if (bphase === 'roundDone') {
+      br++;
+      bphase = 'ready';
+      battleRender();
+      return;
+    }
+    if (bphase === 'ready') {
+      bDisplay = cfg.display === 'random' ? ['always', 'hidden', 'partial'][Math.floor(Math.random() * 3)] : cfg.display;
+      bStart = performance.now();
+      FX.start();
+      bphase = 'running';
+      battleRender();
+      setText('battleStatus', () => T('タイミングを見極めてSTOP！'));
+      battleTick();
+      return;
+    }
+    if (bphase === 'running') {
+      const elapsed = (performance.now() - bStart) / 1000;
+      FX.stop();
+      cancelAnimationFrame(bFrame);
+      const target = sequence()[br], err = Math.abs(elapsed - target);
+      if (err < .0005) FX.result({
+        err,
+        pass: true
+      });
+      bResults[bp].push({
+        target,
+        elapsed,
+        err
+      });
+      setText('battleClock', () => elapsed.toFixed(cfg.digits) + 's');
+      setText('battleStatus', () => F("誤差 {0}秒", err.toFixed(3)));
+      setText('battleSummary', () => F("第{0}回：{1}s → {2}s", br + 1, target, elapsed.toFixed(3)));
+      if (br + 1 === cfg.rounds) {
+        if (bp < playerNames().length - 1) {
+          bphase = 'handoff';
+          battleRender();
+        } else {
+          bphase = 'allDone';
+          battleRender();
+          saveBattleResult();
+        }
+      } else {
+        bphase = 'roundDone';
+        battleRender();
+      }
+    }
+  }
+  let sPending = [];
+  function survivalRender() {
+    const names = playerNames(), done = bphase === 'allDone', handoff = bphase === 'handoff', between = bphase === 'roundDone';
+    const choosing = bphase === 'choose';
+    $('nominationControl').hidden = !choosing;
+    const label = done ? T('サバイバル終了') : choosing ? T('目標秒数を指名') : handoff ? T('端末を次の人へ') : F("サバイバル · 第{0}周", sRound);
+    setText('battleHeading', () => label);
+    setText('battleName', () => done ? sWinner === null ? 'DRAW!' : names[sWinner] + ' WINS!' : choosing ? names[sNominator] + T(' が指定') : handoff ? T('次は ') + names[sPending[0]] : names[bp]);
+    setText('battleGoal', () => done ? 'WIN' : choosing ? 'SELECT' : sGoal().toFixed(3) + 's');
+    $('battleClock').classList.toggle('hidden', done || handoff || between || choosing);
+    $('battleProgress').classList.add('hidden');
+    $('battleAgain').classList.toggle('hidden', !done);
+    $('battleReturn').classList.toggle('hidden', !done);
+    $('battleAction').classList.toggle('hidden', done);
+    $('battleAction').classList.toggle('stop', bphase === 'running');
+    setText('battleAction', () => bphase === 'running' ? '■ STOP' : choosing ? T('▶ この秒数で開始') : handoff ? T('▶ 次のプレイヤー') : between ? T('▶ 次の周へ') : '▶ START');
+    if (bphase === 'ready') {
+      setText('battleClock', () => '0.' + ('0').repeat(cfg.digits) + 's');
+      setText('battleStatus', () => F("許容誤差 ±{0}秒 ／ 残り{1}人", sTolerance().toFixed(3), sAlive.length));
+      setText('battleSummary', () => T('目標に合わせてSTOP！'));
+    }
+    if (handoff || between) {
+      setText('battleStatus', () => between ? F("第{0}周へ進みます", sRound) : T('次のプレイヤーに端末を渡してください'));
+      setText('battleSummary', () => F("生存者：{0}", sAlive.map(i => escapeHtml(names[i])).join('・')));
+    }
+    if (done) {
+      setText('battleStatus', () => F("全{0}周 ／ 許容誤差 ±{1}秒", sRound, sTolerance().toFixed(3)));
+      I18n.html($('battleSummary'), () => `<div class="battle-results" style="grid-template-columns:1fr">${names.map((name, i) => F("<div class=\"{0}\">{1}　{2}<strong>成功 {3}回</strong></div>", sWinner === i ? 'winner' : '', sWinner === i ? T('🏆 優勝') : T('挑戦終了'), escapeHtml(name), bResults[i].filter(x => x.pass).length)).join('')}</div>`);
+    }
+  }
+  function saveSurvival() {
+    const names = playerNames();
+    const scores = bResults.map(a => a.filter(x => x.pass).length);
+    const record = {
+      date: new Date().toLocaleString(I18n.language === 'ja' ? 'ja-JP' : 'en-GB'),
+      rule: 'survival',
+      names,
+      rounds: sRound,
+      targets: sGoals.length ? sGoals : [sGoal()],
+      style: nominated() ? 'nominate' : 'fixed',
+      tolerance: sTolerance(),
+      scores,
+      winner: sWinner
+    };
+    const ok = writeBattles([record, ...readBattles()]);
+    setText('battleRecordNotice', () => ok ? T('✓ サバイバル戦績を保存しました') : T('戦績の保存に失敗しました'));
+    showBattleRecords();
+    FX.battle(sWinner, playerNames());
+  }
+  function survivalAction() {
+    if (bphase === 'allDone') return;
+    if (bphase === 'choose') {
+      sRoundGoal = Number($('nominateSeconds').value);
+      sGoals.push(sRoundGoal);
+      bp = sAlive[0];
+      bphase = 'ready';
+      survivalRender();
+      return;
+    }
+    if (bphase === 'handoff') {
+      bp = sPending[0];
+      bphase = 'ready';
+      survivalRender();
+      return;
+    }
+    if (bphase === 'roundDone') {
+      sRound++;
+      sCurrent = [];
+      bp = sAlive[0];
+      if (nominated()) {
+        sNominator = sAlive.find(i => i > sNominator) ?? sAlive[0];
+        bphase = 'choose';
+      } else {
+        bphase = 'ready';
+        sRoundGoal = Number($('survivalTarget').value);
+      }
+      survivalRender();
+      return;
+    }
+    if (bphase === 'ready') {
+      bDisplay = cfg.display === 'random' ? ['always', 'hidden', 'partial'][Math.floor(Math.random() * 3)] : cfg.display;
+      bStart = performance.now();
+      FX.start();
+      bphase = 'running';
+      survivalRender();
+      battleTick();
+      return;
+    }
+    if (bphase !== 'running') return;
+    const elapsed = (performance.now() - bStart) / 1000;
+    FX.stop();
+    cancelAnimationFrame(bFrame);
+    const err = Math.abs(elapsed - sGoal()), pass = err <= sTolerance() + 1e-10;
+    bResults[bp].push({
+      target: sGoal(),
+      elapsed,
+      err,
+      pass
+    });
+    sCurrent.push({
+      i: bp,
+      err,
+      pass
+    });
+    setText('battleClock', () => elapsed.toFixed(cfg.digits) + 's');
+    FX.result({
+      err,
+      pass
+    });
+    const remaining = sAlive.filter(i => !sCurrent.some(x => x.i === i));
+    if (remaining.length) {
+      bphase = 'handoff';
+      setText('battleStatus', () => pass ? T('成功！ 生き残り') : T('失敗！ 脱落'));
+      setText('battleSummary', () => F("誤差 {0}秒。次は{1}", err.toFixed(3), escapeHtml(playerNames()[remaining[0]])));
+      sPending = remaining;
+    } else {
+      const survivors = sCurrent.filter(x => x.pass).map(x => x.i);
+      if (survivors.length <= 1) {
+        if (survivors.length === 1) sWinner = survivors[0]; else {
+          const min = Math.min(...sCurrent.map(x => x.err));
+          const tied = sCurrent.filter(x => Math.abs(x.err - min) < 1e-9);
+          sWinner = tied.length === 1 ? tied[0].i : null;
+        }
+        bphase = 'allDone';
+        saveSurvival();
+      } else {
+        sAlive = survivors;
+        bphase = 'roundDone';
+      }
+    }
+    survivalRender();
+    if (bphase === 'handoff') {
+      setText('battleStatus', () => pass ? T('成功！ 次の人へ') : T('失敗！ 脱落'));
+      setText('battleSummary', () => F("今回の誤差：{0}秒", err.toFixed(3)));
+    }
+  }
+  $('battleReturn').addEventListener('click', () => {
+    $('battleBack').click();
+  });
+  $('battleAction').addEventListener('click', () => {
+    if (view === 'battle') activate(battleAction);
+  });
+  $('battleAgain').addEventListener('click', battleReset);
+  $('battleBack').addEventListener('click', () => {
+    if (bphase === 'running' && !confirm(T('計測中です。中断しますか？'))) return;
+    cancelAnimationFrame(bFrame);
+    view = 'setup';
+    reset();
+    window.scrollTo(0, 0);
+  });
+  let lastAction = -Infinity;
+  function activate(fn) {
+    const now = performance.now();
+    if (now - lastAction < 120) return;
+    lastAction = now;
+    fn();
+  }
+  function interrupt() {
+    FX.reset();
+    if (phase === 'running') {
+      cancelAnimationFrame(raf);
+      phase = 'ready';
+      setText('hint', () => T('計測は中断されました。もう一度STARTを押してください。'));
+      render();
+    }
+    if (bphase === 'running') {
+      cancelAnimationFrame(bFrame);
+      bphase = 'ready';
+      battleRender();
+      setText('battleStatus', () => T('計測は中断されました。もう一度STARTを押してください。'));
+    }
+  }
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) interrupt();
+  });
+  window.addEventListener('pagehide', interrupt);
+  buildExtraPlayers();
+  document.addEventListener('keydown', e => {
+    if (view === 'setup') return;
+    if (e.code === 'Space' && !e.repeat && !['INPUT', 'SELECT', 'TEXTAREA', 'BUTTON'].includes(document.activeElement.tagName)) {
+      e.preventDefault();
+      (view === 'battle' ? $('battleAction') : $('action')).click();
+    }
+  });
+  render();
+})();
+</script><script>(() => {
+  const I18n = window.StopitI18n, T = I18n.t, F = I18n.f;
+  const settings = document.getElementById('settings');
+  const advanced = document.createElement('details');
+  advanced.id = 'advancedOptions';
+  const summary = document.createElement('summary');
+  I18n.text(summary, () => T('詳しい設定を開く'));
+  advanced.appendChild(summary);
+  const quick = document.getElementById('singleField');
+  quick.insertAdjacentElement('afterend', advanced);
+  for (const id of ['battleRecordsSettings', 'roundsField', 'sequenceField', 'toleranceField', 'failureField', 'partialField']) {
+    const el = document.getElementById(id);
+    if (el) advanced.appendChild(el);
+  }
+  for (const id of ['displays', 'precisions']) {
+    const el = document.getElementById(id);
+    if (el) {
+      const field = el.closest('.field');
+      if (field) advanced.appendChild(field);
+    }
+  }
+  const battle = document.getElementById('battleRecordsSettings');
+  const namesDetails = document.createElement('details');
+  namesDetails.id = 'battleNamesDetails';
+  const namesSummary = document.createElement('summary');
+  I18n.text(namesSummary, () => T('プレイヤー名・過去の戦績を設定'));
+  namesDetails.appendChild(namesSummary);
+  for (const el of [battle.querySelector('.two'), document.getElementById('extraPlayers'), battle.querySelector('p.muted'), battle.querySelector('.battle-record-details')]) {
+    if (el) namesDetails.appendChild(el);
+  }
+  battle.appendChild(namesDetails);
+  const rounds = document.getElementById('roundsField');
+  const hint = document.createElement('p');
+  hint.id = 'quickHint';
+  I18n.text(hint, () => T('時間表示・表示精度などは「詳しい設定」から変更できます。'));
+  advanced.insertAdjacentElement('afterend', hint);
+  function arrange() {
+    const mode = document.querySelector('#modes .active')?.dataset.mode || 'single';
+    if (mode === 'battle') {
+      quick.insertAdjacentElement('afterend', battle);
+      battle.insertAdjacentElement('afterend', rounds);
+      battle.classList.add('quick-battle');
+      rounds.classList.add('quick-rounds');
+      advanced.open = false;
+      I18n.text(hint, () => T('表示精度などは「詳しい設定」から変更できます。'));
+    } else {
+      advanced.appendChild(battle);
+      advanced.appendChild(rounds);
+      battle.classList.remove('quick-battle');
+      rounds.classList.remove('quick-rounds');
+      advanced.open = mode === 'total' || mode === 'gate' || mode === 'streak';
+      I18n.text(hint, () => advanced.open ? T('必要なルールを設定してから開始してください。') : T('時間表示・表示精度などは「詳しい設定」から変更できます。'));
+    }
+  }
+  for (const b of document.querySelectorAll('#modes [data-mode]')) b.addEventListener('click', () => setTimeout(arrange, 0));
+  arrange();
+})();
+</script><script>
 /* v2.5: preserve original event handlers and gameplay. */
 (()=>{
  const setup=document.getElementById('setupScreen');
@@ -363,28 +2259,7 @@ arrange();
  obs.observe(summary,{childList:true});
  resultUI();
 })();
-</script>
-
-<style>
-/* v2.7: action buttons participate in normal document flow.
-   No fixed overlay can obscure setup controls or battle details. */
-@media(max-width:600px){
- #setupScreen.visible{padding-bottom:0!important}
- #setupScreen.visible #beginGame,
- #battleScreen.v25-done #battleAgain:not(.hidden){
-  position:static!important;left:auto!important;right:auto!important;
-  bottom:auto!important;width:100%!important;max-width:none!important;
-  margin:12px 0 8px!important;z-index:auto!important;
-  min-height:64px;padding:12px;font-size:clamp(20px,6vw,27px);
-  box-shadow:none;
- }
- #battleScreen.v25-done{padding-bottom:0!important}
- #battleScreen.v25-done #battleAgain:not(.hidden){
-  background:#9aefbf;color:#082b25;border:2px solid #d7ffe9;
- }
-}
-</style>
-<script>
+</script><script>
 /* v2.7: preserve existing game logic; correct viewport after replay.
    Deferred scroll runs after battleReset has rendered the next round. */
 (()=>{
@@ -409,31 +2284,7 @@ arrange();
  again.addEventListener('click',revealStart);
  begin.addEventListener('click',()=>requestAnimationFrame(top));
 })();
-</script>
-
-<style>
-/* v2.8: compact VS setup without overlays or smaller tap targets. */
-@media(max-width:600px){
- #setupScreen.v25-vs .screen-title{font-size:18px;margin:2px 0 4px}
- #setupScreen.v25-vs .settings{padding:9px 10px 10px}
- #setupScreen.v25-vs .settings>.field:first-of-type{margin:0 0 6px}
- #setupScreen.v25-vs .mode-grid{gap:6px!important;row-gap:6px!important}
- #setupScreen.v25-vs .mode-grid .choice{min-height:44px!important;padding:7px 3px!important;font-size:12px!important}
- #setupScreen.v25-vs #battleRecordsSettings.quick-battle{margin:5px 0!important;padding:8px 10px!important}
- #setupScreen.v25-vs #battleRecordsSettings.quick-battle>.field{margin:3px 0 6px!important}
- #setupScreen.v25-vs #battleRecordsSettings.quick-battle>.field label{font-size:12px;margin-bottom:3px}
- #setupScreen.v25-vs #battleRecordsSettings.quick-battle select{min-height:44px!important;padding:7px 10px!important;font-size:14px}
- #setupScreen.v25-vs #battleRecordsSettings.quick-battle>p.muted{font-size:11px!important;line-height:1.3;margin:4px 0!important}
- #setupScreen.v25-vs #battleNamesDetails{margin:4px 0 0!important}
- #setupScreen.v25-vs #roundsField.quick-rounds{margin:5px 0!important}
- #setupScreen.v25-vs #roundsField.quick-rounds label{margin-bottom:4px!important}
- #setupScreen.v25-vs #roundsField.quick-rounds select{min-height:44px!important;padding:7px 8px!important;font-size:14px}
- #setupScreen.v25-vs #advancedOptions{margin:5px 0!important}
- #setupScreen.v25-vs #advancedOptions>summary{min-height:44px;display:flex;align-items:center;justify-content:center}
- #setupScreen.v25-vs #beginGame{min-height:62px!important;margin:10px 0 5px!important}
-}
-</style>
-<script>
+</script><script>
 /* v2.8: avoid scrolling the user away from the selected mode. */
 (()=>{
  const modes=document.getElementById('modes');
@@ -443,314 +2294,18 @@ arrange();
   });
  });
 })();
-</script>
-
-<style>
-.share-tools{display:flex;flex-wrap:wrap;gap:9px;justify-content:center;align-items:center;margin:12px 0 4px}
-.share-tools[hidden]{display:none!important}
-.share-tools button{border:1px solid #8af1bc;border-radius:12px;background:#142541;color:#a0f2c5;font-weight:750;padding:12px 14px;min-height:46px;cursor:pointer}
-.share-tools .muted{width:100%;font-size:12px;text-align:center}
-@media(max-width:600px){.share-tools button{flex:1 1 130px;font-size:14px}}
-</style>
-<script>
-(()=>{
- const $=id=>document.getElementById(id);
+</script><script>(()=>{'use strict';
+ const I=window.StopitI18n,$=id=>document.getElementById(id),palette=['#62d9ff','#ff719f','#ffd15b','#9df078'];
+ const escape=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const names=()=>Array.from({length:Number($('playerCount').value)||2},(_,i)=>$(i===0?'playerOne':i===1?'playerTwo':'player'+(i+1))?.value?.trim()||'PLAYER '+(i+1));
+ const panel=$('battleScreen').querySelector('.battle-panel'),legend=document.createElement('div');legend.id='playerColorLegend';$('battleName').insertAdjacentElement('afterend',legend);
+ function colors(){const ns=names(),display=$('battleName').textContent;let idx=ns.findIndex(n=>display===n||display.startsWith(n+' ')||display.endsWith(n));if(idx<0){const m=$('battleHeading').textContent.match(/PLAYER (\d+)/);idx=m?Number(m[1])-1:0}panel.style.setProperty('--player-accent',palette[idx%4]);const html=ns.map((n,i)=>'<span data-player-name class="'+(i===idx?'current':'')+'" style="--pc:'+palette[i]+'">'+(i+1)+': '+escape(n)+'</span>').join('');if(legend.innerHTML!==html)legend.innerHTML=html;$('battleSummary').querySelectorAll('.battle-results>div').forEach(row=>{const i=ns.findIndex(n=>row.textContent.includes(n));row.style.setProperty('--row-accent',palette[Math.max(i,0)])});$('shareBattle').hidden=$('battleAgain').classList.contains('hidden');}
+ // Presentation only: this observer never translates or changes game state.
+ const obs=new MutationObserver(colors);obs.observe($('battleName'),{childList:true,subtree:true,characterData:true});obs.observe($('battleSummary'),{childList:true});obs.observe($('battleAgain'),{attributes:true,attributeFilter:['class']});
+ document.addEventListener('stopit-language-change',colors);$('settings').addEventListener('input',colors);
  const url='https://stopit-game.com/';
- const makeText=(battle)=>{
-  if(battle){const heading=$('battleName').textContent;const status=$('battleStatus').textContent;return `⏱ STOP IT! VS対戦\n${heading}\n${status}\nあなたも挑戦！\n${url}`;}
-  const r=window.stopitLastResult;
-  if(!r)return `⏱ STOP IT! に挑戦！\n${url}`;
-  const mode=({single:'ワンショット',total:'ラウンド戦',gate:'ステージ攻略',streak:'連続成功'})[r.mode]||'チャレンジ';
-  return `⏱ STOP IT! ${mode}\n目標 ${r.goal.toFixed(3)}秒 → ${r.elapsed.toFixed(3)}秒\n誤差 ${r.err.toFixed(3)}秒${r.mode==='total'?`\n${r.rounds}回の合計誤差 ${r.total.toFixed(3)}秒`:''}\nあなたもピッタリ止められる？\n${url}`;
- };
- async function share(battle){const msg=makeText(battle),feedback=$(battle?'shareBattleFeedback':'shareFeedback');try{if(navigator.share){await navigator.share({text:msg});feedback.textContent='共有画面を開きました';}else{await navigator.clipboard.writeText(msg);feedback.textContent='結果をコピーしました';}}catch(e){if(e.name!=='AbortError')feedback.textContent='共有できませんでした。コピーをお試しください';}}
- async function copy(battle){const feedback=$(battle?'shareBattleFeedback':'shareFeedback');try{await navigator.clipboard.writeText(makeText(battle));feedback.textContent='結果とリンクをコピーしました';}catch(e){feedback.textContent='コピーできませんでした';}}
- $('shareResult').addEventListener('click',()=>share(false));$('copyResult').addEventListener('click',()=>copy(false));
- $('shareBattleResult').addEventListener('click',()=>share(true));$('copyBattleResult').addEventListener('click',()=>copy(true));
- const observer=new MutationObserver(()=>{const finished=!$('battleAgain').classList.contains('hidden')&&$('battleSummary').textContent.trim().length>0;$('shareBattle').hidden=!finished;});
- observer.observe($('battleSummary'),{childList:true,subtree:true});observer.observe($('battleAgain'),{attributes:true,attributeFilter:['class']});
+ function shareMessage(battle){const ja=I.language==='ja';if(battle)return `⏱ STOP IT! ${ja?'VS対戦':'VS BATTLE'}\n${$('battleName').textContent}\n${$('battleStatus').textContent}\n${ja?'あなたも挑戦！':'Can you beat this?'}\n${url}`;const r=window.stopitLastResult;if(!r)return `⏱ STOP IT!\n${url}`;const mode=I.t(({single:'ワンショット',total:'ラウンド戦',gate:'ステージ攻略',streak:'連続成功'})[r.mode]);return ja?`⏱ STOP IT! ${mode}\n目標 ${r.goal.toFixed(3)}秒 → ${r.elapsed.toFixed(3)}秒\n誤差 ${r.err.toFixed(3)}秒${r.mode==='total'?`\n${r.rounds}回の合計誤差 ${r.total.toFixed(3)}秒`:''}\nあなたもピッタリ止められる？\n${url}`:`⏱ STOP IT! ${mode}\nTarget ${r.goal.toFixed(3)}s → ${r.elapsed.toFixed(3)}s\nError ${r.err.toFixed(3)}s${r.mode==='total'?`\n${r.rounds} rounds · total error ${r.total.toFixed(3)}s`:''}\nCan you beat my score?\n${url}`;}
+ for(const [id,battle,copy] of [['shareResult',false,false],['copyResult',false,true],['shareBattleResult',true,false],['copyBattleResult',true,true]])$(id).addEventListener('click',async()=>{const feedback=$(battle?'shareBattleFeedback':'shareFeedback');try{const message=shareMessage(battle);if(!copy&&navigator.share){await navigator.share({text:message});I.text(feedback,()=>I.t('共有画面を開きました'))}else{await navigator.clipboard.writeText(message);I.text(feedback,()=>I.t('結果とリンクをコピーしました'))}}catch(e){if(e.name!=='AbortError')I.text(feedback,()=>I.t(copy?'コピーできませんでした':'共有できませんでした。コピーをお試しください'))}});
+ I.init();colors();
 })();
-</script>
-<style>
-#languageBar{display:flex;justify-content:flex-end;gap:8px;margin:9px 0 12px}
-#languageBar button{border:1px solid #5575a5;border-radius:999px;background:#1a3055;color:#e8f3ff;padding:9px 14px;min-height:42px;font-weight:800;cursor:pointer}
-#languageBar button.selected{background:#b7ff43;color:#12223b;border-color:#b7ff43}
-#battleScreen .battle-panel{--player-accent:#60d6ff;border:2px solid var(--player-accent);transition:border-color .15s}
-#battleScreen .battle-name{color:var(--player-accent)!important;text-shadow:0 0 18px color-mix(in srgb,var(--player-accent),transparent 70%)}
-#battleScreen .battle-panel .action:not(.stop){background:var(--player-accent);color:#08172c}
-#battleScreen .battle-panel .battle-results>div{border-left:6px solid var(--row-accent,#60d6ff);padding-left:10px}
-#battleScreen .battle-panel .battle-results>div strong{color:var(--row-accent,#60d6ff)}
-#battleScreen .battle-panel .battle-results>div.winner{outline:1px solid var(--row-accent,#60d6ff)}
-#playerColorLegend{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin:7px 0 13px}
-#playerColorLegend span{border:1px solid var(--pc);border-radius:999px;padding:6px 12px;color:var(--pc);font-size:12px;font-weight:850;background:#101e35}
-#playerColorLegend span.current{background:var(--pc);color:#0b1730}
-</style><script>
-/* v3.3: bilingual UI layer, visual player identification, share language. */
-(()=>{
-'use strict';
-const palette=['#62d9ff','#ff719f','#ffd15b','#9df078'];
-const jaToEn={
-'チャレンジを選ぼう':'CHOOSE YOUR CHALLENGE','まずは3秒に挑戦！ 設定を選んで「ゲーム開始」を押そう。':'Try 3 seconds first! Pick your settings and tap START GAME.',
-'ゲーム設定':'GAME SETTINGS','ゲームモード':'GAME MODE','ワンショット':'ONE SHOT','ラウンド戦':'ROUND MATCH','VS対戦':'VS BATTLE','ステージ攻略':'STAGE CHALLENGE','連続成功':'WIN STREAK',
-'対戦プレイヤー':'PLAYERS','対戦人数':'NUMBER OF PLAYERS','対戦ルール':'BATTLE RULES','スコア対戦（合計誤差）':'SCORE BATTLE (TOTAL ERROR)','サバイバル対戦（失敗で脱落）':'SURVIVAL (ELIMINATION)',
-'秒数の決め方':'TARGET SELECTION','固定タイム戦':'FIXED TARGET','指名タイム戦（毎周交代）':'CHOOSE TARGET EACH ROUND','サバイバルの目標秒数':'SURVIVAL TARGET','許容誤差（±）':'ALLOWED ERROR (±)',
-'全員が1回ずつ挑戦して1周。失敗した人は脱落。最後の1人が勝利。同じ周で全員脱落した場合は、その周の誤差が最小の人が勝利します。':'Everyone plays once per round. Miss the target and you are out. Last player standing wins. If everyone is eliminated together, the smallest error wins.',
-'プレイヤー1':'PLAYER 1','プレイヤー2':'PLAYER 2','同じ名前の組み合わせで対戦成績を集計します。':'Match history is grouped by player names.','過去の対戦成績を見る':'VIEW MATCH HISTORY','戦績を削除':'DELETE MATCH HISTORY',
-'回戦数（1〜10回戦）':'ROUNDS (1–10)','スタンダード':'STANDARD','1秒ずつ増加':'INCREASE BY 1 SECOND','ミックス':'MIXED','秒数を個別指定':'CUSTOM TARGETS','各回の目標秒数（1〜10秒から選択）':'TARGET FOR EACH ROUND',
-'目標秒数（ワンショット・連続成功）':'TARGET (ONE SHOT / STREAK)','ステージごとの目標秒数':'STAGE TARGETS','成功条件（絶対誤差が指定値以下）':'SUCCESS CONDITION (MAX ERROR)','クリア制：失敗したとき':'ON FAILURE',
-'そこで終了':'END GAME','同じステージを再挑戦':'RETRY STAGE','第1ステージからやり直し':'RESTART FROM STAGE 1','計測中の時間表示':'CLOCK VISIBILITY','常時表示':'ALWAYS SHOW','非表示':'HIDE','途中まで':'SHOW THEN HIDE','ランダム':'RANDOM','開始から何秒後に隠すか':'HIDE AFTER','結果の表示精度':'RESULT PRECISION',
-'▶ ゲーム開始':'▶ START GAME','インストール不要・オフライン動作可能。':'No install required. Works offline.','端末や入力方式の遅延により、ミリ秒単位の公平性は保証されません。':'Device and input delays may affect millisecond precision.',
-'← 設定に戻る':'← SETTINGS','チャレンジ':'CHALLENGE','目標時間':'TARGET TIME','狙った秒数で止めよう！':'Stop at the target time!','STARTを押して、体内時計で数えよう':'Press START and count in your head!',
-'今回の記録':'YOUR RESULTS','まだ記録はありません。':'No results yet.','↗ 結果をシェア':'↗ SHARE RESULT','↗ 対戦結果をシェア':'↗ SHARE BATTLE','結果をコピー':'COPY RESULT',
-'対戦スタート':'BATTLE START','同じコースで交互に挑戦！':'Take turns on the same targets!','VS BATTLE · 1対1が基本':'VS BATTLE · 2–4 PLAYERS','↻ もう一度対戦':'↻ PLAY AGAIN','↻ もう一度':'↻ PLAY AGAIN','▶ 次の挑戦':'▶ NEXT TRY','▶ 次のステージ':'▶ NEXT STAGE',
-'詳しい設定を開く':'ADVANCED SETTINGS','プレイヤー名・過去の戦績を設定':'PLAYER NAMES & HISTORY','時間表示・表示精度などは「詳しい設定」から変更できます。':'Clock visibility and precision are in Advanced Settings.',
-'最終順位':'FINAL RANKING','スマホを交代してください':'PASS THE PHONE','次は ':'NEXT: ','準備ができたらボタンを押してください':'Press the button when ready.','端末を次のプレイヤーに渡してください。準備ができたら下のボタンを押します。':'Pass the device to the next player, then tap the button.',
-'目標時間に合わせてSTOP！':'Stop as close to the target as you can!','タイミングを見極めてSTOP！':'Time it right and press STOP!','同点優勝':'IT’S A TIE!','合計絶対誤差が小さい順':'Ranked by lowest total absolute error',
-'回':'ROUND','目標':'TARGET','計測':'ACTUAL','誤差':'ERROR','合計誤差':'TOTAL ERROR','各回の記録を見る':'VIEW ROUND DETAILS',
-'サバイバル終了':'SURVIVAL FINISHED','目標秒数を指名':'CHOOSE A TARGET','端末を次の人へ':'PASS THE PHONE','▶ この秒数で開始':'▶ USE THIS TARGET','▶ 次のプレイヤー':'▶ NEXT PLAYER','▶ 次の周へ':'▶ NEXT ROUND',
-'挑戦終了':'ELIMINATED','🏆 優勝':'🏆 WINNER','成功':'SUCCESS','失敗':'FAILED','脱落':'OUT','生き残り':'SURVIVED','次の人へ':'NEXT PLAYER',
-'共有画面を開きました':'Share sheet opened','結果をコピーしました':'Result copied','結果とリンクをコピーしました':'Result and link copied','共有できませんでした。コピーをお試しください':'Could not share. Try copying.','コピーできませんでした':'Could not copy',
-'保存したすべての対戦戦績を削除しますか？':'Delete all saved match history?','計測中です。中断しますか？':'Timer is running. Quit?',
-'← 設定に戻る':'← SETTINGS','▶ 次のラウンド':'▶ NEXT ROUND','次のラウンド':'NEXT ROUND','▶ START':'▶ START','■ STOP':'■ STOP',
-'FINISH':'FINISH','READY':'READY','RESULT':'RESULT',
-'成功しないと次のステージへ進めない':'Clear this stage to advance','全ステージクリア！':'ALL STAGES CLEARED!','再挑戦が必要です':'Try again to advance','チャレンジ終了':'CHALLENGE COMPLETE','次の挑戦へ！':'Ready for your next try!','何回連続で成功できる？':'How many in a row can you clear?','表示を見ながら止めよう':'Watch the clock and press STOP!','途中で表示が消えます':'The clock will disappear','体内時計で数えよう':'Count in your head!','計測中です。中断して設定に戻りますか？':'The timer is running. Return to settings?','まだ対戦記録はありません。':'No match history yet.','保存できませんでした。ブラウザの保存設定を確認してください。':'Could not save. Check your browser storage settings.','✓ 対戦結果をこのブラウザに保存しました':'✓ Match result saved on this device.','✓ サバイバル戦績を保存しました':'✓ Survival result saved on this device.','戦績の保存に失敗しました':'Could not save match history.','必要なルールを設定してから開始してください。':'Choose your rules, then start the game.','表示精度などは「詳しい設定」から変更できます。':'Adjust precision and more in Advanced Settings.','成功！ 生き残り':'SUCCESS! STILL IN!','成功！ 次の人へ':'SUCCESS! NEXT PLAYER','失敗！ 脱落':'MISSED! ELIMINATED','次のプレイヤーに端末を渡してください':'Pass the device to the next player.','目標に合わせてSTOP！':'Stop as close to the target as you can!','第1ステージからやり直し':'RESTART FROM STAGE 1','結果をコピー':'COPY RESULT','チャレンジFINISH':'CHALLENGE COMPLETE','All Stageクリア！':'ALL STAGES CLEARED!','SuccessしないとNEXT Stageへ進めない':'Clear this stage to advance','連続成功':'WIN STREAK','挑戦終了':'ELIMINATED','勝敗差：':'Winning margin: ','各回の値は小数第3位に丸めて表示しています。合計は丸め前の値で計算するため、表示値の合算と0.001秒程度異なる場合があります。':'Each round is displayed to three decimal places. Totals use unrounded values, so they may differ by about 0.001s.',
-};
-
-// v3.5: explicit translations for remaining static, dynamic and mixed UI labels.
-Object.assign(jaToEn,{
-'チャレンジを選んでください':'CHOOSE YOUR CHALLENGE',
-'Challenge 選んでください':'CHOOSE YOUR CHALLENGE',
-'まずは3s試してみてください!SETTINGS 選んで「ゲームSTART」タップしてください。':'Try the 3-second challenge! Choose your settings, then tap START GAME.',
-'まずは3秒試してみてください!SETTINGS 選んで「ゲームSTART」タップしてください。':'Try the 3-second challenge! Choose your settings, then tap START GAME.',
-'Roundマッチ':'ROUND MATCH','VSバトル':'VS BATTLE','Stageクエスト':'STAGE CHALLENGE','連勝':'WIN STREAK',
-'詳細SETTINGS −':'ADVANCED SETTINGS −','詳細SETTINGS －':'ADVANCED SETTINGS −','詳細SETTINGS':'ADVANCED SETTINGS',
-'StageTarget':'STAGE TARGETS','StageTarget 1 → 3 → 5s':'STAGE TARGETS',
-'Success条件 (最大Error)':'SUCCESS CONDITION (MAX ERROR)',
-'時計 視認性':'TIMER VISIBILITY','常に見せる':'ALWAYS VISIBLE','隠れる':'HIDDEN',
-'displayしてから非displayにする':'SHOW THEN HIDE',
-'result 精度':'RESULT PRECISION',
-'ルール 選択したら、ゲーム STARTしてください。':'Choose your settings, then start the game.',
-'ルール 選択したら、ゲームSTARTしてください。':'Choose your settings, then start the game.',
-'選手':'PLAYERS','プレイヤー数':'NUMBER OF PLAYERS','2 players用':'2 PLAYERS',
-'戦闘ルール':'BATTLE RULES','matches履歴は選手名ごとにグループ化されています。':'Match history is grouped by player names.',
-'▶ 選手名と経歴':'▶ PLAYER NAMES & HISTORY','Round (1〜10)':'ROUNDS (1–10)',
-'ターゲット (ワンショット / ストリーク)':'TARGET (ONE SHOT / STREAK)',
-'インストール不要・オフラインで動作します。':'No installation needed. Play right in your browser.',
-'デバイスや入力 遅延により、ミリs単位 精度に影響 出る場合 あります。':'Device and input lag can affect millisecond accuracy.',
-'チャレンジFINISH':'CHALLENGE COMPLETE',
-'ALL STAGES クリア！':'ALL STAGES CLEARED!',
-'PLAYER 1 WIN!':'PLAYER 1 WINS!',
-'何回連続で成功できる？':'How many successes in a row can you get?',
-'秒数の組み合わせ':'TARGET PATTERN',
-'回戦数':'NUMBER OF ROUNDS',
-'2〜4人対戦':'2–4 PLAYER BATTLE',
-'ラウンド進行状況':'ROUND PROGRESS',
-'失敗！ 脱落':'MISSED! ELIMINATED',
-'STARTして、ぴったりSTOP！ 何秒の誤差で止められる？':'Press START, then STOP as close to the target as possible!',
-'成功しないと次のステージへ進めない':'Clear this stage to advance',
-'チャレンジ終了':'CHALLENGE COMPLETE',
-'次のプレイヤーに端末を渡してください':'Pass the device to the next player.',
-'最終順位':'FINAL RANKING',
-'対戦記録':'MATCH HISTORY',
-});
-
-
-// v3.6: stable translations for setup screen; no partial word replacement.
-const setupTranslations = [
- ['#setupScreen .screen-title','CHOOSE YOUR CHALLENGE'],
- ['#setupScreen .setup-note','Try the 3-second challenge! Choose your settings, then tap START GAME.'],
- ['#settings > h2','GAME SETTINGS'],
- ['#modes [data-mode="single"]','ONE SHOT'],['#modes [data-mode="total"]','ROUND MATCH'],
- ['#modes [data-mode="battle"]','VS BATTLE'],['#modes [data-mode="gate"]','STAGE CHALLENGE'],
- ['#modes [data-mode="streak"]','WIN STREAK'],
- ['#battleRecordsSettings > h2','PLAYERS'],
- ['label[for="playerCount"]','NUMBER OF PLAYERS'],['label[for="battleRule"]','BATTLE RULES'],
- ['label[for="survivalStyle"]','TARGET SELECTION'],['label[for="survivalTarget"]','SURVIVAL TARGET'],
- ['label[for="survivalTolerance"]','ALLOWED ERROR (±)'],
- ['#battleRule option[value="score"]','SCORE BATTLE (TOTAL ERROR)'],
- ['#battleRule option[value="survival"]','SURVIVAL (ELIMINATION)'],
- ['#survivalStyle option[value="fixed"]','FIXED TARGET'],
- ['#survivalStyle option[value="nominate"]','CHOOSE TARGET EACH ROUND'],
- ['#playerCount option[value="2"]','2 PLAYERS'],['#playerCount option[value="3"]','3 PLAYERS'],['#playerCount option[value="4"]','4 PLAYERS'],
- ['#battleRecordsSettings > p.muted','Match history is grouped by player names.'],
- ['#battleRecordsSettings .battle-record-details summary','VIEW MATCH HISTORY'],
- ['#clearBattleRecords','DELETE MATCH HISTORY'],
- ['#roundsField > label','ROUNDS (1–10)'],
- ['#pattern option[value="standard"]','STANDARD'],['#pattern option[value="short"]','INCREASE BY 1 SECOND'],
- ['#pattern option[value="mix"]','MIXED'],['#pattern option[value="custom"]','CUSTOM TARGETS'],
- ['#customFields > label','TARGET FOR EACH ROUND (1–10s)'],
- ['#singleField > label','TARGET (ONE SHOT / WIN STREAK)'],
- ['#sequenceField > label','STAGE TARGETS'],
- ['#toleranceField > label','SUCCESS CONDITION (MAX ERROR)'],
- ['#failureField > label','ON FAILURE'],
- ['#failure option[value="end"]','END GAME'],['#failure option[value="retry"]','RETRY STAGE'],
- ['#failure option[value="reset"]','RESTART FROM STAGE 1'],
- ['#displays [data-display="always"]','ALWAYS VISIBLE'],
- ['#displays [data-display="hidden"]','HIDDEN'],
- ['#displays [data-display="partial"]','SHOW THEN HIDE'],
- ['#displays [data-display="random"]','RANDOM'],
- ['#partialField > label','HIDE AFTER'],
- ['#precisions',''],
- ['#beginGame','▶ START GAME'],
- ['#shareResult','↗ SHARE RESULT'],['#copyResult','COPY RESULT'],
- ['#shareBattleResult','↗ SHARE BATTLE'],['#copyBattleResult','COPY RESULT'],
- ['#setupScreen ~ .footer','No installation needed. Works offline.\nDevice and input lag can affect millisecond accuracy.']
-];
-// Stable Japanese originals for labels that must never be inferred from translated DOM.
-const fixedJa = {
- '#modes [data-mode="single"]':'ワンショット',
- '#modes [data-mode="total"]':'ラウンド戦',
- '#modes [data-mode="battle"]':'VS対戦',
- '#modes [data-mode="gate"]':'ステージ攻略',
- '#modes [data-mode="streak"]':'連続成功',
- '#displays [data-display="always"]':'常時表示',
- '#displays [data-display="hidden"]':'非表示',
- '#displays [data-display="partial"]':'途中まで',
- '#displays [data-display="random"]':'ランダム'
-};
-const staticOriginals = new Map(Object.entries(fixedJa));
-function enforceStatic(){
- for(const [selector,en] of setupTranslations){
-  if(!en)continue;
-  const el=document.querySelector(selector);if(!el)continue;
-  if(!staticOriginals.has(selector))staticOriginals.set(selector,el.textContent);
-  const wanted=lang==='en'?en:staticOriginals.get(selector);
-  if(el.textContent!==wanted)el.textContent=wanted;
- }
- // Labels without stable IDs are indexed within their original field groups.
- const labels=[
-  ['#settings > .field:nth-of-type(1) > label','GAME MODE'],
-  ['#settings > .field:has(#displays) > label','TIMER VISIBILITY'],
-  ['#settings > .field:has(#precisions) > label','RESULT PRECISION']
- ];
- for(const [selector,en] of labels){const el=document.querySelector(selector);if(!el)continue;
-  if(!staticOriginals.has(selector))staticOriginals.set(selector,el.textContent);
-  const wanted=lang==='en'?en:staticOriginals.get(selector);if(el.textContent!==wanted)el.textContent=wanted;
- }
-}
-
-const originals=new WeakMap();let lang=(()=>{try{return localStorage.getItem('stopit-language-v1')||((navigator.language||'en').toLowerCase().startsWith('ja')?'ja':'en')}catch(e){return 'en'}})();
-const trans=s=>{
- if(jaToEn[s]!==undefined)return jaToEn[s];
- if(!/[ぁ-んァ-ヶ一-龠]/.test(s))return s;
- // Translate complete dynamic sentences before replacing individual words.
- const patterns=[
- [/^チャレンジ終了（(\d+)回挑戦）$/,(_,n)=>`CHALLENGE COMPLETE (${n} tries)`],
- [/^(\d+)回戦の合計誤差を競う$/,(_,n)=>`Compete for the lowest total error across ${n} rounds`],
- [/^🏆 自己ベスト：(\d+)回連続$/,(_,n)=>`🏆 PERSONAL BEST: ${n} in a row`],
- [/^🏆 この設定の自己ベスト：([\d.]+)秒$/,(_,n)=>`🏆 PERSONAL BEST: ${n}s`],
- [/^今回の連続成功：(\d+)回　｜　今回の最高記録：(\d+)回$/,(_,a,b)=>`Current streak: ${a} | Best this game: ${b}`],
- [/^完了：(\d+)回　｜　合計誤差：([\d.]+)秒$/,(_,n,e)=>`Completed: ${n} rounds | Total error: ${e}s`],
- [/^誤差：([\d.]+)秒$/,(_,n)=>`Error: ${n}s`],
- [/^合計誤差：([\d.]+)秒$/,(_,n)=>`Total error: ${n}s`],
- [/^今回の連続成功：(\d+)回$/,(_,n)=>`Current streak: ${n}`],
- [/^(\d+)\. 目標 ([\d.]+)s → ([\d.]+)s$/,(_,i,t,a)=>`${i}. Target ${t}s → ${a}s`],
- [/^第(\d+)回$/,(_,n)=>`ROUND ${n}`],
- [/^第(\d+)回の目標秒数$/,(_,n)=>`Target for round ${n}`],
- [/^(\d+)秒（以前の設定）$/,(_,n)=>`${n}s (previous setting)`],
- [/^第(\d+)回：([\d.]+)s → ([\d.]+)s$/,(_,i,t,a)=>`Round ${i}: ${t}s → ${a}s`],
- [/^勝敗差：([\d.]+)秒$/,(_,n)=>`Winning margin: ${n}s`],
- [/^全(\d+)周 ／ 許容誤差 ±([\d.]+)秒$/,(_,n,e)=>`${n} rounds | Allowed error ±${e}s`],
- [/^許容誤差 ±([\d.]+)秒 ／ 残り(\d+)人$/,(_,e,n)=>`Allowed error ±${e}s | ${n} players left`],
- [/^第(\d+)周へ進みます$/,(_,n)=>`Moving to round ${n}`],
- [/^サバイバル · 第(\d+)周$/,(_,n)=>`SURVIVAL · ROUND ${n}`],
- [/^生存者：(.*)$/,(_,names)=>`Still in: ${names}`],
- [/^今回の誤差：([\d.]+)秒$/,(_,n)=>`This attempt's error: ${n}s`],
- [/^誤差 ([\d.]+)秒。次は(.*)$/,(_,e,n)=>`Error ${e}s. Next: ${n}`],
- [/^誤差 ([\d.]+)秒$/,(_,n)=>`Error ${n}s`],
- [/^次は (.*)$/,(_,name)=>`NEXT: ${name}`],
- [/^(.*) が指定$/,(_,name)=>`${name} chooses the target`],
- [/^▶ (.*) 開始$/,(_,name)=>`▶ ${name} START`],
- [/^全(\d+)回$/,(_,n)=>`all ${n} rounds`],
- [/^(\d+)位　(.*)$/,(_,i,name)=>`#${i}  ${name}`],
- [/^(\d+)人$/,(_,n)=>`${n} players`],
- [/^(\d+)回戦$/,(_,n)=>`${n} rounds`],
- [/^(\d+)秒後$/,(_,n)=>`After ${n}s`],
- [/^(\d+(?:\.\d+)?)秒$/,(_,n)=>`${n}s`],
- [/^プレイヤー(\d+)$/,(_,n)=>`PLAYER ${n}`],
- ];
- for(const [pattern,fn] of patterns)if(pattern.test(s))return s.replace(pattern,fn);
- let out=s;
- const fullPhrases=[
- [/チャレンジを選んでください/g,'CHOOSE YOUR CHALLENGE'],
- [/チャレンジを選ぼう/g,'CHOOSE YOUR CHALLENGE'],
- [/まずは3秒に挑戦！[^。]*。/g,'Try the 3-second challenge! Choose your settings, then tap START GAME.'],
- [/ラウンド戦/g,'ROUND MATCH'],[/VS対戦/g,'VS BATTLE'],[/ステージ攻略/g,'STAGE CHALLENGE'],[/連続成功/g,'WIN STREAK'],
- [/詳しい設定/g,'ADVANCED SETTINGS'],[/詳細設定/g,'ADVANCED SETTINGS'],
- [/成功条件/g,'SUCCESS CONDITION'],[/時計 視認性/g,'TIMER VISIBILITY'],[/計測中の時間表示/g,'TIMER VISIBILITY'],
- [/常時表示/g,'ALWAYS VISIBLE'],[/常に見せる/g,'ALWAYS VISIBLE'],[/非表示/g,'HIDDEN'],[/隠れる/g,'HIDDEN'],[/途中まで/g,'SHOW THEN HIDE'],
- [/結果の表示精度/g,'RESULT PRECISION'],[/ステージごとの目標秒数/g,'STAGE TARGETS'],
- [/対戦プレイヤー/g,'PLAYERS'],[/対戦人数/g,'NUMBER OF PLAYERS'],[/対戦ルール/g,'BATTLE RULES'],
- [/プレイヤー名・過去の戦績を設定/g,'PLAYER NAMES & HISTORY'],
- [/同じ名前の組み合わせで対戦成績を集計します。/g,'Match history is grouped by player names.'],
- [/設定を選んで[^。]*。/g,'Choose your settings, then start the game.'],
- [/インストール不要[^。]*。/g,'No installation needed. Play right in your browser.'],
- [/端末や入力方式の遅延により[^。]*。/g,'Device and input lag can affect millisecond accuracy.'],
- [/全ステージクリア！/g,'ALL STAGES CLEARED!'],
- [/成功しないと次のステージへ進めない/g,'Clear this stage to advance'],
- ];
- for(const [re,to] of fullPhrases)out=out.replace(re,to);
- const replacements=[
- [/チャレンジFINISH/g,'CHALLENGE COMPLETE'],[/All Stageクリア！/g,'ALL STAGES CLEARED!'],[/SuccessしないとNEXT Stageへ進めない/g,'Clear this stage to advance'],[/全ステージクリア！/g,'ALL STAGES CLEARED!'],[/勝敗差：/g,'Winning margin: '],[/チャレンジ終了/g,'CHALLENGE COMPLETE'],[/この組み合わせ：/g,'This group: '],[/全記録：/g,'All matches: '],[/最近10試合を表示/g,'showing latest 10'],[/引分/g,'Draws'],[/試合/g,' matches'],[/自己ベスト/g,'Personal best'],[/連続/g,' consecutive'],[/クリア/g,' cleared'],[/進めない/g,'cannot advance'],[/準備ができたら/g,'When ready, '],[/端末を/g,'the device '],[/渡してください/g,'pass to next player'],[/生き残り/g,'still in'],[/結果/g,'result'],[/の/g,' '],[/へ/g,' to '],[/を/g,' '],[/が/g,' '],[/しないと/g,'unless '],[/！/g,'!'],[/：/g,': '],[/（/g,' ('],[/）/g,')'],[/・/g,' · '],[/／/g,' / '],
- [/([0-9]+)人/g,'$1 players'],[/([0-9]+)回戦/g,'$1 rounds'],[/([0-9]+)秒後/g,'after $1s'],[/([0-9]+(?:\.[0-9]+)?)秒/g,'$1s'],[/第([0-9]+)回/g,'Round $1'],[/第([0-9]+)ステージ/g,'Stage $1'],[/第([0-9]+)周/g,'Round $1'],[/([0-9]+)位/g,'#$1'],[/([0-9]+)勝/g,'$1 wins'],[/成功 ([0-9]+)回/g,'$1 successes'],
- [/次は/g,'Next: '],[ /勝敗差：/g,'Winning margin: '],[ /スマホを交代してください/g,'Pass the phone'],[/準備ができたらボタンを押してください/g,'Press the button when ready'],[/目標時間に合わせてSTOP！/g,'Stop at the target!'],[/誤差/g,'Error'],[/合計/g,'Total'],[/目標/g,'Target'],[/計測/g,'Actual'],[/対戦/g,'Battle'],[/ラウンド/g,'Round'],[/ステージ/g,'Stage'],[/サバイバル/g,'Survival'],[/許容/g,'Allowed'],[/残り/g,'Remaining'],[/人/g,' players'],[/優勝/g,'Winner'],[/挑戦終了/g,'Eliminated'],[/勝利/g,'Win'],[/失敗/g,'Miss'],[/成功/g,'Success'],[/生存者/g,'Survivors'],[/保存しました/g,'saved'],[/戦績の保存に失敗しました/g,'Could not save results'],[/今回の/g,'This '],[/記録/g,'result'],[/開始/g,'START'],[/終了/g,'FINISH'],[/次の/g,'NEXT '],[/全/g,'All '],[/周/g,' rounds'],[/秒/g,'s'],[/回/g,' rounds'],[/各/g,'Each '],[/表示/g,'display'],[/丸め/g,'rounded'],[/合算/g,'sum'],[/値/g,'value'],[/小数/g,'decimal'],[/異なる場合があります/g,'may differ'],[/挑戦/g,'Challenge'],[/指名/g,'choose'],[/同点/g,'TIE'],[/設定/g,'SETTINGS']
- ];
- for(const [re,to] of replacements)out=out.replace(re,to);
- return out.replace(/\b(PLAYER \d+) WIN!/g,'$1 WINS!');
-};
-// Restore visible English game labels in Japanese mode (not player-entered names).
-const jaLabels={
- 'GREAT!':'いい感じ！','NICE TRY!':'惜しい！','CLEAR!':'成功！','FAILED':'失敗','🎯 PERFECT!':'🎯 パーフェクト！','✨ AMAZING!':'✨ すごい！','⭐ EXCELLENT!':'⭐ 素晴らしい！',
- '🏆 NEW BEST!':'🏆 自己ベスト更新！','NEW BEST!':'自己ベスト更新！','FINISH':'終了','PLAYER 1 WINS!':'プレイヤー1の勝利！',
- '↗ SHARE RESULT':'↗ 結果をシェア','COPY RESULT':'結果をコピー','↗ SHARE BATTLE':'↗ 対戦結果をシェア',
- 'No installation needed. Works offline.':'インストール不要・オフライン動作可能。',
- 'Device and input lag can affect millisecond accuracy.':'端末や入力方式の遅延により、ミリ秒単位の公平性は保証されません。'
-};
-function restoreJa(s){if(jaLabels[s]!==undefined)return jaLabels[s];const original=Object.keys(jaToEn).find(key=>jaToEn[key]===s);if(original!==undefined)return original;return s.replace(/PLAYER (\d+) WINS!/g,(_,n)=>`プレイヤー${n}の勝利！`)}
-function updateText(node){if(!node||!node.parentElement||node.parentElement.closest('#languageBar,#siteLinks,script,style,input,textarea'))return;const current=node.nodeValue;if(!current||!current.trim())return;const holder=node.parentElement; if([...staticOriginals.keys()].some(sel=>{try{return holder.matches(sel)}catch(e){return false}}))return;let entry=originals.get(node);if(!entry){entry={ja:restoreJa(current),last:current};originals.set(node,entry)}else if(current!==entry.last){if(current!==trans(entry.ja)){entry.ja=current}entry.last=current}const next=lang==='en'?trans(entry.ja):restoreJa(entry.ja);if(current!==next){entry.last=next;node.nodeValue=next}}
-function apply(root=document.body){const walk=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);const nodes=[];while(walk.nextNode())nodes.push(walk.currentNode);nodes.forEach(updateText);enforceStatic();document.documentElement.lang=lang;translateAttributes();updateSiteLinks();document.querySelectorAll('#languageBar button').forEach(b=>{b.classList.toggle('selected',b.dataset.lang===lang);b.setAttribute('aria-pressed',String(b.dataset.lang===lang))});}
-
-const originalConfirm=window.confirm.bind(window);
-window.confirm=(message)=>originalConfirm(lang==='en'?trans(String(message)):message);
-function translateAttributes(){
- document.querySelectorAll('[aria-label]').forEach(el=>{
-  if(el.closest('#languageBar'))return;
-  const a=el.getAttribute('aria-label');if(!a)return;
-  if(!el.dataset.originalAriaLabel)el.dataset.originalAriaLabel=a;
-  el.setAttribute('aria-label',lang==='en'?trans(el.dataset.originalAriaLabel):el.dataset.originalAriaLabel);
- });
- document.title=lang==='en'?'STOP IT! | Can you stop the clock?':'STOP IT! | 3秒ぴったりで止められる？';
-}
-const watch=new MutationObserver(changes=>{const nodes=new Set();for(const c of changes){if(c.type==='characterData')nodes.add(c.target);else for(const n of c.addedNodes){if(n.nodeType===3)nodes.add(n);else if(n.nodeType===1){const w=document.createTreeWalker(n,NodeFilter.SHOW_TEXT);while(w.nextNode())nodes.add(w.currentNode)}}}nodes.forEach(updateText);enforceStatic();updateBattleColors()});
-const battle=document.getElementById('battleScreen'),panel=battle.querySelector('.battle-panel'),legend=document.createElement('div');legend.id='playerColorLegend';battle.querySelector('#battleName').insertAdjacentElement('afterend',legend);
-function getNames(){const n=Number(document.getElementById('playerCount').value)||2;return Array.from({length:n},(_,i)=>document.getElementById(i===0?'playerOne':i===1?'playerTwo':'player'+(i+1))?.value?.trim()||'PLAYER '+(i+1))}
-function updateBattleColors(){const names=getNames(),display=battle.querySelector('#battleName').textContent;let idx=names.findIndex(n=>display===n||display.startsWith(n+' ')||display.includes(' '+n));if(idx<0){const heading=battle.querySelector('#battleHeading').textContent;const m=heading.match(/PLAYER (\d+)/);if(m)idx=Number(m[1])-1}if(idx<0)idx=0;panel.style.setProperty('--player-accent',palette[idx%palette.length]);const html=names.map((name,i)=>'<span class="'+(i===idx?'current':'')+'" style="--pc:'+palette[i%palette.length]+'">'+(i+1)+': '+escape(name)+'</span>').join('');if(legend.innerHTML!==html)legend.innerHTML=html;const rows=battle.querySelectorAll('.battle-results>div');rows.forEach(r=>{const i=names.findIndex(n=>r.textContent.includes(n));r.style.setProperty('--row-accent',palette[(i<0?0:i)%palette.length])})}
-function escape(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-for(const b of document.querySelectorAll('#languageBar button'))b.addEventListener('click',()=>{lang=b.dataset.lang;try{localStorage.setItem('stopit-language-v1',lang)}catch(e){}apply();updateBattleColors()});
-for(const id of ['playerOne','playerTwo','playerCount','extraPlayers'])document.getElementById(id)?.addEventListener('input',updateBattleColors);
-// Site information navigation is outside the game screens and remains usable after play.
-function updateSiteLinks(){
- document.querySelectorAll('#siteLinks a').forEach(a=>{
-  const label=lang==='en'?a.dataset.en:a.dataset.ja;
-  if(a.textContent!==label)a.textContent=label;
-  a.href=a.getAttribute('href').split('?')[0]+'?lang='+lang;
- });
-}
-for(const b of document.querySelectorAll('#languageBar button'))b.addEventListener('click',updateSiteLinks);
-watch.observe(document.body,{childList:true,subtree:true,characterData:true});apply();updateSiteLinks();updateBattleColors();
-// Override share text without altering original game state or localStorage history.
-const shareURL='https://stopit-game.com/';
-function shareMessage(battleMode){if(battleMode){const title=document.getElementById('battleName').textContent,status=document.getElementById('battleStatus').textContent;return lang==='ja'?`⏱ STOP IT! VS対戦\n${title}\n${status}\nあなたも挑戦！\n${shareURL}`:`⏱ STOP IT! VS BATTLE\n${title}\n${status}\nCan you beat this?\n${shareURL}`}
-const r=window.stopitLastResult;if(!r)return lang==='ja'?`⏱ STOP IT! に挑戦！\n${shareURL}`:`⏱ STOP IT! Can you stop the clock?\n${shareURL}`;
-const mode=lang==='ja'?({single:'ワンショット',total:'ラウンド戦',gate:'ステージ攻略',streak:'連続成功'})[r.mode]:({single:'ONE SHOT',total:'ROUND MATCH',gate:'STAGE CHALLENGE',streak:'WIN STREAK'})[r.mode];
-return lang==='ja'?`⏱ STOP IT! ${mode}\n目標 ${r.goal.toFixed(3)}秒 → ${r.elapsed.toFixed(3)}秒\n誤差 ${r.err.toFixed(3)}秒${r.mode==='total'?`\n${r.rounds}回の合計誤差 ${r.total.toFixed(3)}秒`:''}\nあなたもピッタリ止められる？\n${shareURL}`:`⏱ STOP IT! ${mode}\nTarget ${r.goal.toFixed(3)}s → ${r.elapsed.toFixed(3)}s\nError ${r.err.toFixed(3)}s${r.mode==='total'?`\n${r.rounds} rounds · total error ${r.total.toFixed(3)}s`:''}\nCan you beat my score?\n${shareURL}`;
-}
-for(const [id,battleMode,copy] of [['shareResult',false,false],['copyResult',false,true],['shareBattleResult',true,false],['copyBattleResult',true,true]]){
-const old=document.getElementById(id),btn=old.cloneNode(true);old.replaceWith(btn);btn.addEventListener('click',async()=>{const message=shareMessage(battleMode),feedback=document.getElementById(battleMode?'shareBattleFeedback':'shareFeedback');try{if(!copy&&navigator.share){await navigator.share({text:message});feedback.textContent=lang==='ja'?'共有画面を開きました':'Share sheet opened'}else{await navigator.clipboard.writeText(message);feedback.textContent=lang==='ja'?'結果とリンクをコピーしました':'Result and link copied'}}catch(e){if(e.name!=='AbortError')feedback.textContent=lang==='ja'?'共有できませんでした':'Could not share'}});
-}
-})();
-</script><div style="text-align:center;padding:16px;background:#101827;">
-  <a href="/games/" style="color:#ffffff;font-size:15px;text-decoration:underline;">
-    🎮 ほかのゲームを見る / More Games
-  </a>
-</div></body></html>
+</script></body></html>
