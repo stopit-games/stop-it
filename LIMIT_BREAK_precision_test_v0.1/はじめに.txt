@@ -1,0 +1,35 @@
+LIMIT BREAK 4桁計測・iPhone検証用 v0.1
+これは修正完了版ではなく、お使いのiPhoneで高精度化できるかを確認する専用ページです。
+今の本番LIMIT BREAKは上書きしません。
+
+【ノートPCでのアップロード】
+1. このZIPをすべて展開します。
+2. UPLOAD内の limit-break-precision-test フォルダを、GitHub stopit-games/stop-it の一番上の階層へアップロードしCommitします。
+3. 次の階層になることを確認してください。
+   limit-break-precision-test/index.html
+   limit-break-precision-test/app.js
+   limit-break-precision-test/precision-worker.js
+   limit-break-precision-test/reset.html
+UPLOAD自体や外側のZIPフォルダをアップロードしません。既存limit-breakフォルダには入れません。
+
+【iPhone Safariでの確認】
+https://stopit-game.com/limit-break-precision-test/index.html?v=0.1
+1. 「高精度計測を有効にする」を1回押します。
+2. 一度だけ自動で読み直した後、表示を確認します。
+3. STARTが有効なら、START→約1秒後にSTOPを数回お試しください。
+4. 表示される「高精度用のページ設定」「観測した刻み」「4桁目が0以外になった結果」を画面でお知らせください。
+既に細かい時計を取得できている環境では有効化ボタンが無効で、すぐSTARTできます。
+4桁計測が確認できない環境ではSTARTを無効にし、確認できていない旨を表示します。
+
+【検証設定の解除・復旧】
+https://stopit-game.com/limit-break-precision-test/reset.html
+を開き「解除する」を押し、検証タブを閉じます。
+本番ゲームの記録・ファイル・他ゲームには変更を加えません。
+検証を片付ける場合は、この解除を先に行ってからGitHub上の検証フォルダを削除できます。
+自動リロードが何度も続く仕様にはしていません。
+
+【検証範囲】
+PC Chromiumでは100μs程度の刻みと実測7.6471秒（4桁目1）を確認。
+iPhone Safariでの高精度化は未確認です。成功を確認してから本番へ組み込みます。
+時計の細かさと指が触れた物理的な時刻の正確さは別です。
+検証情報は端末内の表示だけで、自動送信しません。コピーは利用者がボタンを押したときだけです。

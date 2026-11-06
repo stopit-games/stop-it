@@ -1,0 +1,24 @@
+2026-11-06 LIMIT BREAK precision test v0.1
+目的：スマホで本来の小数4桁計測を目指す。固定末尾や疑似乱数で4桁目を作らない。
+調査：WebKit Performance.nowとEvent.timeStampは同じreduceTimeResolution経路。イベント時刻に替えるだけで1ms制限を解消できるとはしない。
+Cross-Origin Isolationで時計の刻みが細かくなる実装がWebKitに存在。GitHub Pagesで配信設定を付与するService Worker方式を、独立フォルダだけに適用する検証。
+Safari向けにCOEP=require-corpを使用。credentiallessは使わない。
+workerは自作。キャッシュ保存・オフライン化なし、ネットワークから毎回取得。自身の検証フォルダのindex/rootナビゲーションだけにCOOP=same-origin/COEP=require-corp/CORP=same-originを設定。
+本番/limit-break/や/games/などは処理しない。アプリ側でも検証フォルダ名が違う場合は登録しない。
+reset.htmlはworkerで処理せず、検証フォルダと一致した登録だけを解除。
+自動再読込は明示の有効化操作後に1回だけ。再読込後に無効なら失敗を表示し無限再試行しない。
+clock sample：32バッチ×512読出しの正の変化を収集、4件以上の正の変化が必要。下位10%付近の刻みが0.105ms以下なら4桁テストを許可。これは標本化した刻みで物理入力精度保証ではない。
+0.1msより粗い環境はSTART禁止。計測結果はperformance.nowの差分そのもの。
+静的構文チェックPASS。自動テストPASS：粗い時計でSTART禁止、細かい時計の実測1.0002、登録失敗UI、必須ヘッダ、キャッシュなし、他ゲーム非介入、resetへの退避、既存記録への変更なし。
+Cloud Chromiumのプレビューで0.1ms付近の刻み、START/STOPによる7.6471秒、4桁目非0の結果1回を確認。
+プレビューはHTTP・secure=falseのため、Service WorkerによるCOI有効化自体のブラウザ試験は未実施。
+実iPhone/SafariのCOI有効化、HTTP公開反映、Safari上の4桁目変化は未確認。
+
+一次資料：
+https://github.com/WebKit/WebKit/blob/main/Source/WebCore/page/Performance.cpp
+https://chromium.googlesource.com/external/github.com/WebKit/webkit/+/b498597741af207e69fc5510de87ab12193f7edc/Source/WebCore/dom/Event.cpp
+https://github.com/gzuidhof/coi-serviceworker
+https://github.com/gzuidhof/coi-serviceworker/issues/20
+https://trac.webkit.org/timeline?authors=&daysback=4&from=2021-09-04
+
+再検証：Node.jsとjsdomを用意し、SOURCE/check.cjsをnodeで実行（実機SafariやService Workerの統合動作は自動テストの対象外）。
