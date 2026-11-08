@@ -1,1 +1,151 @@
-test
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=yes"><title>CARPET CLEAN! v3.0</title><style>
+*{box-sizing:border-box}body{margin:0;background:#111d2b;color:#eaf4f8;font:16px system-ui,Arial}.wrap{max-width:1150px;margin:auto;padding:12px}header,.footer{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}h1{margin:0;font-size:clamp(22px,3vw,30px)}small,.hint,.note{color:#b8cad7}.modebar{display:flex;gap:8px;align-items:center;margin-top:10px}.modebar button{padding:8px 16px}.modebar button.active{background:#85e7d4;color:#082d34}.tools{display:grid;display:flex;flex-wrap:nowrap;overflow-x:auto;gap:7px;margin:12px 0;scrollbar-width:thin}button{border:1px solid #5a7486;border-radius:11px;background:#24384b;color:white;padding:12px 8px;font-weight:750;cursor:pointer;font-size:14px} .tools button{flex:1 0 auto;min-width:105px;white-space:nowrap}.tools button.active{background:#85e7d4;color:#082d34;border-color:#b9ffeb}.board{border:1px solid #5c7282;border-radius:14px;padding:7px;background:#273949}canvas{display:block;width:100%;border-radius:7px;touch-action:none;cursor:none}.hint{min-height:21px;font-size:13px;margin:7px 0}.footer button{flex:1;min-width:120px}.footer{margin-top:12px}.finish{background:#ffe1a0;color:#292014}.note{font-size:13px}.modal{display:none;position:fixed;inset:0;background:#06111be8;align-items:center;justify-content:center;z-index:5;padding:20px}.modal.show{display:flex}.dialog{background:#243a4e;border:1px solid #8099a7;padding:28px;border-radius:18px;text-align:center;width:min(440px,100%)}#score{font-size:66px;font-weight:900;color:#ffe4a3}@media(max-width:640px){.tools button{font-size:12px;min-width:100px}.wrap{padding:6px}.footer button{min-width:45%;}}
+/* Mobile touch layout: preserve full cleaning surface and keep controls reachable. */
+button{touch-action:manipulation} .board{overflow:hidden} #c{touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+@media(max-width:640px){
+ .wrap{padding:6px 5px 12px}header{gap:5px}h1{font-size:22px}header small{font-size:11px}
+ .modebar{gap:5px;flex-wrap:wrap;margin-top:7px}.modebar button{padding:9px 13px}
+ .tools{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));overflow:visible;gap:4px;margin:8px 0}
+ .tools button{min-width:0;white-space:normal;font-size:10px;padding:9px 2px;line-height:1.2;min-height:47px}
+ .tools #flip,.tools #finish,.tools #reset{grid-column:span 1}
+ .board{padding:3px;border-radius:8px}.hint,.note{font-size:11px;margin:5px 0}
+ .dialog{padding:18px}#score{font-size:52px}
+}
+@media(max-width:380px){.tools button{font-size:9px}}
+</style></head><body><main class="wrap"><header><div><h1>CARPET CLEAN! <small>v3.2</small></h1><small id="side">FRONT SIDE · Free cleaning</small></div><div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap"><button id="sound">🔊 Sound ON</button></div></header><div class="modebar"><strong>MODE</strong><button id="easy" class="active">EASY</button><button id="real">REAL</button><small id="modeHint">One thorough wash per side can earn 100.</small></div><div class="tools"><button data-tool="shower" class="active">🚿 SHOWER</button><button data-tool="soap">🫧 SOAP</button><button data-tool="brush">🌀 BRUSH</button><button data-tool="squeegee">🧹 SQUEEGEE</button><button id="flip">↪ FLIP RUG</button><button class="finish" id="finish">✨ FINISH</button><button id="reset">↻ RESTART</button></div><div class="board"><canvas id="c" width="1000" height="650"></canvas></div><p class="hint" id="hint">SHOWER: soak a wide area, rinse foam, and wash the floor.</p><p class="note" id="status">On phones, drag a finger over the rug. Landscape gives a larger cleaning area. Choose any tool. Drag freely in any direction. Floor water stays until you wash or push it away. No time limit.</p><p class="note">BGM: Dreambyte by PeriTune (peritune.com)</p></main><div id="modal" class="modal"><div class="dialog"><h2>CLEANING RESULT</h2><div id="score">0 / 100</div><h3 id="rating"></h3><p id="details"></p><button id="close">KEEP CLEANING</button> <button id="again">NEW RUG</button></div></div><script>
+(()=>{'use strict';
+const c=document.getElementById('c'),ctx=c.getContext('2d'),W=1000,H=650,R={x:142,y:125,w:716,h:390},N=90,M=50,el=id=>document.getElementById(id),rnd=(a,b)=>a+Math.random()*(b-a),clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+let bgm=new Audio('Peritune_Dreambyte_loop.mp3');bgm.loop=true;bgm.volume=.18;let bgmUrl=null;let rugShape=null,rugPattern=-1;const rugShapes=['rect','oval','circle'];let mode='easy';let dragAxis=0,dragAnchor=null;let tool='shower',side=0,sound=true,down=false,last=null,cursor=null,angle=0,frame=0,started=Date.now(),audio=null;let visibleDirt=[],dirt=[],wet=[],foam=[],tough=[],loosened=[],scrubbed=[],floor=[],spray=[],washProgress=[],initialDirt=[];
+function initialize(){const previousShape=rugShape,previousPattern=rugPattern;const otherShapes=rugShapes.filter(v=>v!==previousShape);rugShape=otherShapes[Math.floor(Math.random()*otherShapes.length)];const otherPatterns=[0,1,2,3,4].filter(v=>v!==previousPattern);rugPattern=otherPatterns[Math.floor(Math.random()*otherPatterns.length)];if(rugShape==='circle'){Object.assign(R,{x:195,y:20,w:610,h:610})}else{Object.assign(R,{x:142,y:125,w:716,h:390})}rug.width=R.w;rug.height=R.h;buildRug();dirt=[];visibleDirt=[];wet=[];foam=[];tough=[];loosened=[];scrubbed=[];washProgress=[];initialDirt=[];floor=[];spray=[];side=0;started=Date.now();el('side').textContent='FRONT SIDE · '+rugShape.toUpperCase()+' · Free cleaning';for(let s=0;s<2;s++){dirt[s]=new Float32Array(N*M);visibleDirt[s]=new Float32Array(N*M);wet[s]=new Float32Array(N*M);foam[s]=new Float32Array(N*M);tough[s]=new Float32Array(N*M);loosened[s]=new Float32Array(N*M);scrubbed[s]=new Float32Array(N*M);washProgress[s]=new Float32Array(N*M);for(let j=0;j<M;j++)for(let i=0;i<N;i++){let k=j*N+i,region=Math.sin(i*.16+s)*Math.cos(j*.18+s);dirt[s][k]=1;tough[s][k]=clamp(.3+.4*Math.sin(i*.12+j*.19)**2+rnd(0,.4),0,1)}visibleDirt[s].set(dirt[s]);initialDirt[s]=dirt[s].reduce((a,v,k)=>a+(cellInRug(k)?v:0),0)}}
+function setMode(m){mode=m;el('easy').classList.toggle('active',m==='easy');el('real').classList.toggle('active',m==='real');el('modeHint').textContent=m==='easy'?'One thorough wash per side can earn 100.':'Stubborn dirt needs repeated washing.';initialize()}el('easy').onclick=()=>setMode('easy');el('real').onclick=()=>setMode('real');const hints={shower:'SHOWER: soak a wide area, rinse foam, and wash the floor.',soap:'SOAP: spread fluffy foam over a wide area.',brush:'BRUSH: scrub to loosen dirt. Soap and water make a big difference.',squeegee:'SQUEEGEE: remove loosened dirt and push dirty water off the rug.'};document.querySelectorAll('[data-tool]').forEach(b=>b.onclick=()=>{tool=b.dataset.tool;document.querySelectorAll('[data-tool]').forEach(x=>x.classList.toggle('active',x===b));el('hint').textContent=hints[tool];beep(430,.04)});el('sound').onclick=()=>{sound=!sound;el('sound').textContent=sound?'🔊 Sound ON':'🔇 Sound OFF';if(sound)bgm.play().catch(()=>{});else bgm.pause()};document.addEventListener('pointerdown',()=>{if(sound&&bgm.paused)bgm.play().catch(()=>{});},{once:true});el('flip').onclick=()=>{side=1-side;el('side').textContent=(side?'BACK':'FRONT')+' SIDE · '+rugShape.toUpperCase()+' · Free cleaning';beep(500,.07)};el('reset').onclick=()=>{if(confirm('Start a new dirty rug?'))initialize()};
+function beep(freq,dur){if(!sound)return;try{audio??=new(window.AudioContext||window.webkitAudioContext)();let o=audio.createOscillator(),g=audio.createGain();o.type='sine';o.frequency.value=freq;g.gain.setValueAtTime(.025,audio.currentTime);g.gain.exponentialRampToValueAtTime(.001,audio.currentTime+dur);o.connect(g).connect(audio.destination);o.start();o.stop(audio.currentTime+dur)}catch(e){}}
+// A pool is a multi-lobed, stable irregular stain, not an ellipse. No automatic fading.
+function addPool(x,y,kind,r,concentration=kind==='mud'?1:0){
+  // Incoming runoff pushes older puddles outward, rather than replacing them.
+  let cx=clamp(x,0,W),cy=clamp(y,0,H),force=kind==='mud'?1.35:1;
+  if(kind==='water'){for(let p of floor){if(p.kind==='foam'&&Math.hypot(p.x-cx,p.y-cy)<r+p.r+35)p.amount=0;}floor=floor.filter(p=>p.amount>0);}
+  for(let p of floor){
+    if(kind==='water'&&p.kind==='water')continue;
+    let vx=p.x-cx,vy=p.y-cy,dist=Math.hypot(vx,vy)+.01;
+    if(dist<r+p.r+80){
+      let push=(1-dist/(r+p.r+80))*18*force;
+      // Favor moving runoff away from the rug toward the floor's perimeter.
+      let outwardX=(p.x-W/2)/Math.max(W/2,1),outwardY=(p.y-H/2)/Math.max(H/2,1);
+      p.x=clamp(p.x+(vx/dist*.65+outwardX*.35)*push,0,W);
+      p.y=clamp(p.y+(vy/dist*.65+outwardY*.35)*push,0,H);
+      p.r=Math.min(105,p.r+1.8*force);
+    }
+  }
+  // Multiple differently shaped lobes make broad, connected, irregular pools.
+  let seed=rnd(0,99),lobes=Array.from({length:16},()=>rnd(.55,1.38));
+  // Merge nearby pools of the same kind instead of painting hundreds of opaque layers.
+  let nearby=floor.find(p=>p.kind===kind && Math.hypot(p.x-cx,p.y-cy)<Math.min(75,p.r*.45+r*.6));
+  if(nearby){nearby.r=Math.min(112,nearby.r+Math.min(2,r*.08));nearby.x=nearby.x*.96+cx*.04;nearby.y=nearby.y*.96+cy*.04;nearby.concentration=Math.max(nearby.concentration||0,concentration);return;}
+  floor.push({x:cx,y:cy,r:Math.min(110,r*2.0),kind,lobes,seed,amount:1,concentration});
+  if(floor.length>320){let idx=floor.findIndex(p=>p.kind==='foam');if(idx<0)idx=0;floor.splice(idx,1);}
+}
+function rugPoint(x,y){let u=(x-R.x)/R.w,v=(y-R.y)/R.h,dx=(u-.5)*2,dy=(v-.5)*2;if(rugShape==='oval')return dx*dx+dy*dy<=1;if(rugShape==='circle'){let rr=Math.min(R.w,R.h)*.49;return (x-(R.x+R.w/2))**2+(y-(R.y+R.h/2))**2<=rr*rr}return u>=0&&u<=1&&v>=0&&v<=1}
+function cellInRug(k){let i=k%N,j=Math.floor(k/N);return rugPoint(R.x+(i+.5)*R.w/N,R.y+(j+.5)*R.h/M)}
+function rugPath(cx){cx.beginPath();if(rugShape==='rect')cx.rect(R.x,R.y,R.w,R.h);else if(rugShape==='oval')cx.ellipse(R.x+R.w/2,R.y+R.h/2,R.w/2,R.h/2,0,0,Math.PI*2);else cx.arc(R.x+R.w/2,R.y+R.h/2,Math.min(R.w,R.h)*.49,0,Math.PI*2)}
+function insideRug(x,y){return rugPoint(x,y)}
+function sparkle(x,y,type,n){for(let t=0;t<n;t++){if(spray.length>420)spray.shift();spray.push({x:x+rnd(-20,20),y:y+rnd(-15,15),vx:rnd(-2.5,2.5),vy:rnd(-3,1),life:rnd(12,28),type,r:rnd(2,7)})}}
+function workRug(x,y,dx,dy){let addedWater=0,extractedMud=0,extractedWater=0,localDirt=0,samples=0,localScrub=0,wetSamples=0;let gx=(x-R.x)/R.w*N,gy=(y-R.y)/R.h*M;let radius={shower:13,soap:10,brush:16,squeegee:11}[tool];for(let j=Math.max(0,Math.floor(gy-radius));j<Math.min(M,Math.ceil(gy+radius));j++)for(let i=Math.max(0,Math.floor(gx-radius));i<Math.min(N,Math.ceil(gx+radius));i++){let ax=i-gx,ay=j-gy;let footprintAngle=tool==='squeegee'?angle+Math.PI/2:angle;let ca=Math.cos(footprintAngle),sa=Math.sin(footprintAngle),rx=ax*ca+ay*sa,ry=-ax*sa+ay*ca;let dist=tool==='squeegee'?Math.hypot(rx*.50,ry*2.0):tool==='shower'?Math.hypot(ax*.75,ay):Math.hypot(ax,ay);if(dist>radius)continue;let k=j*N+i;if(!cellInRug(k))continue;let a=Math.pow(1-dist/radius,.6),d=dirt[side],w=wet[side],f=foam[side],res=1+tough[side][k]*3.3;
+if(tool==='shower'){let old=w[k];w[k]=clamp(old+.12*a,0,1);addedWater+=w[k]-old;f[k]=Math.max(0,f[k]-.065*a)}
+if(tool==='soap'){f[k]=clamp(f[k]+.14*a,0,1);w[k]=clamp(w[k]+.035*a,0,1)}
+if(tool==='brush'){
+  // Only a scrubbed area gains removable, loosened dirt. Soap and water matter.
+  // Strict per-cell eligibility: dry brushing, water alone, and soap alone never loosen dirt.
+  const prepared=w[k]>=.10 && f[k]>=.10;
+  if(prepared){
+    const efficiency=mode==='easy'?1:(.42/(1+tough[side][k]*1.3));
+    const lifted=Math.min(Math.max(0,d[k]-loosened[side][k]),(mode==='easy'?.105:.018)*a*efficiency);
+    loosened[side][k]=clamp(loosened[side][k]+Math.max(0,lifted),0,d[k]);
+    scrubbed[side][k]=clamp(scrubbed[side][k]+.009*a,0,3);
+  }
+  f[k]*=.996;
+}
+if(tool==='squeegee'){
+  localDirt+=d[k]*a;localScrub+=scrubbed[side][k]*a;samples+=a;wetSamples+=w[k]*a;let wasWet=w[k],wasFoam=f[k];let extracted=w[k]*.20*a;extractedWater+=extracted;w[k]-=extracted;f[k]*=(1-.11*a);
+  // Squeegee removes only dirt previously lifted by brushing.
+  // A wet, soaped and actually brushed CELL is the only cell eligible for dirt removal.
+  // Nearby wet cells and the squeegee's wide footprint must never clean untouched cells.
+  let removed=(wasWet>=.055 && scrubbed[side][k]>=.003 && loosened[side][k]>=.001)
+    ?Math.min(d[k],loosened[side][k],(mode==='easy'?.13:.040)*a):0;
+  d[k]-=removed;visibleDirt[side][k]=Math.max(d[k],visibleDirt[side][k]-Math.min(removed*.34,.018*a));loosened[side][k]-=removed;washProgress[side][k]=clamp(washProgress[side][k]+removed,0,1);extractedMud+=removed;
+}
+}
+if(tool==='shower'){for(let t=0;t<7;t++)sparkle(x+rnd(-70,70),y+rnd(-40,40),'water',2)}if(tool==='soap')sparkle(x,y,'foam',11);if(tool==='brush')sparkle(x,y,'foam',5);if(tool==='squeegee'&&extractedWater>.018){let concentration=clamp(samples>0?localDirt/(samples+.001):0,0,1);let muddy=extractedMud>.0001;sparkle(x,y,muddy?'mud':'water',12);}
+// Real runoff must land OUTSIDE the rug, where it remains visible.
+// Shower makes clean water, while squeegee carries the local dirt color.
+if((tool==='shower'&&addedWater>.25)||(tool==='squeegee'&&extractedWater>.018)){
+  let chance=tool==='shower'?Math.min(1,addedWater/2.8):Math.min(1,extractedWater/1.8);
+  if(Math.random()<chance){
+    let left=x-R.x,right=R.x+R.w-x,top=y-R.y,bottom=R.y+R.h-y;
+    let nearest=Math.min(left,right,top,bottom),px=x,py=y,margin=rnd(10,62);
+    if(nearest===left){px=R.x-margin;py=clamp(y+rnd(-65,65),5,H-5)}
+    else if(nearest===right){px=R.x+R.w+margin;py=clamp(y+rnd(-65,65),5,H-5)}
+    else if(nearest===top){py=R.y-margin;px=clamp(x+rnd(-80,80),5,W-5)}
+    else{py=R.y+R.h+margin;px=clamp(x+rnd(-80,80),5,W-5)}
+    // For unbrushed spots, water is not falsely credited as cleaning.
+    let remaining=samples?localDirt/samples:1;let pass=samples?localScrub/samples:0;
+    // Only after substantial repeated scrubbing AND low residual dirt can squeegee water look clean.
+    let muddy=tool==='squeegee' && (extractedMud>.0001 || (mode==='real'&&wetSamples>.08&&remaining>.12&&pass>.003));
+    let concentration=muddy?(mode==='easy'?(remaining>.30?.85:.30):(remaining>.42?.92:remaining>.14?.62:.25)):0;
+    addPool(px,py,muddy?'mud':'water',tool==='shower'?rnd(16,28):rnd(14,27),concentration);
+    // Broad shower sends visible clean water beyond several sides of the rug.
+    if(tool==='shower'&&addedWater>4&&Math.random()<.30){let offset=rnd(-120,120),sx=px,sy=py;if(nearest===left||nearest===right)sy=clamp(py+offset,4,H-4);else sx=clamp(px+offset,4,W-4);addPool(sx,sy,'water',rnd(14,29),0)}
+  }
+}
+}
+function workFloor(x,y,dx,dy){let width=tool==='shower'?115:tool==='squeegee'?105:tool==='brush'?55:70;let count=0;for(let p of floor){let dist=Math.hypot(p.x-x,p.y-y);if(dist>width+p.r*.35)continue;count++;if(tool==='squeegee'){p.x+=dx*3.6;p.y+=dy*3.6;p.r=Math.min(110,p.r+0.08);if(p.x<15||p.x>W-15||p.y<15||p.y>H-15)p.amount=0}else if(tool==='shower'){if(p.kind==='foam')p.amount=Math.max(0,p.amount-.08);}else if(tool==='brush'){p.r*=.995}}floor=floor.filter(p=>p.amount>0&&p.r>3);if(tool==='soap'&&Math.random()<.10)addPool(x+rnd(-20,20),y+rnd(-20,20),'foam',rnd(12,25));if((tool==='shower')&&Math.random()<.11)addPool(x+rnd(-25,25),y+rnd(-25,25),'water',rnd(8,20));sparkle(x,y,tool==='soap'?'foam':'water',tool==='shower'?9:3)}
+function apply(x,y,dx,dy){if(insideRug(x,y))workRug(x,y,dx,dy);else workFloor(x,y,dx,dy)}function pos(e){let b=c.getBoundingClientRect();return{x:(e.clientX-b.left)*W/b.width,y:(e.clientY-b.top)*H/b.height}}function pointerMove(e){let p=pos(e);cursor={x:clamp(p.x,72,W-72),y:clamp(p.y,58,H-58)};if(last&&Math.hypot(p.x-last.x,p.y-last.y)>3){let dx=p.x-last.x,dy=p.y-last.y;if(tool==='squeegee'){let ax=p.x-dragAnchor.x,ay=p.y-dragAnchor.y;if(Math.hypot(ax,ay)>12){dragAxis=Math.abs(ax)>=Math.abs(ay)?Math.PI/2:0;}angle=dragAxis;}else angle=Math.atan2(dy,dx);}if(!down)return;e.preventDefault();if(!last){last=p;return}let dx=p.x-last.x,dy=p.y-last.y,steps=Math.max(1,Math.ceil(Math.hypot(dx,dy)/18));for(let n=1;n<=steps;n++)apply(last.x+dx*n/steps,last.y+dy*n/steps,dx/steps,dy/steps);last=p}
+c.addEventListener('pointerdown',e=>{e.preventDefault();down=true;last=pos(e);dragAnchor=last;dragAxis=0;angle=0;cursor={x:clamp(last.x,72,W-72),y:clamp(last.y,58,H-58)};try{c.setPointerCapture(e.pointerId)}catch(_){}apply(last.x,last.y,0,0)});c.addEventListener('pointermove',pointerMove);c.addEventListener('pointerleave',()=>{if(!down)cursor=null});for(let ev of ['pointerup','pointercancel','lostpointercapture'])c.addEventListener(ev,()=>{down=false;last=null;dragAnchor=null});
+// Generate a new shape and pattern each time NEW RUG is selected.
+const rug=document.createElement('canvas');rug.width=R.w;rug.height=R.h;let rc=rug.getContext('2d');
+function buildRug(){
+ rc.clearRect(0,0,R.w,R.h);rc.save();rc.beginPath();
+ if(rugShape==='rect')rc.rect(0,0,R.w,R.h);
+ else if(rugShape==='oval')rc.ellipse(R.w/2,R.h/2,R.w/2,R.h/2,0,0,Math.PI*2);
+ else rc.arc(R.w/2,R.h/2,Math.min(R.w,R.h)*.49,0,Math.PI*2);
+ rc.clip();const w=R.w,h=R.h;
+ const fill=(color)=>{rc.fillStyle=color;rc.fillRect(0,0,w,h)};
+ const line=(color,width)=>{rc.strokeStyle=color;rc.lineWidth=width};
+ const diamond=(x,y,r,color)=>{rc.save();rc.translate(x,y);rc.rotate(Math.PI/4);rc.fillStyle=color;rc.fillRect(-r,-r,2*r,2*r);rc.restore()};
+ const petal=(x,y,r,color)=>{rc.fillStyle=color;for(let t=0;t<6;t++){let a=t*Math.PI/3;rc.beginPath();rc.ellipse(x+Math.cos(a)*r*.55,y+Math.sin(a)*r*.55,r*.53,r*.26,a,0,Math.PI*2);rc.fill()}rc.beginPath();rc.arc(x,y,r*.28,0,7);rc.fill()};
+ if(rugPattern===0){ // Persian: layered borders, central medallion and vines
+  fill('#263d60');line('#e6b967',19);rc.strokeRect(22,22,w-44,h-44);line('#9e374a',13);rc.strokeRect(43,43,w-86,h-86);
+  for(let x=67;x<w-60;x+=42){diamond(x,35,10,'#edca8a');diamond(x,h-35,10,'#edca8a')}
+  for(let y=70;y<h-65;y+=42){diamond(34,y,10,'#edca8a');diamond(w-34,y,10,'#edca8a')}
+  rc.save();rc.translate(w/2,h/2);rc.scale(1.22,.9);diamond(0,0,Math.min(w,h)*.28,'#b04453');diamond(0,0,Math.min(w,h)*.21,'#e1b973');diamond(0,0,Math.min(w,h)*.14,'#285a6c');petal(0,0,48,'#f3d9a1');rc.restore();
+  for(let x=105;x<w-90;x+=125)for(let y=90;y<h-75;y+=115){if(Math.hypot((x-w/2)/1.2,y-h/2)>Math.min(w,h)*.28)petal(x,y,19,'#d99e73')}
+ }else if(rugPattern===1){ // Moroccan: large woven diamonds and zigzag
+  fill('#e9d9b9');for(let y=45;y<h+80;y+=115)for(let x=20;x<w+100;x+=140){let xx=x+(Math.round(y/115)%2)*70;diamond(xx,y,45,'#214f60');diamond(xx,y,31,'#d97855');diamond(xx,y,17,'#edc17c')}
+  for(let y=18;y<h;y+=115){line('#333d4a',6);rc.beginPath();for(let x=0;x<=w;x+=20){let yy=y+Math.abs((x%80)-40)*.35;if(x===0)rc.moveTo(x,yy);else rc.lineTo(x,yy)}rc.stroke()}
+ }else if(rugPattern===2){ // Floral botanical: leaves, flowers and trailing stems
+  fill('#d6c9a5');for(let x=30;x<w+80;x+=120){line('#3c7569',7);rc.beginPath();rc.moveTo(x,0);rc.bezierCurveTo(x+80,h*.28,x-75,h*.68,x+30,h);rc.stroke();for(let y=65;y<h;y+=100){let xx=x+35*Math.sin(y*.021);petal(xx,y,31,y%200<100?'#b4526d':'#d49a4f');for(let q of [-1,1]){rc.save();rc.translate(xx+q*42,y+22);rc.rotate(q*.7);rc.fillStyle='#5b9077';rc.beginPath();rc.ellipse(0,0,22,10,0,0,7);rc.fill();rc.restore()}}}
+  line('#b4526d',12);rc.strokeRect(18,18,w-36,h-36)
+ }else if(rugPattern===3){ // Kilim: stepped tribal bands and sharp contrast
+  fill('#a33f3f');for(let y=0;y<h;y+=88){rc.fillStyle=(Math.floor(y/88)%2)?'#e5af68':'#276b7b';rc.fillRect(0,y,w,62);for(let x=38;x<w;x+=100){diamond(x+((y/88)%2)*25,y+30,25,'#f4e5bc');diamond(x+((y/88)%2)*25,y+30,12,'#4c455b')}}
+  for(let x=0;x<w;x+=38){line('#f1d29b',5);rc.beginPath();rc.moveTo(x,0);rc.lineTo(x+18,18);rc.lineTo(x,36);rc.stroke()}
+ }else{ // Art Deco: scalloped fans, symmetry and metallic geometry
+  fill('#153f4d');for(let y=48;y<h+110;y+=145)for(let x=0;x<w+160;x+=155){let xx=x+(Math.round(y/145)%2)*78;for(let r=67;r>=23;r-=15){line(r%2?'#d5b477':'#d5b477',5);rc.beginPath();rc.arc(xx,y,r,Math.PI,2*Math.PI);rc.stroke()}diamond(xx,y+28,13,'#f0d69b')}
+  line('#d5b477',12);rc.strokeRect(22,22,w-44,h-44);line('#6aa3a3',5);rc.strokeRect(40,40,w-80,h-80)
+ }
+ rc.restore();rc.save();line('#72543e',11);rc.beginPath();if(rugShape==='rect')rc.rect(6,6,w-12,h-12);else if(rugShape==='oval')rc.ellipse(w/2,h/2,w/2-6,h/2-6,0,0,7);else rc.arc(w/2,h/2,Math.min(w,h)*.49-6,0,7);rc.stroke();rc.restore()
+}
+initialize();const overlay=document.createElement('canvas');overlay.width=N;overlay.height=M;let oc=overlay.getContext('2d');function puddle(p){let a=p.lobes;ctx.beginPath();for(let i=0;i<=a.length;i++){let t=i%a.length,theta=i/a.length*Math.PI*2,r=p.r*a[t],xx=p.x+Math.cos(theta)*r*1.15,yy=p.y+Math.sin(theta)*r*.82;if(i===0)ctx.moveTo(xx,yy);else ctx.lineTo(xx,yy)}ctx.closePath();ctx.fillStyle=p.kind==='mud'?`rgba(${Math.round(115-45*(p.concentration??1))},${Math.round(111-50*(p.concentration??1))},${Math.round(87-46*(p.concentration??1))},${.22+.54*(p.concentration??1)})`:p.kind==='foam'?'rgba(255,255,255,.84)':'rgba(37,159,219,.48)';ctx.fill();ctx.strokeStyle=p.kind==='mud'?'rgba(53,39,27,.22)':p.kind==='foam'?'rgba(255,255,255,.35)':'rgba(31,145,201,.23)';ctx.lineWidth=2;ctx.stroke();if(p.kind==='foam'){for(let i=0;i<5;i++){let xx=p.x+Math.cos(i*2.4+p.seed)*p.r*.6,yy=p.y+Math.sin(i*2.4+p.seed)*p.r*.45;ctx.fillStyle='rgba(255,255,255,.6)';ctx.beginPath();ctx.arc(xx,yy,2+i%3*2,0,7);ctx.fill()}}}
+function toolVisual(x,y){ctx.save();ctx.translate(x,y);let rot=angle;ctx.rotate(rot);ctx.shadowColor='#091a24';ctx.shadowBlur=6;ctx.shadowOffsetY=3;if(tool==='shower'){ctx.fillStyle='#314a60';ctx.fillRect(-27,-8,35,16);ctx.fillStyle='#c2d8e0';ctx.fillRect(5,-12,20,24);ctx.fillStyle='#203646';ctx.fillRect(-31,-6,8,12);ctx.fillStyle='#8bd9f4';for(let i=-4;i<=4;i++){ctx.beginPath();ctx.arc(37+Math.cos(i*.3)*20,i*8,3.2,0,7);ctx.fill()}}else if(tool==='soap'){ctx.scale(1.28,1.28);ctx.fillStyle='#a4d3e0';ctx.fillRect(-17,-23,30,45);ctx.fillStyle='#e6f9ff';ctx.fillRect(-12,-30,20,10);ctx.fillStyle='#60b9e7';ctx.fillRect(-10,-9,17,20);for(let i=0;i<7;i++){ctx.fillStyle='rgba(255,255,255,.86)';ctx.beginPath();ctx.arc(20+i*5,rnd(-18,18),3+i%3*2,0,7);ctx.fill()}}else if(tool==='brush'){ctx.fillStyle='#254d67';ctx.beginPath();ctx.arc(0,0,50,0,7);ctx.fill();ctx.strokeStyle='#b4e8ee';ctx.lineWidth=10;ctx.beginPath();ctx.arc(0,0,36,frame*.13,frame*.13+4.6);ctx.stroke();ctx.fillStyle='#d4e5e3';for(let i=0;i<8;i++){let a=i*Math.PI/4+frame*.09;ctx.beginPath();ctx.arc(Math.cos(a)*24,Math.sin(a)*24,8,0,7);ctx.fill()}}else{ctx.fillStyle='#526c7d';ctx.fillRect(-59,-9,118,13);ctx.fillStyle='#dce7e9';ctx.fillRect(-60,4,120,9);ctx.fillStyle='#b17d50';ctx.fillRect(-5,-31,10,24);ctx.fillStyle='#e4b988';ctx.fillRect(-46,-7,92,4)}ctx.restore()}
+function draw(){frame++;for(let ss=0;ss<2;ss++)for(let k=0;k<N*M;k++){if(visibleDirt[ss][k]>dirt[ss][k])visibleDirt[ss][k]=Math.max(dirt[ss][k],visibleDirt[ss][k]-.0035)}ctx.fillStyle='#e8ece8';ctx.fillRect(0,0,W,H);ctx.strokeStyle='rgba(90,120,129,.16)';ctx.lineWidth=1;for(let x=0;x<W;x+=64){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke()}for(let y=0;y<H;y+=64){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke()}// Draw clean water in a single translucent pass, preventing white/opaque accumulation.
+  for(let p of floor.filter(p=>p.kind!=='water'))puddle(p);
+  ctx.save();ctx.globalCompositeOperation='source-over';
+  for(let p of floor.filter(p=>p.kind==='water'))puddle(p);
+  ctx.restore();ctx.save();rugPath(ctx);ctx.fillStyle='#b7c6c3';ctx.fill();ctx.clip();ctx.drawImage(rug,R.x,R.y);let img=oc.createImageData(N,M);for(let k=0;k<N*M;k++){let v=visibleDirt[side][k],mottle=.82+.18*Math.sin((k%N)*.37+Math.floor(k/N)*.23)*Math.cos((k%N)*.13-Math.floor(k/N)*.41),w=wet[side][k],f=foam[side][k],l=loosened[side][k],q=k*4;img.data[q]=Math.round(81-12*w+12*f+15*l);img.data[q+1]=Math.round(72-10*w+12*f);img.data[q+2]=Math.round(51-7*w+12*f);img.data[q+3]=Math.round(clamp(v<=.02?0:v>=.98?1:Math.pow((v-.02)/.96,1.15),0,1)*255)}oc.putImageData(img,0,0);ctx.drawImage(overlay,R.x,R.y,R.w,R.h);ctx.save();for(let j=0;j<M;j+=2)for(let i=0;i<N;i+=2){let f=foam[side][j*N+i];if(f>.14){let x=R.x+(i+.5)*R.w/N,y=R.y+(j+.5)*R.h/M,sz=(2+f*(4+10*(.5+.5*Math.sin(i*11.1+j*9.3))));ctx.fillStyle='rgba(248,254,255,.7)';ctx.beginPath();ctx.arc(x,y,sz,0,7);ctx.fill();ctx.strokeStyle='rgba(255,255,255,.55)';ctx.lineWidth=1;ctx.stroke()}}ctx.restore();ctx.restore();ctx.strokeStyle='#746e5a';ctx.lineWidth=7;rugPath(ctx);ctx.stroke();for(let p of spray){p.x+=p.vx;p.y+=p.vy;p.vy+=.08;p.life--;ctx.globalAlpha=clamp(p.life/22,0,1);ctx.fillStyle=p.type==='mud'?'#8b5b38':p.type==='foam'?'#fff':'#78d6f6';ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,7);ctx.fill()}ctx.globalAlpha=1;spray=spray.filter(p=>p.life>0);if(cursor)toolVisual(cursor.x,cursor.y);requestAnimationFrame(draw)}draw();
+el('finish').onclick=()=>{const avg=(a)=>a.reduce((t,v)=>t+v,0);let remaining=(a)=>a.reduce((t,v,k)=>t+(cellInRug(k)?v:0),0);let front=clamp(1-remaining(dirt[0])/initialDirt[0],0,1),back=clamp(1-remaining(dirt[1])/initialDirt[1],0,1);
+  // Only rug cleanliness contributes to the final score. Floor runoff is visual gameplay only.
+  let frontPts=50*front,backPts=50*back;
+  let score=clamp(Math.round(frontPts+backPts),0,100);
+  el('score').textContent=score+' / 100';el('rating').textContent=score===100?'PERFECT!':score>=90?'EXCELLENT!':score>=70?'GREAT WORK!':score>=50?'GOOD START!':'KEEP CLEANING!';
+  el('details').textContent=`FRONT ${frontPts.toFixed(1)} / 50 · BACK ${backPts.toFixed(1)} / 50. Floor runoff is for visual enjoyment and does not affect your score.`;
+  el('modal').classList.add('show');beep(740,.2)};el('close').onclick=()=>el('modal').classList.remove('show');el('again').onclick=()=>{initialize();el('modal').classList.remove('show')};
+})();
+</script></body></html>
