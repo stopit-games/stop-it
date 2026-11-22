@@ -1,0 +1,694 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SUDOKU! · PLAY ROOM</title>
+<meta name="description" content="Play 30 Sudoku puzzles from easy to hard, with pencil notes, undo, and hints that explain your next move.">
+<link rel="canonical" href="https://stopit-game.com/sudoku/">
+<style>
+* { box-sizing:border-box; }
+body { margin:0; background:#f6f2e9; color:#142639; font:16px system-ui,sans-serif; }
+main { max-width:470px; margin:auto; padding:10px 8px 8px; }
+header { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
+h1 { margin:0; font-size:24px; letter-spacing:-.035em; }
+.site-footer { display:flex; flex-wrap:wrap; justify-content:center; gap:4px 12px; margin-top:12px; font-size:11px; }
+.site-footer a { color:#354a56; }
+button { font:inherit; color:inherit; cursor:pointer; touch-action:manipulation; }
+button:focus-visible { outline:2px solid #177b76; outline-offset:-2px; }
+.control,.keys button { background:#fffdf7; border:1px solid #abb7bc; border-radius:6px; min-height:40px; }
+.header-controls { display:flex; gap:4px; }
+.header-controls .control { font-size:12px; padding:0 7px; min-height:36px; }
+#board { display:grid; grid-template-columns:repeat(9,minmax(0,1fr)); grid-template-rows:repeat(9,minmax(0,1fr)); aspect-ratio:1; border:2px solid #172c40; }
+.cell { position:relative; display:grid; place-items:center; min-width:0; min-height:0; background:#fffefa; padding:0; border:0; border-right:1px solid #bfc8ca; border-bottom:1px solid #bfc8ca; font-size:clamp(17px,6vw,29px); color:#176761; }
+.fixed { font-weight:700; color:#142639; }
+.completed { font-weight:700; }
+.box-right { border-right:2px solid #172c40; }
+.box-bottom { border-bottom:2px solid #172c40; }
+.last-col { border-right:0; }
+.last-row { border-bottom:0; }
+.related { background:#edf3ee; }
+.same-number { background:#b8ded5; box-shadow:inset 0 0 0 2px #367f74; }
+.evidence { background:#f9e3a6; }
+.selected { background:#c9eae0; box-shadow:inset 0 0 0 2px #247369; }
+.conflict { color:#a52035; text-decoration:underline; }
+.marks { display:grid; width:100%; height:100%; grid-template:repeat(3,1fr)/repeat(3,1fr); padding:1px; font-size:clamp(8px,2.7vw,13px); line-height:1; color:#4e6470; }
+.marks span { display:grid; place-items:center; }
+.keys,.tools { display:flex; margin-top:7px; gap:4px; }
+.keys button,.tools button { flex:1; min-width:0; padding:0; }
+.keys { display:grid; grid-template-columns:repeat(9,minmax(0,1fr)); min-height:40px; }
+.keys button { font-size:20px; font-weight:650; }
+.tools button { font-size:13px; }
+.control[aria-pressed="true"], .keys button[aria-pressed="true"] { background:#c9eae0; border-color:#247369; box-shadow:inset 0 0 0 1px #247369; }
+button:disabled { opacity:.53; cursor:default; }
+#status { margin:8px 0 0; min-height:2.8em; font-size:13px; line-height:1.4; color:#354a56; }
+#board.is-clearing { animation:clear-frame 1.45s ease-out; }
+.cell.number-finish { animation:number-finish .72s ease-out; }
+.cell.clear-wave { animation:clear-wave 1s var(--wave-delay) both; }
+@keyframes number-finish {
+  0%,100% { box-shadow:none; }
+  31% { background:#f8db90; box-shadow:inset 0 0 0 2px #956c27; }
+}
+@keyframes clear-wave {
+  28% { background:#a9e3d6; color:#174c4a; }
+  62% { background:#f7df9d; }
+}
+@keyframes clear-frame {
+  22% { box-shadow:0 0 0 3px #d4ae5d, 0 0 18px #f1cf87; }
+}
+@media (prefers-reduced-motion:reduce) {
+  #board.is-clearing,.cell.number-finish,.cell.clear-wave { animation:none; }
+  #board.is-clearing { outline:2px solid #a98035; }
+  .cell.number-finish,.cell.clear-wave { background:#f7df9d; }
+}
+#stage { font-size:12px; color:#516273; }
+.stage-actions { display:flex; gap:8px; margin-bottom:8px; }
+.stage-actions:has(button[hidden]+button[hidden]) { margin-bottom:0; }
+.stage-actions button { flex:1; padding:0 7px; font-size:14px; font-weight:650; }
+.stage-actions #next { background:#176761; border-color:#176761; color:#fff; }
+.cell.eliminated { background:#e8e0f5; }
+.audio-credit { color:#516273; font-size:11px; line-height:1.45; }
+.audio-credit summary { width:fit-content; cursor:pointer; }
+.audio-credit p { margin:4px 0; }
+.audio-credit a { color:#176761; }
+</style>
+</head>
+<body>
+<main>
+<header><div><h1>SUDOKU!</h1><div id="stage"></div></div><div class="header-controls">
+<button class="control" type="button" id="music"></button>
+<button class="control" type="button" id="sound"></button>
+<button class="control" type="button" id="language"></button>
+</div></header>
+<div role="group" id="board"></div>
+<div class="keys" id="keys"></div>
+<div class="tools">
+<button class="control" type="button" id="undo"></button><button class="control" type="button" id="erase"></button><button class="control" type="button" id="memo"></button><button class="control" type="button" id="hint"></button>
+</div>
+<p id="status" role="status"></p>
+<div class="stage-actions">
+  <button class="control" type="button" id="replay" hidden></button>
+  <button class="control" type="button" id="next" hidden></button>
+</div>
+<details class="audio-credit">
+<summary id="audio-credit"></summary>
+<p id="audio-use"></p>
+<a id="audio-source" href="https://opentracks.com/bgm/detail/23745/download" target="_blank" rel="noopener noreferrer">OpenTracks</a>
+</details>
+<footer class="site-footer">
+  <a href="../games/" id="game-list">← PLAY ROOM</a>
+  <a href="../about.html?v=neon100" id="about-link">About</a>
+  <a href="../privacy.html" id="privacy-link">Privacy</a>
+  <a href="../contact.html" id="contact-link">Contact</a>
+</footer>
+</main>
+<script>
+const digits = [1,2,3,4,5,6,7,8,9];
+function unitsFor(index) {
+  const row = Math.floor(index / 9), col = index % 9;
+  const boxRow = Math.floor(row / 3) * 3, boxCol = Math.floor(col / 3) * 3;
+  return [
+    Array.from({length:9}, (_, i) => row * 9 + i),
+    Array.from({length:9}, (_, i) => i * 9 + col),
+    Array.from({length:9}, (_, i) => (boxRow + Math.floor(i / 3)) * 9 + boxCol + i % 3)
+  ];
+}
+const unitCache = Array.from({length:81}, (_, i) => unitsFor(i));
+function legalDigits(board, index) {
+  if (board[index]) return [];
+  const used = new Set(unitCache[index].flat().map(i => board[i]));
+  return digits.filter(n => !used.has(n));
+}
+function conflictCells(board) {
+  const conflicts = new Set();
+  for (let i=0; i<81; i++) {
+    if (!board[i]) continue;
+    for (const j of unitCache[i].flat()) {
+      if (j!==i && board[j]===board[i]) conflicts.add(i);
+    }
+  }
+  return [...conflicts];
+}
+function basicHint(board, selected = -1, possible) {
+  const conflicts = conflictCells(board);
+  if (conflicts.length) return {kind:'conflict', cells:conflicts};
+  const candidates = possible ?? board.map((_, i) => legalDigits(board, i));
+  const order = [...new Set([selected,...board.keys()])].filter(i=>i>=0&&i<81);
+  for (const index of order) {
+    if (candidates[index].length!==1) continue;
+    const [value] = candidates[index];
+    const evidence = [];
+    for (const excluded of digits) {
+      if (excluded === value) continue;
+      for (const [unit, cells] of unitCache[index].entries()) {
+        const witness = cells.find(i=>board[i]===excluded);
+        if (witness !== undefined) {
+          evidence.push({value:excluded, cell:witness, unit});
+          break;
+        }
+      }
+    }
+    return {kind:'single-candidate',index,value,evidence};
+  }
+  for (const index of order) {
+    for (const value of candidates[index]) {
+      for (const [unit,cells] of unitCache[index].entries()) {
+        if (cells.some(i=>i!==index&&candidates[i].includes(value))) continue;
+        return {kind:'single-position',index,value,unit,cells};
+      }
+    }
+  }
+  return {kind:'no-basic-hint'};
+}
+function countSolutions(board, limit=2) {
+  if (conflictCells(board).length) return 0;
+  function visit(cap) {
+    let target=-1, choices=[];
+    for(let i=0;i<81;i++) {
+      if(board[i])continue;
+      const candidates=legalDigits(board,i);
+      if(!candidates.length)return 0;
+      if(target===-1||candidates.length<choices.length){target=i;choices=candidates;}
+    }
+    if(target===-1)return 1;
+    let count=0;
+    for(const value of choices){
+      board[target]=value;
+      count+=visit(cap-count);
+      board[target]=0;
+      if(count>=cap)break;
+    }
+    return count;
+  }
+  return visit(limit);
+}
+
+const allUnits = [
+  ...Array.from({length: 9}, (_, i) => unitCache[i * 9][0]),
+  ...Array.from({length: 9}, (_, i) => unitCache[i][1]),
+  ...Array.from({length: 9}, (_, i) =>
+    unitCache[Math.floor(i / 3) * 27 + i % 3 * 3][2])
+];
+function findElimination(candidates) {
+  for (const [i, unit] of allUnits.entries()) {
+    const isBox = i >= 18;
+    for (const value of digits) {
+      const cells = unit.filter(j => candidates[j].includes(value));
+      if (cells.length < 2 || cells.length > 3) continue;
+      const crossing = isBox ? unitCache[cells[0]].slice(0, 2) : [unitCache[cells[0]][2]];
+      for (const other of crossing) {
+        if (!cells.every(j => other.includes(j))) continue;
+        const removed = other.filter(j => !unit.includes(j) && candidates[j].includes(value));
+        if (removed.length) return {kind: 'locked', values: [value], cells, removed};
+      }
+    }
+  }
+  for (const unit of allUnits) {
+    for (const index of unit) {
+      const values = candidates[index];
+      if (values.length !== 2) continue;
+      const cells = unit.filter(j => candidates[j].length === 2 &&
+        values.every(n => candidates[j].includes(n)));
+      if (cells.length !== 2) continue;
+      const removed = unit.filter(j => !cells.includes(j) &&
+        values.some(n => candidates[j].includes(n)));
+      if (removed.length) return {kind: 'pair', values, cells, removed};
+    }
+  }
+  return null;
+}
+
+function findHint(board, selected = -1) {
+  const candidates = board.map((_, i) => legalDigits(board, i));
+  const basic = basicHint(board, selected, candidates);
+  if (basic.kind !== 'no-basic-hint') return basic;
+  let first, steps = 0;
+  for (let step = findElimination(candidates); step; step = findElimination(candidates)) {
+    first ??= step;
+    steps++;
+    for (const index of step.removed) {
+      candidates[index] = candidates[index].filter(n => !step.values.includes(n));
+    }
+    const placement = basicHint(board, selected, candidates);
+    if (placement.index !== undefined) return {
+      kind: 'elimination', index: placement.index, value: placement.value, first, steps
+    };
+  }
+  return basic;
+}
+
+const stages = [
+  ["600320905049061072070004000085000090402000630736200501927400060360700400000030709","618327945549861372273954816185673294492518637736249581927485163361792458854136729",0],
+  ["000647183038500090010300275300806409069021350000073806645098001103000940207000068","952647183738512694416389275371856429869421357524973816645298731183765942297134568",0],
+  ["403008600500106084800007013001309406600870000234610097070500348000483060048060925","413258679597136284862947513781329456659874132234615897176592348925483761348761925",0],
+  ["040230700239080650000005210000071305004560029001392070098004532023059801516003000","145236798239187654687945213962471385374568129851392476798614532423759861516823947",0],
+  ["198060470030090628402300090840003051000017836013080940980031200000050007071240089","198562473537194628462378195846923751259417836713685942985731264624859317371246589",0],
+  ["080000427006487095097020608200674081048390562000002900570000006900010703801740050","185963427326487195497125638259674381748391562613852974574239816962518743831746259",0],
+  ["700800500068574091945000070231065700050907100479003600004308007080096002000241360","712839546368574291945612873231465789856927134479183625624358917183796452597241368",0],
+  ["793028040002400070005790002350060704070045139480037026000684053030570400520300000","793128645162453978845796312359261784276845139481937526917684253638572491524319867",0],
+  ["000205008003049000050080012317028009400300520509406080004050971002607050870914036","741265398283149765956783412317528649468391527529476183634852971192637854875914236",0],
+  ["400913560010000009009728000002100080137005046850670213041307090306090004080001072","428913567713546829569728431692134785137285946854679213241357698376892154985461372",0],
+  ["357000024001570000006203850502000040090402006000397210030140060410025000600000000","357986124281574639946213857572861943193452786864397215738149562419625378625738491",1],
+  ["006900300000030000003106040041000908739400060008001500300000210107028009902014700","816947325475832691293156847541263978739485162628791534384579216167328459952614783",1],
+  ["010630007073005090000801063000002000302000780041000020580740000420050800030298645","814639257673425198295871463768512934352964781941387526589746312426153879137298645",1],
+  ["462700098510000007308009025704001500820040009100900070000100000040395860000006052","462753198519824637378619425794231586826547319153968274685172943247395861931486752",1],
+  ["860070000009004376307001800000400500003109068008000004100247000080395001000600095","862573149519824376347961852921486537473159268658732914195247683786395421234618795",1],
+  ["020000135900000400000043020103460570600058312207319000000290701000800254800100000","426987135938521467571643928183462579694758312257319846365294781719836254842175693",1],
+  ["300050010020680035000002800097865203605000100000410500704090000036078001810040050","378954612421687935569132874197865243645723198283419567754291386936578421812346759",1],
+  ["300100008002097300091068720000730000000609000000801097200000003906504080008203409","367125948852497316491368725189732654725649831643851297214986573936574182578213469",1],
+  ["060020400002170060104300007016007940700010038480063000000800092008000056001032080","567928413832174569194356827316287945725419638489563271673845192248791356951632784",1],
+  ["406200300235070408008304025003001074080002000007000050074620500800007003009050780","416285397235179468798364125623591874581742936947836251374628519852917643169453782",1],
+  ["002007501000080040000305000095000000070000402004198000000871305210403070000009000","982647531153982647746315289395724168871536492624198753469871325218453976537269814",2],
+  ["200075090079000205003000040500090000090000028002106050725400800000007000100000509","214875396679341285853962741567298134391754628482136957725419863936587412148623579",2],
+  ["000805000007160040305407001000040013800710400100500600900650000004000069000000007","419835726287169345365427981796248513853716492142593678978652134524371869631984257",2],
+  ["308020004000450000000300060970000080024098705000700206000005170080000600200010000","368927514719456328542381967973562481624198735851743296496835172185279643237614859",2],
+  ["000000007009046010467310080104000008020000030070409006601800000005030000900000300","213598647859746213467312985194263578526187439378459126631825794745931862982674351",2],
+  ["003000050204300108869020040000038900028700003000000500600200000040610000700000005","173984256254376198869125347416538972528791463937462581681259734345617829792843615",2],
+  ["000300175400100000000500006000050010027000008500010037830000000710200600000907081","298364175465178329371529846983756214127493568546812937839641752714285693652937481",2],
+  ["806040009005900006090600045204197000300050020000000000000000907000039100060701002","816345279435972816792618345254197683389456721671823594128564937547239168963781452",2],
+  ["090604030706200000020000610000000000000000269608390540000850006200006001000001800","195684732736215498824739615942567183357148269618392547471853926289476351563921874",2],
+  ["090200000407800300000031000020060000000008700510000809070600208000480090002009040","391247586457896312286531974728963451649158723513724869974615238135482697862379145",2]
+];
+const $ = id => document.getElementById(id);
+const originalBoardKey = 'play-room-sudoku-01d-demo';
+const stageKey = 'play-room-sudoku-stage-v1';
+function read(key) { try { return localStorage.getItem(key); } catch { return null; } }
+function save(key, value) { try { localStorage.setItem(key, value); } catch {} }
+const langKey = 'stopit-language-v1';
+let lang = read(langKey) === 'ja' ? 'ja' : 'en';
+const t = (ja,en) => lang === 'ja' ? ja : en;
+const savedStage = Number(read(stageKey));
+let stageIndex = Number.isInteger(savedStage) && savedStage >= 0 && savedStage < stages.length ? savedStage : 0;
+let given, solution, board, notes, selected;
+let pencil = false, memoDigit = 0, hint = null;
+const history = [];
+const musicKey = 'play-room-sudoku-music';
+const soundKey = 'play-room-sudoku-sound';
+let musicEnabled = read(musicKey) === 'on';
+let soundEnabled = read(soundKey) !== 'off';
+let celebration = null, celebrationTimer;
+const musicVolume = .17;
+const musicAssetKey = 'zMCSpHXRBZBC3qT0cxCrJQ==';
+let audioContext, musicPlayback, musicBufferPromise, musicSession = 0, musicError = false;
+function stageBoardKey() {
+  return stageIndex === 0 ? originalBoardKey : stageKey + '-board-' + (stageIndex + 1);
+}
+function loadStage({reset = false} = {}) {
+  const [puzzle, answer] = stages[stageIndex];
+  given = [...puzzle].map(Number);
+  solution = [...answer].map(Number);
+  board = given.slice();
+  notes = given.map(() => 0);
+  if (!reset) {
+    try {
+      const saved = JSON.parse(read(stageBoardKey()));
+      if (Array.isArray(saved?.board) && saved.board.length === 81 &&
+          Array.isArray(saved?.notes) && saved.notes.length === 81) {
+        board = given.map((n,i) => n || (digits.includes(saved.board[i]) ? saved.board[i] : 0));
+        notes = given.map((_,i) => board[i] ? 0 : saved.notes[i] & 1022);
+      }
+    } catch {}
+  }
+  selected = board.indexOf(0);
+  if (selected === -1) selected = given.indexOf(0);
+  history.length = 0;
+  pencil = false;
+  memoDigit = 0;
+  hint = null;
+}
+loadStage();
+const row = i => Math.floor(i / 9), col = i => i % 9;
+const locationName = i => t((row(i)+1)+'行'+(col(i)+1)+'列', 'Row '+(row(i)+1)+', column '+(col(i)+1));
+const finished = () => board.every((n,i) => n === solution[i]);
+function digitComplete(digit) {
+  return digit > 0 && board.every((value,i) => (value === digit) === (solution[i] === digit));
+}
+
+const cells = given.map((_,i) => {
+  const el = document.createElement('button');
+  el.type = 'button';
+  el.className = 'cell';
+  el.style.setProperty('--wave-delay', ((row(i) + col(i)) * 23) + 'ms');
+  el.onclick = () => {
+    select(i);
+    if (pencil && memoDigit && !board[i]) enter(memoDigit);
+  };
+  $('board').append(el);
+  return el;
+});
+for (const n of digits) {
+  const el = document.createElement('button');
+  el.type = 'button';
+  el.textContent = n;
+  el.style.gridColumn = String(n);
+  el.onclick = () => chooseDigit(n);
+  $('keys').append(el);
+}
+function select(i, focus = false) {
+  selected = i;
+  hint = null;
+  render();
+  if (focus) cells[i].focus();
+}
+function persist() {
+  save(stageBoardKey(), JSON.stringify({board,notes}));
+  render();
+}
+function chooseDigit(n) {
+  if (digitComplete(n)) return;
+  if (pencil) {
+    memoDigit = n;
+    hint = null;
+    render();
+  } else {
+    enter(n);
+  }
+}
+function enter(n) {
+  if (given[selected] || digitComplete(board[selected]) || digitComplete(n)) return;
+  if (pencil && n && board[selected]) return;
+  if (!n && !board[selected] && !notes[selected]) return;
+  if (!pencil && n && board[selected] === n) return;
+  history.push({board:board.slice(),notes:notes.slice(),selected});
+  if (pencil && n) notes[selected] ^= 1 << n;
+  else {
+    board[selected] = n;
+    notes[selected] = 0;
+    if (n && n === solution[selected]) {
+      const completed = digitComplete(n);
+      const affected = completed ? notes.keys() : new Set(unitCache[selected].flat());
+      for (const index of affected) notes[index] &= ~(1 << n);
+      if (completed) celebrate(finished() ? 'clear' : 'digit', n);
+    }
+  }
+  hint = null;
+  persist();
+}
+function undo() {
+  if (!history.length) return;
+  stopCelebration();
+  ({board, notes, selected} = history.pop());
+  hint = null;
+  persist();
+}
+function getHint() {
+  if (finished()) return;
+  const repeated = conflictCells(board);
+  const wrong = board.findIndex((n,i) => !!n && n !== solution[i]);
+  if (repeated.length) hint = {kind:'conflict'};
+  else if (wrong >= 0) { selected = wrong; hint = {kind:'wrong'}; }
+  else {
+    hint = findHint(board, selected);
+    if (hint.index !== undefined) selected = hint.index;
+  }
+  render();
+}
+function statusText(completed) {
+  if (finished()) return stageIndex === stages.length - 1
+    ? t('全30ステージクリア！','All 30 stages cleared!')
+    : t('クリア！ 81マスすべて正解です。','Solved! All 81 squares are correct.');
+  if (hint?.kind === 'conflict') return t('下線の数字が重複しています。先に見直しましょう。','Check the underlined digits. They repeat in a row, column, or box.');
+  if (hint?.kind === 'wrong') return t(locationName(selected)+'に入れた数字を見直しましょう。','Recheck the digit in '+locationName(selected)+'.');
+  if (hint?.kind === 'single-candidate') return t(locationName(selected)+'には '+hint.value+' が入ります。黄色のマスにほかの数字があるためです。',locationName(selected)+' takes '+hint.value+'. The highlighted squares rule out all other digits.');
+  if (hint?.kind === 'single-position') {
+    const unit = t(['横一列','縦一列','3×3の枠'],['row','column','box'])[hint.unit];
+    return t('同じ'+unit+'で '+hint.value+' が入るのは、選んだマスだけです。','The selected square is the only place for '+hint.value+' in this '+unit+'.');
+  }
+  if (hint?.kind === 'elimination') {
+    const values = hint.first.values.join(t('と',' and '));
+    const detail = hint.first.kind === 'locked'
+      ? t('黄色のマスに '+values+' の候補が限られるので、薄紫のマスから外せます。',
+          values+' is confined to the yellow squares in the intersecting units. Remove it from the purple squares.')
+      : t('黄色の2マスは '+values+' の組なので、薄紫のマスから両方を外せます。',
+          'The two yellow squares must take '+values+'. Remove both from the purple squares.');
+    const next = t(
+      (hint.steps > 1 ? 'さらに候補を絞ると、' : '候補を消すと、')+locationName(selected)+'は '+hint.value+' です。',
+      (hint.steps > 1 ? 'After further eliminations, ' : 'After this elimination, ')+locationName(selected).toLowerCase()+' takes '+hint.value+'.'
+    );
+    return detail+' '+next;
+  }
+  if (hint) return t('今の盤面で示せるヒントが見つかりませんでした。','No hint was found for this position.');
+  if (celebration?.kind === 'digit') return t(
+    celebration.digit+'が9個そろいました！',
+    'All nine '+celebration.digit+'s are in place!'
+  );
+  if (musicError) return t('BGMを読み込めませんでした。BGMボタンで再試行できます。','Music could not load. Press BGM to retry.');
+  if (pencil && memoDigit) return t(
+    'メモ '+memoDigit+'：空いているマスをタップ。もう一度タップすると消せます。',
+    'Note '+memoDigit+': tap empty squares. Tap again to remove the note.'
+  );
+  if (pencil) return t('メモする数字を下から選んでください。','Choose a number below to start adding notes.');
+  if (completed.has(board[selected])) return t(
+    board[selected]+'は9個すべて正しい位置に入り、固定されています。',
+    'All nine '+board[selected]+'s are in the correct squares and are locked.'
+  );
+  return t('縦・横・太枠の3×3に、1〜9を一度ずつ入れます。','Use 1–9 once in each row, column, and 3×3 box.');
+}
+function render() {
+  document.documentElement.lang = lang;
+  const level = t(['初級','中級','上級'],['Easy','Medium','Hard'])[stages[stageIndex][2]];
+  $('stage').textContent = level+' · '+(stageIndex+1)+' / '+stages.length;
+  $('about-link').textContent = t('このサイトについて','About');
+  $('privacy-link').textContent = t('プライバシーポリシー','Privacy');
+  $('contact-link').textContent = t('お問い合わせ','Contact');
+  $('language').textContent = t('English','日本語');
+  $('language').lang = t('en','ja');
+  $('sound').textContent = t('効果音','Sound');
+  $('sound').setAttribute('aria-pressed',soundEnabled);
+  $('music').textContent = 'BGM';
+  $('music').setAttribute('aria-pressed',musicEnabled);
+  $('music').setAttribute('aria-label',t('BGMの切り替え','Toggle background music'));
+  $('audio-credit').textContent = t('BGM「Kuru kuru world」 / 蒲鉾さちこ','BGM “Kuru kuru world” / Kamaboko Sachiko');
+  $('audio-use').textContent = t(
+    '音源の抽出・再配布・このゲーム以外での利用は禁止です。利用条件を守ってプレイしてください。',
+    'Do not extract, redistribute, or reuse the audio from this game. Please follow these terms when playing.'
+  );
+  $('audio-source').textContent = t('配布元 OpenTracks（旧DOVA-SYNDROME）','Source: OpenTracks (formerly DOVA-SYNDROME)');
+  $('board').setAttribute('aria-label',t('数独の盤面','Sudoku board'));
+  $('undo').textContent = t('元に戻す','Undo');
+  $('erase').textContent = t('消す','Erase');
+  $('memo').textContent = t('メモ','Notes');
+  $('hint').textContent = t('ヒント','Hint');
+  $('memo').setAttribute('aria-pressed',pencil);
+  const completed = new Set(digits.filter(digitComplete));
+  digits.forEach((n,i) => {
+    const button = $('keys').children[i];
+    button.hidden = completed.has(n);
+    if (pencil) button.setAttribute('aria-pressed', n === memoDigit);
+    else button.removeAttribute('aria-pressed');
+  });
+  $('undo').disabled = history.length === 0;
+  $('erase').disabled = !!given[selected] || completed.has(board[selected]) || !(board[selected] || notes[selected]);
+  const solved = finished();
+  $('hint').disabled = solved;
+  const showStageActions = solved && !celebration;
+  $('replay').hidden = !showStageActions;
+  $('replay').textContent = t('もう一度遊ぶ','Play again');
+  $('next').hidden = !showStageActions || stageIndex === stages.length - 1;
+  $('next').textContent = t('次の問題へ','Next puzzle');
+  const repeated = new Set(conflictCells(board));
+  const related = new Set(unitCache[selected].flat());
+  const selectedValue = board[selected];
+  const evidence = new Set(hint?.evidence?.map(item => item.cell) ?? hint?.first?.cells ?? hint?.cells ?? []);
+  const eliminated = new Set(hint?.first?.removed ?? []);
+  cells.forEach((el,i) => {
+    el.classList.toggle('fixed',!!given[i]);
+    el.classList.toggle('completed',completed.has(board[i]));
+    el.classList.toggle('related',related.has(i));
+    el.classList.toggle('same-number',!!selectedValue && board[i] === selectedValue && i !== selected);
+    el.classList.toggle('evidence', evidence.has(i));
+    el.classList.toggle('eliminated', eliminated.has(i) && i !== selected);
+    el.classList.toggle('selected',i === selected);
+    el.classList.toggle('conflict',repeated.has(i));
+    el.classList.toggle('box-right', col(i) === 2 || col(i) === 5);
+    el.classList.toggle('box-bottom', row(i) === 2 || row(i) === 5);
+    el.classList.toggle('last-col',col(i) === 8);
+    el.classList.toggle('last-row',row(i) === 8);
+    el.tabIndex = selected === i ? 0 : -1;
+    el.setAttribute('aria-pressed',selected === i);
+    const memoDigits = digits.filter(n => notes[i] & 1 << n);
+    const valueLabel = board[i] || (memoDigits.length ? t('メモ ','Notes ')+memoDigits.join(', ') : t('空欄','Empty'));
+    const lockLabel = completed.has(board[i]) ? t('（固定）',' (locked)') : '';
+    el.setAttribute('aria-label',locationName(i)+' '+valueLabel+lockLabel);
+    el.textContent = board[i] || '';
+    if (memoDigits.length) {
+      const marks = document.createElement('span');
+      marks.className = 'marks';
+      marks.setAttribute('aria-hidden','true');
+      for (const n of digits) {
+        const mark = document.createElement('span');
+        mark.textContent = memoDigits.includes(n) ? n : '';
+        marks.append(mark);
+      }
+      el.append(marks);
+    }
+  });
+  $('status').textContent = statusText(completed);
+}
+function stopCelebration() {
+  clearTimeout(celebrationTimer);
+  if (!celebration) return;
+  $('board').classList.remove('is-clearing');
+  cells.forEach(cell => cell.classList.remove('number-finish','clear-wave'));
+  celebration = null;
+}
+function celebrate(kind, digit) {
+  stopCelebration();
+  celebration = {kind,digit};
+  if (kind === 'clear') {
+    $('board').classList.add('is-clearing');
+    cells.forEach(cell => cell.classList.add('clear-wave'));
+  } else {
+    cells.forEach((cell,i) => {
+      if (board[i] === digit) cell.classList.add('number-finish');
+    });
+  }
+  celebrationTimer = setTimeout(() => { stopCelebration(); render(); }, kind === 'clear' ? 1550 : 1150);
+  playCue(kind);
+}
+
+async function needAudio() {
+  try {
+    const Audio = window.AudioContext || window.webkitAudioContext;
+    if (!Audio) return null;
+    audioContext ??= new Audio();
+    if (audioContext.state !== 'running') await audioContext.resume();
+    return audioContext;
+  } catch { return null; }
+}
+function tone(ctx, output, midi, start, length, volume, shape = 'sine') {
+  const oscillator = ctx.createOscillator();
+  const envelope = ctx.createGain();
+  oscillator.type = shape;
+  oscillator.frequency.value = 440 * 2 ** ((midi - 69) / 12);
+  envelope.gain.setValueAtTime(0.0001,start);
+  envelope.gain.exponentialRampToValueAtTime(volume,start + 0.025);
+  envelope.gain.exponentialRampToValueAtTime(0.0001,start + length);
+  oscillator.connect(envelope);
+  envelope.connect(output);
+  oscillator.start(start);
+  oscillator.stop(start + length + 0.015);
+}
+async function playCue(kind) {
+  if (!soundEnabled) return;
+  const ctx = await needAudio();
+  if (!ctx || !soundEnabled) return;
+  const start = ctx.currentTime + 0.02;
+  if (kind === 'digit') {
+    tone(ctx,ctx.destination,76,start,.34,.05);
+    tone(ctx,ctx.destination,81,start + .11,.46,.045);
+  } else {
+    [60,67,72,76,79,84].forEach((n,i) => tone(ctx,ctx.destination,n,start + i * .09,.67,.05));
+    [60,64,71].forEach(n => tone(ctx,ctx.destination,n,start + .36,1.08,.026,'triangle'));
+  }
+}
+function loadMusic(ctx) {
+  musicBufferPromise ??= (async () => {
+    const response = await fetch('./soundtrack.dat');
+    if (!response.ok) throw new Error('Soundtrack download failed');
+    const bytes = await response.arrayBuffer();
+    const keyBytes = Uint8Array.from(atob(musicAssetKey), character => character.charCodeAt(0));
+    const key = await crypto.subtle.importKey('raw',keyBytes,'AES-GCM',false,['decrypt']);
+    const track = await crypto.subtle.decrypt({name:'AES-GCM',iv:bytes.slice(0,12)},key,bytes.slice(12));
+    return ctx.decodeAudioData(track);
+  })().catch(error => {
+    musicBufferPromise = undefined;
+    throw error;
+  });
+  return musicBufferPromise;
+}
+async function startMusic() {
+  if (!musicEnabled || musicPlayback || document.hidden) return;
+  const session = musicSession;
+  try {
+    const ctx = await needAudio();
+    if (session !== musicSession || !musicEnabled || musicPlayback || document.hidden) return;
+    if (!ctx) throw new Error('Web Audio unavailable');
+    const buffer = await loadMusic(ctx);
+    if (session !== musicSession || !musicEnabled || musicPlayback || document.hidden) return;
+    const source = ctx.createBufferSource();
+    const gain = ctx.createGain();
+    source.buffer = buffer;
+    source.loop = true;
+    gain.gain.setValueAtTime(0,ctx.currentTime);
+    gain.gain.linearRampToValueAtTime(musicVolume,ctx.currentTime + .15);
+    source.connect(gain);
+    gain.connect(ctx.destination);
+    source.onended = () => { source.disconnect(); gain.disconnect(); };
+    source.start();
+    musicPlayback = {source,gain};
+  } catch {
+    if (session !== musicSession || !musicEnabled) return;
+    musicEnabled = false;
+    musicError = true;
+    save(musicKey,'off');
+    render();
+  }
+}
+function stopMusic() {
+  musicSession++;
+  if (!musicPlayback) return;
+  const {source,gain} = musicPlayback;
+  musicPlayback = undefined;
+  const now = audioContext.currentTime;
+  gain.gain.cancelScheduledValues(now);
+  gain.gain.setTargetAtTime(0,now,.018);
+  source.stop(now + .09);
+}
+$('music').onclick = () => {
+  musicEnabled = !musicEnabled;
+  musicError = false;
+  save(musicKey,musicEnabled ? 'on' : 'off');
+  if (musicEnabled) startMusic();
+  else stopMusic();
+  render();
+};
+$('sound').onclick = () => {
+  soundEnabled = !soundEnabled;
+  save(soundKey,soundEnabled ? 'on' : 'off');
+  render();
+};
+document.addEventListener('visibilitychange',() => {
+  if (document.hidden) stopMusic();
+  else if (musicEnabled && audioContext) startMusic();
+});
+document.addEventListener('pointerdown',() => {
+  if (musicEnabled && !musicPlayback) startMusic();
+});
+$('language').onclick = () => { lang = t('en','ja'); save(langKey,lang); render(); };
+$('undo').onclick = undo;
+$('replay').onclick = () => {
+  if (!finished()) return;
+  stopCelebration();
+  loadStage({reset:true});
+  persist();
+  cells[selected].focus();
+};
+$('next').onclick = () => {
+  if (!finished() || celebration || stageIndex === stages.length - 1) return;
+  stageIndex++;
+  save(stageKey,String(stageIndex));
+  loadStage();
+  persist();
+  cells[selected].focus();
+};
+$('erase').onclick = () => enter(0);
+$('memo').onclick = () => {
+  pencil = !pencil;
+  memoDigit = 0;
+  hint = null;
+  render();
+};
+$('hint').onclick = getHint;
+document.addEventListener('keydown', event => {
+  if (event.ctrlKey || event.altKey || event.metaKey) return;
+  if (/^[1-9]$/.test(event.key)) { event.preventDefault(); chooseDigit(Number(event.key)); }
+  if (event.key === 'Backspace' || event.key === 'Delete') { event.preventDefault(); enter(0); }
+  const movement = {ArrowUp:row(selected)>0?-9:0,ArrowDown:row(selected)<8?9:0,ArrowLeft:col(selected)>0?-1:0,ArrowRight:col(selected)<8?1:0};
+  if (movement[event.key] && $('board').contains(event.target)) {
+    event.preventDefault();
+    select(selected + movement[event.key], true);
+  }
+});
+render();</script>
+</body></html>
